@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { API_URL } from '../constants'
 
 var myStorage = window.localStorage
 // myStorage.setItem('token', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjIiLCJjbGVhcmFuY2UiOiJBRE1JTiJ9.a1lD/can5gzGUL4yki6CAZmdm4ucsInRXYatqzi4Pzk=')
@@ -8,7 +9,7 @@ var Api = (function () {
   my.all = axios.all
   my.spread = axios.spread
   my.login = function (username, password, cb) {
-    axios.post('http://146.185.183.217/api/auth', {
+    axios.post(API_URL + '/auth', {
       username: username,
       password: password
     })
@@ -24,7 +25,7 @@ var Api = (function () {
   }
 
   my.validateToken = function (cb) {
-    axios.post('http://146.185.183.217/api/auth', {
+    axios.post(API_URL + '/auth', {
       token: myStorage.getItem('token')
     })
       .then(function (response) {
@@ -36,7 +37,7 @@ var Api = (function () {
   }
 
   my.getCurrentUser = function (cb) {
-    axios.get('http://146.185.183.217/api/currentUser', {
+    axios.get(API_URL + '/currentUser', {
       params: {
         token: myStorage.getItem('token')
       }
@@ -55,7 +56,7 @@ var Api = (function () {
   }
 
   my.getStudentsWithEdu = function (callback) {
-    axios.get('http://146.185.183.217/api/studentenMetOpleiding', {
+    axios.get(API_URL + '/studentenMetOpleiding', {
       params: {
         token: myStorage.getItem('token')
       }
@@ -69,7 +70,7 @@ var Api = (function () {
   }
 
   my.getOpleidingen = function (callback) {
-    axios.get('http://146.185.183.217/api/opleidingen', {
+    axios.get(API_URL + '/opleidingen', {
       params: {
         token: myStorage.getItem('token')
       }
@@ -83,7 +84,7 @@ var Api = (function () {
   }
 
   my.getStudent = function (id, cb) {
-    axios.get('http://146.185.183.217/api/student', {
+    axios.get(API_URL + '/student', {
       params: {
         id: id,
         token: myStorage.getItem('token')
@@ -98,7 +99,7 @@ var Api = (function () {
   }
 
   my.getStudentReports = function (id, cb) {
-    axios.get('http://146.185.183.217/api/studentReports', {
+    axios.get(API_URL + '/studentReports', {
       params: {
         id: id,
         token: myStorage.getItem('token')
@@ -113,7 +114,7 @@ var Api = (function () {
   }
 
   my.getStudentReport = function (rapportid, cb) {
-    axios.get('http://146.185.183.217/api/studentReport', {
+    axios.get(API_URL + '/studentReport', {
       params: {
         id: rapportid,
         token: myStorage.getItem('token')
@@ -128,7 +129,7 @@ var Api = (function () {
   }
 
   my.saveReport = function (report, cb) {
-    axios.post('http://146.185.183.217/api/saveReport', {
+    axios.post(API_URL + '/saveReport', {
       commentaarAlgemeen: report.commentaarAlgemeen,
       commentaarKlassenraad: report.commentaarKlassenraad,
       commentaarWerkplaats: report.commentaarWerkplaats,
@@ -148,7 +149,7 @@ var Api = (function () {
   }
 
   my.updateReport = function (report, cb) {
-    axios.patch('http://146.185.183.217/api/updateReport', {
+    axios.patch(API_URL + '/updateReport', {
       commentaarAlgemeen: report.commentaarAlgemeen,
       commentaarKlassenraad: report.commentaarKlassenraad,
       commentaarWerkplaats: report.commentaarWerkplaats,
@@ -169,7 +170,7 @@ var Api = (function () {
   }
 
   my.getFullOpleiding = function (id, cb) {
-    axios.get('http://146.185.183.217/api/fullOpleiding', {
+    axios.get(API_URL + '/fullOpleiding', {
       params: {
         opleiding: id,
         token: myStorage.getItem('token')
@@ -184,7 +185,7 @@ var Api = (function () {
   }
 
   my.getEvalForStudent = function (id, cb) {
-    axios.get('http://146.185.183.217/api/evaluatieVoorStudent', {
+    axios.get(API_URL + '/evaluatieVoorStudent', {
       params: {
         id: id,
         token: myStorage.getItem('token')
@@ -199,7 +200,7 @@ var Api = (function () {
   }
 
   my.createUser = function (firstname, lastname, email, pw, moduleIds, id, cb) {
-    axios.post('http://146.185.183.217/api/createUser', {
+    axios.post(API_URL + '/createUser', {
       params: {
         firstname: firstname,
         lastname: lastname,
@@ -221,7 +222,7 @@ var Api = (function () {
   }
 
   my.updateUser = function (firstname, lastname, email, id, cb) {
-    axios.patch('http://146.185.183.217/api/updateUser', {
+    axios.patch(API_URL + '/updateUser', {
       firstname: firstname,
       lastname: lastname,
       email: email,
@@ -237,7 +238,7 @@ var Api = (function () {
   }
 
   my.createEval = function (evalJSON, cb) {
-    axios.post('http://146.185.183.217/api/saveEvaluatie', {
+    axios.post(API_URL + '/saveEvaluatie', {
       aspecten: evalJSON.aspecten,
       name: evalJSON.name,
       studentId: evalJSON.studentId,
@@ -255,7 +256,7 @@ var Api = (function () {
   }
 
   my.updateEval = function (evalJSON, cb) {
-    axios.patch('http://146.185.183.217/api/updateEvaluatie', {
+    axios.patch(API_URL + '/updateEvaluatie', {
       evalId: evalJSON.evalId,
       aspecten: evalJSON.aspecten,
       name: evalJSON.name,
@@ -272,7 +273,7 @@ var Api = (function () {
   }
 
   my.getEvalsByStudent = function (modId, studId, cb) {
-    axios.get('http://146.185.183.217/api/getEvaluatiesPerStudent', {
+    axios.get(API_URL + '/getEvaluatiesPerStudent', {
       params: {
         modId: modId,
         studId: studId,
@@ -288,7 +289,7 @@ var Api = (function () {
   }
 
   my.getAllEvalsByStudent = function (studId, cb) {
-    axios.get('http://146.185.183.217/api/studentAllEvaluationsFull', {
+    axios.get(API_URL + '/studentAllEvaluationsFull', {
       params: {
         student: studId
       }
@@ -302,7 +303,7 @@ var Api = (function () {
   }
 
   my.deleteEval = function (id, cb) {
-    axios.delete('http://146.185.183.217/api/deleteEvaluatie', {
+    axios.delete(API_URL + '/deleteEvaluatie', {
       params: {
         id: id,
         token: myStorage.getItem('token')
@@ -317,7 +318,7 @@ var Api = (function () {
   }
 
   my.createOpleiding = function (creatorId, name, cb) {
-    axios.post('http://146.185.183.217/api/createOpleiding', {
+    axios.post(API_URL + '/createOpleiding', {
       name: name,
       creatorId: creatorId
     })
@@ -330,7 +331,7 @@ var Api = (function () {
   }
 
   my.updateOpleiding = function (opleidingId, name, cb) {
-    axios.patch('http://146.185.183.217/api/updateOpleiding', {
+    axios.patch(API_URL + '/updateOpleiding', {
       name: name,
       opleidingId: opleidingId
     })
@@ -343,7 +344,7 @@ var Api = (function () {
   }
 
   my.createModule = function (name, opleidingId, teacherId, creatorId, cb) {
-    axios.post('http://146.185.183.217/api/createModule', {
+    axios.post(API_URL + '/createModule', {
       name: name,
       opleidingId: opleidingId,
       teacherId: teacherId,
@@ -359,7 +360,7 @@ var Api = (function () {
   }
 
   my.updateModule = function (moduleId, name, cb) {
-    axios.patch('http://146.185.183.217/api/updateModule', {
+    axios.patch(API_URL + '/updateModule', {
       name: name,
       moduleId: moduleId
     })
@@ -372,7 +373,7 @@ var Api = (function () {
   }
 
   my.createDoelstellingscategorie = function (name, moduleId, creatorId, cb) {
-    axios.post('http://146.185.183.217/api/createDoelstellingscategorie', {
+    axios.post(API_URL + '/createDoelstellingscategorie', {
       name: name,
       moduleId: moduleId,
       creatorId: creatorId
@@ -387,7 +388,7 @@ var Api = (function () {
   }
 
   my.updateDoelstellingscategorie = function (doelstellingscategorieId, name, cb) {
-    axios.patch('http://146.185.183.217/api/updateDoelstellingscategorie', {
+    axios.patch(API_URL + '/updateDoelstellingscategorie', {
       name: name,
       doelstellingscategorieId: doelstellingscategorieId
     })
@@ -400,7 +401,7 @@ var Api = (function () {
   }
 
   my.createDoelstelling = function (name, doelstellingscategorieId, creatorId, cb) {
-    axios.post('http://146.185.183.217/api/createDoelstelling', {
+    axios.post(API_URL + '/createDoelstelling', {
       name: name,
       doelstellingscategorieId: doelstellingscategorieId,
       creatorId: creatorId
@@ -414,7 +415,7 @@ var Api = (function () {
   }
 
   my.updateDoelstelling = function (doelstellingId, name, cb) {
-    axios.patch('http://146.185.183.217/api/updateDoelstelling', {
+    axios.patch(API_URL + '/updateDoelstelling', {
       name: name,
       doelstellingId: doelstellingId
     })
