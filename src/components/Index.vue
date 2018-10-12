@@ -52,54 +52,48 @@
 </template>
 
 <script>
+import * as api from "../js/API_module";
+
 export default {
-  name: 'Index',
+  name: "Index",
   data: () => ({
     drawer: false,
-    navigation: [
-      'Rapporten',
-      'Studenten',
-      'Opleidingen',
-      'Afdrukken'
-    ],
+    navigation: ["Rapporten", "Studenten", "Opleidingen", "Afdrukken"],
     fav: true,
     menu: false,
     message: false,
     hints: true,
     currentUser: {
-      id: '',
-      name: '',
-      role: ''
+      id: "",
+      name: "",
+      role: ""
     },
     isLoaded: false
   }),
   methods: {
-    route (path) {
-      this.$router.push(path)
+    route(path) {
+      this.$router.push(path);
     },
-    logout: function () {
-      var self = this
-      self.menu = false
-      self.$http.logout(function (data) {
-        self.$router.push('/login')
-      })
+    logout: function() {
+      var self = this;
+      self.menu = false;
+      api.logout();
+      this.$router.push("/login");
     }
   },
-  created: function () {
-    var self = this
-    self.$http.getCurrentUser(function (data) {
-      self.currentUser.id = data.id
-      self.currentUser.name = data.name
-      self.currentUser.role = data.role
-      self.isLoaded = true
-    })
+  created: async function() {
+    var self = this;
+    const user = await api.getCurrentUser();
+    this.currentUser.id = user.id;
+    this.currentUser.name = user.name;
+    this.currentUser.role = user.role;
+    this.isLoaded = true;
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
 /* TODO custom css for the logo to fit the drawer */
-
 </style>

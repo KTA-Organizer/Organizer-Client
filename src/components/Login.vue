@@ -2,7 +2,7 @@
   <v-app>
     <v-layout column>
         <v-flex xs4 offset-xs4>
-          <form v-model="valid">
+          <form>
             <v-flex xs12 class="text-xs-center" mt-5>
               <h3>Sign In</h3>
             </v-flex>
@@ -15,6 +15,7 @@
                         type="email"
                         :rules="emailRules"
                         v-model="email"
+                        autofocus="autofocus"
                         required></v-text-field>
               </v-flex>
               <v-flex>
@@ -40,31 +41,37 @@
 
 
 <script>
+import * as api from "../js/API_module";
+
 export default {
-  name: 'Login',
+  name: "Login",
   data: () => ({
-    valid: true,
-    password: '',
-    passwordRules: [
-      (v) => !!v || 'paswoord moet ingevuld worden'
-    ],
-    email: '',
+    password: "test",
+    passwordRules: [v => !!v || "paswoord moet ingevuld worden"],
+    email: "test@test.be",
     emailRules: [
-      (v) => !!v || 'E-mail moet ingevuld worden',
-      (v) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail moet geldig zijn'
+      v => !!v || "E-mail moet ingevuld worden",
+      v =>
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+        "E-mail moet geldig zijn"
     ],
     loginError: null
   }),
   methods: {
-    onLogin () {
-      var self = this
-      this.$http.login(this.email, this.password, function (data) {
-        console.log(data.Error)
-        self.loginError = data.Error
-      })
+    async onLogin() {
+      try {
+        const res = await api.login(this.email, this.password);
+        if (res) {
+          console.log(res);
+          console.log("res is true");
+          this.$router.push("/home");
+        }
+      } catch (error) {
+        throw error;
+      }
     }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
