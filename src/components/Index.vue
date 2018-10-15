@@ -27,7 +27,6 @@
             <v-list-tile-content v-if="isLoaded">
               <v-list-tile-title class="amber--text">{{ currentUser.role }}</v-list-tile-title>
               <div>{{ currentUser.name }}</div>
-              <!--<v-list-tile-sub-title>Lector fysica & Chemie</v-list-tile-sub-title>-->
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -82,10 +81,9 @@ export default {
     }
   },
   created: async function() {
-    var self = this;
-    const user = await api.getCurrentUser();
+    const user = $cookies.get("user-session");
     this.currentUser.id = user.id;
-    this.currentUser.name = user.name;
+    this.currentUser.name = `${user.firstname} ${user.lastname}`;
     this.currentUser.role = user.role;
     this.isLoaded = true;
   }

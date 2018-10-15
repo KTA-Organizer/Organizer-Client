@@ -1,19 +1,20 @@
 import { API_URL } from "../constants";
 const myStorage = window.localStorage;
 
-// TODO change login mechanism
-export const login = (username, password) =>
-  processReq("/auth", { username, password }, "POST");
+export const login = (email, password) =>
+  processReq("/login", { email, password }, "POST");
 
-// TODO change logout
-export const logout = () => myStorage.removeItem("token");
+// TODO logout call to back-end
+export const logout = () => $cookies.remove("user-session");
 
 export const getCurrentUser = () => processReq("/currentUser", {}, "get");
 
 export const getStudentsWithEdu = () =>
   processReq("/studentenMetOpleiding", {}, "get");
 
-export const getStudent = (id) => processReq("/student", { id }, "get");
+export const getStudent = id => processReq(`/student/${id}`, {}, "get");
+
+export const getUser = id => processReq(`/user/${id}`, {}, "get");
 
 export const getOpleidingen = () => processReq("/opleidingen", {}, "get");
 
@@ -115,17 +116,21 @@ export const updateDoelstelling = (doelstellingId, name) =>
   );
 
 async function processReq(url, dataObj, method) {
+  const conf = {
+    method: method,
+    credentials: "include",
+    mode: "cors",
+    cache: "no-cache"
+  };
+  if (method.toUpperCase() === "POST") {
+    conf.body = JSON.stringify(dataObj);
+    conf.headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
+  }
   try {
-    const response = await fetch(`${API_URL}${url}`, {
-      body: JSON.stringify(dataObj),
-      method,
-      credentials: "include",
-      mode: "cors",
-      cache: "no-cache",
-      headers: {
-        Accept: "application/json"
-      }
-    });
+    const response = await fetch(`${API_URL}${url}`, conf);
     if (response.ok) {
       try {
         return response.json();
@@ -133,7 +138,7 @@ async function processReq(url, dataObj, method) {
         return null;
       }
     } else {
-      console.log(response.error);
+      console.log(response);
       throw new Error(response.error);
     }
   } catch (error) {

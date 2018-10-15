@@ -62,11 +62,12 @@ export default {
       try {
         const res = await api.login(this.email, this.password);
         if (res) {
-          console.log(res);
-          console.log("res is true");
+          console.log("response " , res);
+          $cookies.set("user-session", res.user);
           this.$router.push("/home");
         }
       } catch (error) {
+        console.error(error);
         throw error;
       }
     }
