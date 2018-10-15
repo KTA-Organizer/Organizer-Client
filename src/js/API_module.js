@@ -13,13 +13,13 @@ export const getCurrentUser = () => processReq("/currentUser", {}, "get");
 export const getStudentsWithEdu = () =>
   processReq("/studentenMetOpleiding", {}, "get");
 
-export const getStudent = () => processReq("/student", { id }, "get");
+export const getStudent = (id) => processReq("/student", { id }, "get");
 
 export const getOpleidingen = () => processReq("/opleidingen", {}, "get");
 
 export const saveReport = () => processReq("/saveReport", report, "post");
 
-export const updateReport = () => processReq("updateReport", report, "patch");
+export const updateReport = () => processReq("/updateReport", report, "patch");
 
 export const getFullOpleiding = id =>
   processReq("/fullOpleiding", { id }, "get");
