@@ -93,80 +93,79 @@
 </template>
 
 <script>
+import * as api from "../js/API_module";
 export default {
-  name: 'Students',
-  data () {
+  name: "Students",
+  data() {
     return {
-      filename: '',
+      filename: "",
       formData: [],
       addStudentsFile: false,
-      search: '',
+      search: "",
       receivedData: false,
       selectedid: null,
       filters: [],
-      keys: ['firstname', 'lastname'],
-      item_name: 'fullname',
-      item_value: 'id',
-      zoeklabel: 'student',
+      keys: ["firstname", "lastname"],
+      item_name: "fullname",
+      item_value: "id",
+      zoeklabel: "student",
       headers: [
-        { text: 'Student', align: 'left', value: 'student' },
-        { text: 'Opleiding', align: 'left', value: 'opleiding' },
-        { text: '', value: 'rapportid' }
+        { text: "Student", align: "left", value: "student" },
+        { text: "Opleiding", align: "left", value: "opleiding" },
+        { text: "", value: "rapportid" }
       ],
       items: [],
       opleidingen: []
-    }
+    };
   },
   methods: {
-    uploadFiles () {
-      const form = this.formData
-      console.log(form)
+    uploadFiles() {
+      const form = this.formData;
+      console.log(form);
     },
-    applyFilters (payload) {
-      var self = this
-      payload.forEach(function (filter) {
+    applyFilters(payload) {
+      var self = this;
+      payload.forEach(function(filter) {
         if (self.filters.includes(filter.opleiding)) {
           if (filter.value === true) {
-            const index = self.filters.indexOf(filter.opleiding)
-            self.filters.splice(index, 1)
+            const index = self.filters.indexOf(filter.opleiding);
+            self.filters.splice(index, 1);
           }
         } else if (filter.value === false) {
-          self.filters.push(filter.opleiding)
+          self.filters.push(filter.opleiding);
         }
-      })
+      });
     },
-    applySelection (payload) {
-      this.selectedid = payload
+    applySelection(payload) {
+      this.selectedid = payload;
     },
-    checkSelected (id) {
+    checkSelected(id) {
       if (this.selectedid === null) {
-        return true
+        return true;
       } else if (this.selectedid === id) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     }
   },
-  created () {
-    var self = this
-    this.$http.getStudentsWithEdu(function (data) {
-      self.items = data
-    })
-    this.$http.getOpleidingen(function (data) {
-      self.opleidingen = data
-      self.receivedData = true
-    })
+  created() {
+    var self = this;
+    this.$http.getStudentsWithEdu(function(data) {
+      self.items = data;
+    });
+    const opleidingen = api.getOpleidingen();
+    this.opleidingen = opleidingen;
+    this.receivedData = true;
   },
-  mounted () {
-    var sheet = document.createElement('style')
-    sheet.innerHTML = 'div.menu__content--autocomplete {top:165px !important;}'
-    document.body.appendChild(sheet)
+  mounted() {
+    var sheet = document.createElement("style");
+    sheet.innerHTML = "div.menu__content--autocomplete {top:165px !important;}";
+    document.body.appendChild(sheet);
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>

@@ -23,7 +23,7 @@ export const saveReport = () => processReq("/saveReport", report, "post");
 export const updateReport = () => processReq("/updateReport", report, "patch");
 
 export const getFullOpleiding = id =>
-  processReq("/fullOpleiding", { id }, "get");
+  processReq(`/opleidingen/${id}`, {}, "get");
 
 export const getEvalForStudent = id =>
   processReq("/evaluatieVoorStudent", { id }, "get");

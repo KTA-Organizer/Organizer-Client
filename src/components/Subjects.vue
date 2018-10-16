@@ -42,11 +42,12 @@
 </template>
 
 <script>
+import * as api from "../js/API_module";
 export default {
-  name: 'Subjects',
-  data () {
+  name: "Subjects",
+  data() {
     return {
-      filename: '',
+      filename: "",
       formData: [],
       editMode: false,
       givenmajor: {
@@ -55,54 +56,53 @@ export default {
       },
       addSubjectFile: false,
       headers: [
-        { text: 'Opleiding', align: 'left', value: 'opleiding' },
-        { text: '', value: 'actionbtns' }
+        { text: "Opleiding", align: "left", value: "opleiding" },
+        { text: "", value: "actionbtns" }
       ],
       items: [],
       filters: [],
       selectedid: null,
-      keys: ['name'],
-      zoeklabel: 'Opleiding',
-      item_name: 'name',
-      item_value: 'id'
-    }
+      keys: ["name"],
+      zoeklabel: "Opleiding",
+      item_name: "name",
+      item_value: "id"
+    };
   },
   methods: {
-    applySelection (payload) {
-      this.selectedid = payload
+    applySelection(payload) {
+      this.selectedid = payload;
     },
-    uploadFiles () {
-      const form = this.formData
-      console.log(form)
+    uploadFiles() {
+      const form = this.formData;
+      console.log(form);
     },
-    setGivenMajor (major) {
-      this.givenmajor = major
-      this.editMode = true
+    setGivenMajor(major) {
+      this.givenmajor = major;
+      this.editMode = true;
     },
-    checkSelected (id) {
+    checkSelected(id) {
       if (this.selectedid === null) {
-        return true
+        return true;
       } else if (this.selectedid === id) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     }
   },
-  created () {
-    var self = this
-    this.$http.getOpleidingen(function (data) {
-      self.items = data
-    })
+  async created() {
+    var self = this;
+    const opleidingen = await api.getOpleidingen();
+    console.log("Opleidingen", opleidingen);
+    this.items = opleidingen;
   },
-  mounted () {
-    var sheet = document.createElement('style')
-    sheet.innerHTML = 'div.menu__content--autocomplete {top:165px !important;}'
-    document.body.appendChild(sheet)
+  mounted() {
+    var sheet = document.createElement("style");
+    sheet.innerHTML = "div.menu__content--autocomplete {top:165px !important;}";
+    document.body.appendChild(sheet);
   }
-}
+};
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>

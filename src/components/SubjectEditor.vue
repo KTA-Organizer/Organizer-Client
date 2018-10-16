@@ -197,6 +197,7 @@
 </template>
 
 <script>
+import * as api from "../js/API_module";
 export default {
   name: 'SubjectEditor',
   props: ['givenmajor'],
@@ -397,12 +398,13 @@ export default {
       }
     }
   },
-  created () {
+  async created () {
     var self = this
     if (this.givenmajor != null) {
       this.opleidingsnaam = self.givenmajor.name
-      this.$http.getFullOpleiding(this.givenmajor.id, function (data) {
-        data.modules.forEach(function (module, moduleindex) {
+      const fullOpleiding = await api.getFullOpleiding(this.givenmajor.id);
+      console.log("FullOpleiding", fullOpleiding);
+      fullOpleiding.modules.forEach(function (module, moduleindex) {
           module['indexes'] = [moduleindex + 1]
           module.categorieen.forEach(function (categorie, categorieIndex) {
             categorie['indexes'] = [moduleindex + 1, categorieIndex + 1]
@@ -418,7 +420,25 @@ export default {
           })
         })
         self.opleiding = data.modules
-      })
+      
+      // this.$http.getFullOpleiding(this.givenmajor.id, function (data) {
+      //   data.modules.forEach(function (module, moduleindex) {
+      //     module['indexes'] = [moduleindex + 1]
+      //     module.categorieen.forEach(function (categorie, categorieIndex) {
+      //       categorie['indexes'] = [moduleindex + 1, categorieIndex + 1]
+      //       categorie.doelstellingen.forEach(function (doelstelling, doelstellingIndex) {
+      //         doelstelling['indexes'] = [moduleindex + 1, categorieIndex + 1, doelstellingIndex + 1]
+      //         doelstelling.criteria.forEach(function (criterium, criteriumIndex) {
+      //           criterium['indexes'] = [moduleindex + 1, categorieIndex + 1, doelstellingIndex + 1, criteriumIndex + 1]
+      //           criterium.aspecten.forEach(function (aspect, aspectIndex) {
+      //             aspect['indexes'] = [moduleindex + 1, categorieIndex + 1, doelstellingIndex + 1, criteriumIndex + 1, aspectIndex + 1]
+      //           })
+      //         })
+      //       })
+      //     })
+      //   })
+      //   self.opleiding = data.modules
+      // })
     }
   }
 }
@@ -427,40 +447,40 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
-  .custom-loader {
-    animation: loader 1s infinite;
-    display: flex;
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
   }
-  @-moz-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
   }
-  @-webkit-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
   }
-  @-o-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
   }
-  @keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
   }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 </style>
