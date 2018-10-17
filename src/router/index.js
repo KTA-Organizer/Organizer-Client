@@ -23,6 +23,7 @@ Vue.component("subjecteditor", SubjectEditor);
 Vue.component("datatableselects", DataTableSelects);
 Vue.component("datepicker", Datepicker);
 Vue.use(Router);
+import * as api from "../js/API_module";
 
 export default new Router({
   routes: [
@@ -30,8 +31,19 @@ export default new Router({
       path: "/",
       name: "index",
       component: Index,
-      beforeEnter: (to, from, next) => {
-        const user = $cookies.get("user-session");
+      beforeEnter: async (to, from, next) => {
+        try {
+          const user = await api.getCurrentUser();
+          if (user == null) {
+            next({ path: "/login" });
+          } else {
+            next();
+          }
+        } catch (error) {
+          console.log("Not logged in");
+          next({ path: "/login" });
+        }
+        const user = await api.getCurrentUser();
         if (user == null) {
           next({ path: "/login" });
         } else {
@@ -73,18 +85,21 @@ export default new Router({
           path: "/home",
           name: "home",
           component: Home
-        } /*,
-        {
-          path: '/login',
-          name: 'login',
-          component: Login
-        } */
+        }
       ]
     },
     {
       path: "/login",
       name: "login",
-      component: Login
+      component: Login,
+      beforeEnter: (to, from, next) => {
+        const user = $cookies.get("user-session");
+        if (user != null) {
+          next({ path: "/home" });
+        } else {
+          next();
+        }
+      }
     }
   ]
 });

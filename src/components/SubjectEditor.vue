@@ -199,12 +199,12 @@
 <script>
 import * as api from "../js/API_module";
 export default {
-  name: 'SubjectEditor',
-  props: ['givenmajor'],
-  data () {
+  name: "SubjectEditor",
+  props: ["givenmajor"],
+  data() {
     return {
       snackbar: false,
-      opleidingsnaam: '',
+      opleidingsnaam: "",
       editingModule: false,
       editingCategorie: false,
       editingDoelstelling: false,
@@ -218,230 +218,263 @@ export default {
       addAspectenActive: false,
       selectedcategorie: null,
       selectedcriteria: null,
-      ModuleAddString: '',
-      CategorieAddString: '',
-      DoelstellingAddString: '',
-      CriteriaAddString: '',
-      AspectenAddString: '',
-      opleiding: [
-      ],
+      ModuleAddString: "",
+      CategorieAddString: "",
+      DoelstellingAddString: "",
+      CriteriaAddString: "",
+      AspectenAddString: "",
+      opleiding: [],
       loader: null,
       loading: false
-    }
+    };
   },
   methods: {
-    enterAddition (title, object, level, parentIndexes) {
-      if (title !== '') {
-        if (level === 'module') {
-          object.push({name: title, new: true, indexes: [], categorieen: []})
-          object[object.length - 1].indexes.push(object.length)
-        } else if (level === 'categorie') {
-          var array = []
-          parentIndexes.forEach(function (item) {
-            array.push(item)
-          })
-          object.push({name: title, new: true, indexes: array, doelstellingen: []})
-          object[object.length - 1].indexes.push(object.length)
-        } else if (level === 'doelstelling') {
-          array = []
-          parentIndexes.forEach(function (item) {
-            array.push(item)
-          })
-          object.push({name: title, new: true, indexes: array, criteria: []})
-          object[object.length - 1].indexes.push(object.length)
-        } else if (level === 'criteria') {
-          array = []
-          parentIndexes.forEach(function (item) {
-            array.push(item)
-          })
-          object.push({name: title, new: true, indexes: array, aspecten: []})
-          object[object.length - 1].indexes.push(object.length)
-        } else if (level === 'aspect') {
-          array = []
-          parentIndexes.forEach(function (item) {
-            array.push(item)
-          })
-          object.push({name: title, new: true, indexes: array})
-          object[object.length - 1].indexes.push(object.length)
+    enterAddition(title, object, level, parentIndexes) {
+      if (title !== "") {
+        if (level === "module") {
+          object.push({ name: title, new: true, indexes: [], categorieen: [] });
+          object[object.length - 1].indexes.push(object.length);
+        } else if (level === "categorie") {
+          var array = [];
+          parentIndexes.forEach(function(item) {
+            array.push(item);
+          });
+          object.push({
+            name: title,
+            new: true,
+            indexes: array,
+            doelstellingen: []
+          });
+          object[object.length - 1].indexes.push(object.length);
+        } else if (level === "doelstelling") {
+          array = [];
+          parentIndexes.forEach(function(item) {
+            array.push(item);
+          });
+          object.push({ name: title, new: true, indexes: array, criteria: [] });
+          object[object.length - 1].indexes.push(object.length);
+        } else if (level === "criteria") {
+          array = [];
+          parentIndexes.forEach(function(item) {
+            array.push(item);
+          });
+          object.push({ name: title, new: true, indexes: array, aspecten: [] });
+          object[object.length - 1].indexes.push(object.length);
+        } else if (level === "aspect") {
+          array = [];
+          parentIndexes.forEach(function(item) {
+            array.push(item);
+          });
+          object.push({ name: title, new: true, indexes: array });
+          object[object.length - 1].indexes.push(object.length);
         }
       }
-      this.ModuleAddString = ''
-      this.CategorieAddString = ''
-      this.DoelstellingAddString = ''
-      this.CriteriaAddString = ''
-      this.AspectenAddString = ''
-      this.addModuleActive = false
-      this.addCategorieActive = false
-      this.addDoelstellingActive = false
-      this.addCriteriaActive = false
-      this.addAspectenActive = false
+      this.ModuleAddString = "";
+      this.CategorieAddString = "";
+      this.DoelstellingAddString = "";
+      this.CriteriaAddString = "";
+      this.AspectenAddString = "";
+      this.addModuleActive = false;
+      this.addCategorieActive = false;
+      this.addDoelstellingActive = false;
+      this.addCriteriaActive = false;
+      this.addAspectenActive = false;
     },
-    setCategorie (data) {
-      this.selectedcategorie = data
+    setCategorie(data) {
+      this.selectedcategorie = data;
     },
-    setCriteria (data) {
-      this.selectedcriteria = data
+    setCriteria(data) {
+      this.selectedcriteria = data;
     },
-    hideCategorie () {
-      this.selectedcategorie = null
-      this.selectedcriteria = null
-      this.enterAddition('', this.opleiding)
+    hideCategorie() {
+      this.selectedcategorie = null;
+      this.selectedcriteria = null;
+      this.enterAddition("", this.opleiding);
     },
-    hideAspects () {
-      this.selectedcriteria = null
-      this.enterAddition('', this.opleiding)
+    hideAspects() {
+      this.selectedcriteria = null;
+      this.enterAddition("", this.opleiding);
     },
-    editModule (payload) {
-      this.payload = payload
-      this.editingModule = !this.editingModule
-      this.hideCategorie()
+    editModule(payload) {
+      this.payload = payload;
+      this.editingModule = !this.editingModule;
+      this.hideCategorie();
     },
-    editCategorie (payload) {
-      this.payload = payload
-      this.editingCategorie = !this.editingCategorie
-      this.hideCategorie()
+    editCategorie(payload) {
+      this.payload = payload;
+      this.editingCategorie = !this.editingCategorie;
+      this.hideCategorie();
     },
-    editDoelstelling (payload) {
-      this.payload = payload
-      this.editingDoelstelling = !this.editingDoelstelling
+    editDoelstelling(payload) {
+      this.payload = payload;
+      this.editingDoelstelling = !this.editingDoelstelling;
     },
-    editCriteria (payload) {
-      this.payload = payload
-      this.editingCriteria = !this.editingCriteria
+    editCriteria(payload) {
+      this.payload = payload;
+      this.editingCriteria = !this.editingCriteria;
     },
-    editAspect (payload) {
-      this.payload = payload
-      this.editingAspect = !this.editingAspect
+    editAspect(payload) {
+      this.payload = payload;
+      this.editingAspect = !this.editingAspect;
     },
-    createOpleiding () {
-      var self = this
-      this.$http.createOpleiding(3, this.opleidingsnaam, function (response) {
-        console.log(response.data)
-        console.log(!isNaN(response.data))
+    createOpleiding() {
+      var self = this;
+      this.$http.createOpleiding(3, this.opleidingsnaam, function(response) {
+        console.log(response.data);
+        console.log(!isNaN(response.data));
         if (!isNaN(response.data)) {
-          self.givenmajor.id = response.data
-          self.givenmajor.name = self.opleidingsnaam
+          self.givenmajor.id = response.data;
+          self.givenmajor.name = self.opleidingsnaam;
         }
-        console.log('opleiding gemaakt met id: ' + response.data)
-        self.saveModules()
-      })
+        console.log("opleiding gemaakt met id: " + response.data);
+        self.saveModules();
+      });
     },
-    saveDoelstellingen (doelstellingscategorie) {
-      var self = this
-      doelstellingscategorie.doelstellingen.forEach(function (doelstelling) {
+    saveDoelstellingen(doelstellingscategorie) {
+      var self = this;
+      doelstellingscategorie.doelstellingen.forEach(function(doelstelling) {
         if (doelstelling.id && !doelstelling.new) {
-          self.$http.updateDoelstelling(doelstelling.id, doelstelling.name, function (response) {
-            console.log(response)
-            console.log(response.data)
-          })
+          self.$http.updateDoelstelling(
+            doelstelling.id,
+            doelstelling.name,
+            function(response) {
+              console.log(response);
+              console.log(response.data);
+            }
+          );
         } else {
-          self.$http.createDoelstelling(doelstelling.name, doelstellingscategorie.id, 3, function (response) {
-            console.log(response)
-            console.log(response.data)
-            doelstelling['id'] = response.data
-            doelstelling.new = false
-          })
+          self.$http.createDoelstelling(
+            doelstelling.name,
+            doelstellingscategorie.id,
+            3,
+            function(response) {
+              console.log(response);
+              console.log(response.data);
+              doelstelling["id"] = response.data;
+              doelstelling.new = false;
+            }
+          );
         }
-      })
+      });
     },
-    saveDoelstellingscategorieen (module) {
-      var self = this
-      module.categorieen.forEach(function (categorie) {
+    saveDoelstellingscategorieen(module) {
+      var self = this;
+      module.categorieen.forEach(function(categorie) {
         if (categorie.id && !categorie.new) {
-          self.$http.updateDoelstellingscategorie(categorie.id, categorie.name, function (response) {
-            self.saveDoelstellingen(categorie)
-          })
+          self.$http.updateDoelstellingscategorie(
+            categorie.id,
+            categorie.name,
+            function(response) {
+              self.saveDoelstellingen(categorie);
+            }
+          );
         } else {
-          self.$http.createDoelstellingscategorie(categorie.name, module.id, 3, function (response) {
-            categorie['id'] = response.data
-            categorie.new = false
-            self.saveDoelstellingen(categorie)
-          })
+          self.$http.createDoelstellingscategorie(
+            categorie.name,
+            module.id,
+            3,
+            function(response) {
+              categorie["id"] = response.data;
+              categorie.new = false;
+              self.saveDoelstellingen(categorie);
+            }
+          );
         }
-      })
+      });
     },
-    saveModules () {
-      var self = this
-      this.opleiding.forEach(function (module) {
+    saveModules() {
+      var self = this;
+      this.opleiding.forEach(function(module) {
         if (module.id && !module.new) {
-          self.$http.updateModule(module.id, module.name, function (response) {
-            self.saveDoelstellingscategorieen(module)
-          })
+          self.$http.updateModule(module.id, module.name, function(response) {
+            self.saveDoelstellingscategorieen(module);
+          });
         } else {
-          self.$http.createModule(module.name, self.givenmajor.id, 13, 3, function (response) {
-            module['id'] = response.data
-            module.new = false
-            self.saveDoelstellingscategorieen(module)
-          })
+          self.$http.createModule(
+            module.name,
+            self.givenmajor.id,
+            13,
+            3,
+            function(response) {
+              module["id"] = response.data;
+              module.new = false;
+              self.saveDoelstellingscategorieen(module);
+            }
+          );
         }
-      })
-      this.loading = null
+      });
+      this.loading = null;
     },
-    saveOpleiding () {
-      this.loading = true
-      var self = this
+    saveOpleiding() {
+      this.loading = true;
+      var self = this;
       if (this.givenmajor.id === null) {
-        this.createOpleiding()
+        this.createOpleiding();
       } else {
-        this.$http.updateOpleiding(this.givenmajor.id, this.opleidingsnaam, function (response) {
-          self.saveModules()
-        })
+        this.$http.updateOpleiding(
+          this.givenmajor.id,
+          this.opleidingsnaam,
+          function(response) {
+            self.saveModules();
+          }
+        );
       }
     }
   },
-  watch: {
-  },
+  watch: {},
   computed: {
-    deactivateModuleHeaders: function () {
+    deactivateModuleHeaders: function() {
       if (this.editingModule === true) {
-        this.$children[2].$children[this.payload + 1].isActive = false
+        this.$children[2].$children[this.payload + 1].isActive = false;
       }
     }
   },
-  async created () {
-    var self = this
+  async created() {
+    var self = this;
     if (this.givenmajor != null) {
-      this.opleidingsnaam = self.givenmajor.name
+      this.opleidingsnaam = self.givenmajor.name;
       const fullOpleiding = await api.getFullOpleiding(this.givenmajor.id);
       console.log("FullOpleiding", fullOpleiding);
-      fullOpleiding.modules.forEach(function (module, moduleindex) {
-          module['indexes'] = [moduleindex + 1]
-          module.categorieen.forEach(function (categorie, categorieIndex) {
-            categorie['indexes'] = [moduleindex + 1, categorieIndex + 1]
-            categorie.doelstellingen.forEach(function (doelstelling, doelstellingIndex) {
-              doelstelling['indexes'] = [moduleindex + 1, categorieIndex + 1, doelstellingIndex + 1]
-              doelstelling.criteria.forEach(function (criterium, criteriumIndex) {
-                criterium['indexes'] = [moduleindex + 1, categorieIndex + 1, doelstellingIndex + 1, criteriumIndex + 1]
-                criterium.aspecten.forEach(function (aspect, aspectIndex) {
-                  aspect['indexes'] = [moduleindex + 1, categorieIndex + 1, doelstellingIndex + 1, criteriumIndex + 1, aspectIndex + 1]
-                })
-              })
-            })
-          })
-        })
-        self.opleiding = data.modules
-      
-      // this.$http.getFullOpleiding(this.givenmajor.id, function (data) {
-      //   data.modules.forEach(function (module, moduleindex) {
-      //     module['indexes'] = [moduleindex + 1]
-      //     module.categorieen.forEach(function (categorie, categorieIndex) {
-      //       categorie['indexes'] = [moduleindex + 1, categorieIndex + 1]
-      //       categorie.doelstellingen.forEach(function (doelstelling, doelstellingIndex) {
-      //         doelstelling['indexes'] = [moduleindex + 1, categorieIndex + 1, doelstellingIndex + 1]
-      //         doelstelling.criteria.forEach(function (criterium, criteriumIndex) {
-      //           criterium['indexes'] = [moduleindex + 1, categorieIndex + 1, doelstellingIndex + 1, criteriumIndex + 1]
-      //           criterium.aspecten.forEach(function (aspect, aspectIndex) {
-      //             aspect['indexes'] = [moduleindex + 1, categorieIndex + 1, doelstellingIndex + 1, criteriumIndex + 1, aspectIndex + 1]
-      //           })
-      //         })
-      //       })
-      //     })
-      //   })
-      //   self.opleiding = data.modules
-      // })
+      fullOpleiding.modules.forEach(function(module, moduleindex) {
+        module["indexes"] = [moduleindex + 1];
+        module.doelstellingCategories.forEach(function(
+          categorie,
+          categorieIndex
+        ) {
+          categorie["indexes"] = [moduleindex + 1, categorieIndex + 1];
+          categorie.doelstellingen.forEach(function(
+            doelstelling,
+            doelstellingIndex
+          ) {
+            doelstelling["indexes"] = [
+              moduleindex + 1,
+              categorieIndex + 1,
+              doelstellingIndex + 1
+            ];
+            doelstelling.criteria.forEach(function(criterium, criteriumIndex) {
+              criterium["indexes"] = [
+                moduleindex + 1,
+                categorieIndex + 1,
+                doelstellingIndex + 1,
+                criteriumIndex + 1
+              ];
+            //   criterium.aspecten.forEach(function(aspect, aspectIndex) {
+            //     aspect["indexes"] = [
+            //       moduleindex + 1,
+            //       categorieIndex + 1,
+            //       doelstellingIndex + 1,
+            //       criteriumIndex + 1,
+            //       aspectIndex + 1
+            //     ];
+            //   });
+            });
+          });
+        });
+      });
+      self.opleiding = fullOpleiding.modules;
     }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -2,19 +2,19 @@ import { API_URL } from "../constants";
 const myStorage = window.localStorage;
 
 export const login = (email, password) =>
-  processReq("/login", { email, password }, "POST");
+  processReq("/auth/login", { email, password }, "POST");
 
 // TODO logout call to back-end
-export const logout = () => $cookies.remove("user-session");
+export const logout = () => processReq("/auth/logout", {}, "POST");
 
-export const getCurrentUser = () => processReq("/currentUser", {}, "get");
+export const getCurrentUser = () => processReq("/users/current", {}, "get");
 
 export const getStudentsWithEdu = () =>
   processReq("/studentenMetOpleiding", {}, "get");
 
 export const getStudent = id => processReq(`/student/${id}`, {}, "get");
 
-export const getUser = id => processReq(`/user/${id}`, {}, "get");
+export const getUser = id => processReq(`/users/${id}`, {}, "get");
 
 export const getOpleidingen = () => processReq("/opleidingen", {}, "get");
 
@@ -23,7 +23,7 @@ export const saveReport = () => processReq("/saveReport", report, "post");
 export const updateReport = () => processReq("/updateReport", report, "patch");
 
 export const getFullOpleiding = id =>
-  processReq(`/opleidingen/${id}`, {}, "get");
+  processReq(`/opleidingen/${id}/full`, {}, "get");
 
 export const getEvalForStudent = id =>
   processReq("/evaluatieVoorStudent", { id }, "get");

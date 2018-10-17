@@ -29,7 +29,7 @@
                         required></v-text-field>
               </v-flex>
               <v-flex class="text-xs-center" mt-5>
-                <v-btn primary type="submit" v-on:click.prevent="onLogin">Sign In</v-btn>
+                <v-btn color="primary" type="submit" v-on:click.prevent="onLogin">Sign In</v-btn>
                 <p v-if="loginError" class="red--text">{{loginError}}</p>
               </v-flex>
             </v-layout>
@@ -63,7 +63,6 @@ export default {
         const res = await api.login(this.email, this.password);
         if (res) {
           console.log("response " , res);
-          $cookies.set("user-session", res.user);
           this.$router.push("/home");
         }
       } catch (error) {

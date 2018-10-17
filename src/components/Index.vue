@@ -81,7 +81,8 @@ export default {
     }
   },
   created: async function() {
-    const user = $cookies.get("user-session");
+    const user = await api.getCurrentUser();
+    console.log(user);
     this.currentUser.id = user.id;
     this.currentUser.name = `${user.firstname} ${user.lastname}`;
     this.currentUser.role = user.role;
