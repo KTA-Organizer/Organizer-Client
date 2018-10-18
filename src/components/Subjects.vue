@@ -93,7 +93,6 @@ export default {
   async created() {
     var self = this;
     const opleidingen = await api.getOpleidingen();
-    console.log("Opleidingen", opleidingen);
     this.items = opleidingen;
   },
   mounted() {

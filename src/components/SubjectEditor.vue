@@ -320,8 +320,6 @@ export default {
     createOpleiding() {
       var self = this;
       this.$http.createOpleiding(3, this.opleidingsnaam, function(response) {
-        console.log(response.data);
-        console.log(!isNaN(response.data));
         if (!isNaN(response.data)) {
           self.givenmajor.id = response.data;
           self.givenmajor.name = self.opleidingsnaam;
@@ -451,22 +449,22 @@ export default {
               categorieIndex + 1,
               doelstellingIndex + 1
             ];
-            doelstelling.criteria.forEach(function(criterium, criteriumIndex) {
+            doelstelling.evaluatieCriteria.forEach(function(criterium, criteriumIndex) {
               criterium["indexes"] = [
                 moduleindex + 1,
                 categorieIndex + 1,
                 doelstellingIndex + 1,
                 criteriumIndex + 1
               ];
-            //   criterium.aspecten.forEach(function(aspect, aspectIndex) {
-            //     aspect["indexes"] = [
-            //       moduleindex + 1,
-            //       categorieIndex + 1,
-            //       doelstellingIndex + 1,
-            //       criteriumIndex + 1,
-            //       aspectIndex + 1
-            //     ];
-            //   });
+              criterium.aspecten.forEach(function(aspect, aspectIndex) {
+                aspect["indexes"] = [
+                  moduleindex + 1,
+                  categorieIndex + 1,
+                  doelstellingIndex + 1,
+                  criteriumIndex + 1,
+                  aspectIndex + 1
+                ];
+              });
             });
           });
         });
