@@ -4,13 +4,15 @@ const myStorage = window.localStorage;
 export const login = (email, password) =>
   processReq("/auth/login", { email, password }, "POST");
 
-// TODO logout call to back-end
 export const logout = () => processReq("/auth/logout", {}, "POST");
 
 export const getCurrentUser = () => processReq("/users/current", {}, "get");
 
 export const getStudentsWithEdu = () =>
   processReq("/studentModules", {}, "get");
+
+  export const getStudentOpleiding = studId =>
+  processReq(`/studentModules/${studId}`, {}, "get");
 
 export const getStudents = () => processReq("/students", {}, "get");
 
@@ -19,6 +21,8 @@ export const getStudent = id => processReq(`/students/${id}`, {}, "get");
 export const getUser = id => processReq(`/users/${id}`, {}, "get");
 
 export const getOpleidingen = () => processReq("/opleidingen", {}, "get");
+
+export const getOpleiding = id => processReq(`/opleidingen/${id}`, {}, "get");
 
 export const saveReport = () => processReq("/saveReport", report, "post");
 
@@ -29,6 +33,9 @@ export const getFullOpleiding = id =>
 
 export const getEvalForStudent = id =>
   processReq("/evaluatieVoorStudent", { id }, "get");
+
+export const getModulesForStudent = studId =>
+  processReq(`/modules/${studId}/student`, {}, "get");
 
 export const createUser = (firstname, lastname, email, pw, moduleIds, id) =>
   processReq(
@@ -64,8 +71,8 @@ export const createEval = evalJson =>
 export const updateEval = evalJson =>
   processReq("/updateEvaluatie", evalJson, "post");
 
-export const getEvalsByStudent = (modId, studId) =>
-  processReq(`/evaluatie/${studId}/student`, {}, "get");
+export const getEvalsByStudent = (studId) =>
+  processReq(`/evaluaties/${studId}/student`, {}, "get");
 
 export const getAllEvalsByStudent = studId =>
   processReq("/studentAllEvaluationsFull", { studId }, "get");

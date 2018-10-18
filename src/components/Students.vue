@@ -97,8 +97,8 @@ import * as api from "../js/API_module";
 
 function createStudentOpleidingMap(students, opleidingen) {
   return students.map(function(student) {
-    console.log(student);
-    student.opleidingsNaam = "Kapper";
+    const opleiding = opleidingen.find(x => x.id === student.opleidingId);
+    student.opleidingsNaam = (opleiding !== undefined) ? opleiding.name : "Geen opleiding gevonden.";
     return student;
   });
 }

@@ -205,207 +205,229 @@
 </template>
 
 <script>
-    export default {
-      name: 'Evaluatie',
-      data () {
-        return {
-          student: {name: '', firstname: '', id: null},
-          breadcrumbs: [
-            {id: 0, text: 'test', disabled: false},
-            {id: 1, text: '', disabled: false}
-          ],
-          modulesDropdown: [],
-          modules: [],
-          selectedModuleName: [],
-          selectedModule: {},
-          evalFiches: [],
-          prevEvals: [],
-          moduleSelected: false,
-          newEvalTable: false,
-          gotEvals: false,
-          updateEval: false,
-          doelRowSpan: 0,
-          activeBoxes: {},
-          activeBoxesCreated: false,
-          saveEval: {},
-          evalName: '',
-          currentEvalId: null,
-          evalError: null,
-          format: 'dd/MM/yyyy',
-          date: null,
-          menu: false,
-          popup: false,
-          popupId: null,
-          popupName: null
+import * as api from "../js/API_module";
+export default {
+  name: "Evaluatie",
+  data() {
+    return {
+      student: {},
+      breadcrumbs: [
+        { id: 0, text: "test", disabled: false },
+        { id: 1, text: "", disabled: false }
+      ],
+      modulesDropdown: [],
+      modules: [],
+      selectedModuleName: [],
+      selectedModule: {},
+      evalFiches: [],
+      prevEvals: [],
+      moduleSelected: false,
+      newEvalTable: false,
+      gotEvals: false,
+      updateEval: false,
+      doelRowSpan: 0,
+      activeBoxes: {},
+      activeBoxesCreated: false,
+      saveEval: {},
+      evalName: "",
+      currentEvalId: null,
+      evalError: null,
+      format: "dd/MM/yyyy",
+      date: null,
+      menu: false,
+      popup: false,
+      popupId: null,
+      popupName: null
+    };
+  },
+  methods: {
+    selectItem: function() {
+      var self = this;
+      this.breadcrumbs[1].text = this.selectedModuleName;
+      var result = this.modules.filter(function(obj) {
+        return obj.name === self.selectedModuleName;
+      });
+      this.selectedModule = result;
+      console.log(this.selectedModule);
+      this.moduleSelected = true;
+      this.newEvalTable = false;
+      self.createActiveBoxes(this.selectedModule);
+      self.getPrevEvals();
+    },
+    getPrevEvals: function() {
+      var self = this;
+      self.prevEvals = [];
+      this.$http.getEvalsByStudent(
+        this.selectedModule[0].id,
+        this.student.id,
+        function(data) {
+          self.prevEvals.push(data);
+          // console.log(self.prevEvals)
+          self.gotEvals = true;
         }
-      },
-      methods: {
-        selectItem: function () {
-          var self = this
-          this.breadcrumbs[1].text = this.selectedModuleName
-          var result = this.modules.filter(function (obj) {
-            return obj.name === self.selectedModuleName
-          })
-          this.selectedModule = result
-          console.log(this.selectedModule)
-          this.moduleSelected = true
-          this.newEvalTable = false
-          self.createActiveBoxes(this.selectedModule)
-          self.getPrevEvals()
-        },
-        getPrevEvals: function () {
-          var self = this
-          self.prevEvals = []
-          this.$http.getEvalsByStudent(this.selectedModule[0].id, this.student.id, function (data) {
-            self.prevEvals.push(data)
-            // console.log(self.prevEvals)
-            self.gotEvals = true
-          })
-        },
-        newEval: function () {
-          var self = this
-          self.newEvalTable = true
-          var d = new Date()
-          var month = d.getMonth() + 1
-          self.date = month + '/' + d.getDate() + '/' + d.getFullYear()
-          self.evalName = null
-          self.createActiveBoxes(this.selectedModule)
-          self.updateEval = false
-          // console.log(self.activeBoxes)
-        },
-        createActiveBoxes: function (module) {
-          this.activeBoxes = {}
-          for (var i = 0; i < module.length; i++) {
-            for (var j = 0; j < module[i].categorieen.length; j++) {
-              for (var k = 0; k < module[i].categorieen[j].doelstellingen.length; k++) {
-                for (var l = 0; l < module[i].categorieen[j].doelstellingen[k].criteria.length; l++) {
-                  for (var m = 0; m < module[i].categorieen[j].doelstellingen[k].criteria[l].aspecten.length; m++) {
-                    var objectid = module[i].categorieen[j].doelstellingen[k].criteria[l].aspecten[m].id
-                    var objectName = 'yes' + objectid
-                    this.activeBoxes[objectName] = null
-                    objectName = 'no' + objectid
-                    this.activeBoxes[objectName] = null
-                  }
-                }
+      );
+    },
+    newEval: function() {
+      var self = this;
+      self.newEvalTable = true;
+      var d = new Date();
+      var month = d.getMonth() + 1;
+      self.date = month + "/" + d.getDate() + "/" + d.getFullYear();
+      self.evalName = null;
+      self.createActiveBoxes(this.selectedModule);
+      self.updateEval = false;
+    },
+    createActiveBoxes: function(module) {
+      this.activeBoxes = {};
+      for (var i = 0; i < module.length; i++) {
+        for (var j = 0; j < module[i].categorieen.length; j++) {
+          for (
+            var k = 0;
+            k < module[i].categorieen[j].doelstellingen.length;
+            k++
+          ) {
+            for (
+              var l = 0;
+              l < module[i].categorieen[j].doelstellingen[k].criteria.length;
+              l++
+            ) {
+              for (
+                var m = 0;
+                m <
+                module[i].categorieen[j].doelstellingen[k].criteria[l].aspecten
+                  .length;
+                m++
+              ) {
+                var objectid =
+                  module[i].categorieen[j].doelstellingen[k].criteria[l]
+                    .aspecten[m].id;
+                var objectName = "yes" + objectid;
+                this.activeBoxes[objectName] = null;
+                objectName = "no" + objectid;
+                this.activeBoxes[objectName] = null;
               }
             }
           }
-          this.activeBoxesCreated = true
-        },
-        logYes: function (id) {
-          this.$set(this.activeBoxes, 'yes' + id, 1)
-          this.$set(this.activeBoxes, 'no' + id, 0)
-          this.$forceUpdate()
-        },
-        logNo: function (id) {
-          this.$set(this.activeBoxes, 'yes' + id, 0)
-          this.$set(this.activeBoxes, 'no' + id, 1)
-          this.$forceUpdate()
-        },
-        reset: function (id) {
-          this.$set(this.activeBoxes, 'yes' + id, null)
-          this.$set(this.activeBoxes, 'no' + id, null)
-          this.$forceUpdate()
-        },
-        makeJSON: function (update) {
-          var self = this
-          if (this.evalName !== '') {
-            this.evalError = null
-            var objKeys = Object.keys(this.activeBoxes)
-            var objLength = Object.keys(this.activeBoxes).length
-            this.saveEval['name'] = this.evalName
-            this.saveEval['studentId'] = this.student.id
-            this.saveEval['moduleId'] = this.selectedModule[0].id
-            this.saveEval['aspecten'] = []
-            this.saveEval['date'] = document.querySelector('.datepicker1 input').value
-            for (var i = 0; i < objLength; i = i + 2) {
-              var obj = {aspectId: objKeys[i].substr(3), beoordeling: this.activeBoxes[objKeys[i]]}
-              this.saveEval['aspecten'].push(obj)
-            }
-            if (update) {
-              this.saveEval['evalId'] = this.currentEvalId
-              this.$http.updateEval(this.saveEval, function (data) {
-                self.getPrevEvals()
-              })
-            } else {
-              this.$http.createEval(this.saveEval, function (data) {
-                self.getPrevEvals()
-              })
-            }
-            console.log(this.saveEval)
-            this.newEvalTable = false
-          } else {
-            this.evalError = 'geef een naam op voor de Evaluatiefiche'
-          }
-        },
-        getEvaluation: function (id) {
-          var self = this
-          self.newEvalTable = true
-          var obj = self.prevEvals[0].evaluaties.filter(function (elem) {
-            if (elem.id === id) return elem
-          })
-          self.evalName = obj[0].name
-          var d = obj[0].date.split('/')
-          var d1 = d[2] + '/' + d[1] + '/' + d[0]
-          self.date = d1
-          self.currentEvalId = obj[0].id
-          self.createActiveBoxes(this.selectedModule)
-          obj[0].aspecten.forEach(function (item) {
-            if (item.aspectBeoordeling === '1') {
-              self.$set(self.activeBoxes, 'yes' + item.aspectId, 1)
-              self.$set(self.activeBoxes, 'no' + item.aspectId, 0)
-            } else if (item.aspectBeoordeling === '0') {
-              self.$set(self.activeBoxes, 'yes' + item.aspectId, 0)
-              self.$set(self.activeBoxes, 'no' + item.aspectId, 1)
-            }
-          })
-          self.updateEval = true
-          this.$forceUpdate()
-        },
-        deleteEvalPopup: function (id, name) {
-          this.popupId = id
-          this.popupName = name
-          this.popup = true
-        },
-        deleteEval: function (id) {
-          this.popup = false
-          var self = this
-          console.log(id)
-          this.$http.deleteEval(id, function (data) {
-            console.log(data)
-            self.getPrevEvals()
-          })
         }
-      },
-      created () {
-        var self = this
-        var studentId = this.$route.query.id
-        this.$http.getStudent(studentId, function (data) {
-          self.student.firstname = data.student.firstname
-          self.student.name = data.student.lastname
-          self.student.id = data.student.id
-          self.breadcrumbs[0].text = data.opleiding.name
-        })
-        this.$http.getEvalForStudent(studentId, function (data) {
-          self.modules = data.modules
-          for (var i = 0; i < self.modules.length; i++) {
-            self.modulesDropdown.push(self.modules[i].name)
-          }
-        })
       }
+      this.activeBoxesCreated = true;
+    },
+    logYes: function(id) {
+      this.$set(this.activeBoxes, "yes" + id, 1);
+      this.$set(this.activeBoxes, "no" + id, 0);
+      this.$forceUpdate();
+    },
+    logNo: function(id) {
+      this.$set(this.activeBoxes, "yes" + id, 0);
+      this.$set(this.activeBoxes, "no" + id, 1);
+      this.$forceUpdate();
+    },
+    reset: function(id) {
+      this.$set(this.activeBoxes, "yes" + id, null);
+      this.$set(this.activeBoxes, "no" + id, null);
+      this.$forceUpdate();
+    },
+    makeJSON: function(update) {
+      var self = this;
+      if (this.evalName !== "") {
+        this.evalError = null;
+        var objKeys = Object.keys(this.activeBoxes);
+        var objLength = Object.keys(this.activeBoxes).length;
+        this.saveEval["name"] = this.evalName;
+        this.saveEval["studentId"] = this.student.id;
+        this.saveEval["moduleId"] = this.selectedModule[0].id;
+        this.saveEval["aspecten"] = [];
+        this.saveEval["date"] = document.querySelector(
+          ".datepicker1 input"
+        ).value;
+        for (var i = 0; i < objLength; i = i + 2) {
+          var obj = {
+            aspectId: objKeys[i].substr(3),
+            beoordeling: this.activeBoxes[objKeys[i]]
+          };
+          this.saveEval["aspecten"].push(obj);
+        }
+        if (update) {
+          this.saveEval["evalId"] = this.currentEvalId;
+          this.$http.updateEval(this.saveEval, function(data) {
+            self.getPrevEvals();
+          });
+        } else {
+          this.$http.createEval(this.saveEval, function(data) {
+            self.getPrevEvals();
+          });
+        }
+        console.log(this.saveEval);
+        this.newEvalTable = false;
+      } else {
+        this.evalError = "geef een naam op voor de Evaluatiefiche";
+      }
+    },
+    getEvaluation: function(id) {
+      var self = this;
+      self.newEvalTable = true;
+      var obj = self.prevEvals[0].evaluaties.filter(function(elem) {
+        if (elem.id === id) return elem;
+      });
+      self.evalName = obj[0].name;
+      var d = obj[0].date.split("/");
+      var d1 = d[2] + "/" + d[1] + "/" + d[0];
+      self.date = d1;
+      self.currentEvalId = obj[0].id;
+      self.createActiveBoxes(this.selectedModule);
+      obj[0].aspecten.forEach(function(item) {
+        if (item.aspectBeoordeling === "1") {
+          self.$set(self.activeBoxes, "yes" + item.aspectId, 1);
+          self.$set(self.activeBoxes, "no" + item.aspectId, 0);
+        } else if (item.aspectBeoordeling === "0") {
+          self.$set(self.activeBoxes, "yes" + item.aspectId, 0);
+          self.$set(self.activeBoxes, "no" + item.aspectId, 1);
+        }
+      });
+      self.updateEval = true;
+      this.$forceUpdate();
+    },
+    deleteEvalPopup: function(id, name) {
+      this.popupId = id;
+      this.popupName = name;
+      this.popup = true;
+    },
+    deleteEval: function(id) {
+      this.popup = false;
+      var self = this;
+      console.log(id);
+      this.$http.deleteEval(id, function(data) {
+        console.log(data);
+        self.getPrevEvals();
+      });
     }
+  },
+  async created() {
+    var self = this;
+    const studentId = this.$route.query.id;
+    const student = await api.getUser(studentId);
+    this.student = student;
+    console.log("studentje", this.student);
+    const opleidingObj = await api.getStudentOpleiding(this.student.id);
+    this.breadcrumbs[0].text = opleidingObj.opleiding.name;
+    console.log(this.student.id);
+    const evaluations = await api.getEvalsByStudent(this.student.id);
+    this.modules = await api.getModulesForStudent(this.student.id);
+    this.modules.forEach(x => this.modulesDropdown.push(x.name));
+  }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-p{
-    margin-bottom: 0;
+p {
+  margin-bottom: 0;
 }
-input[type="radio"]{
-    display:inline-block;
-    position: absolute;
-    left: 33%;
-    top: 50%;
-    transform: translateY(-50%) scale(3);
+input[type="radio"] {
+  display: inline-block;
+  position: absolute;
+  left: 33%;
+  top: 50%;
+  transform: translateY(-50%) scale(3);
 }
 </style>
