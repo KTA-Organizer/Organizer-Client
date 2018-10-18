@@ -16,7 +16,7 @@
    <v-toolbar color="indigo" dark fixed app v-if="['login'].indexOf($route.name)">
         <v-icon large color="white" @click.stop="drawer = !drawer">{{ drawer? 'close':'menu' }}</v-icon>
      <v-toolbar-title>Rapportensysteem</v-toolbar-title>
-     <v-spacer></v-spacer>
+     <v-spacer>Welcome {{currentUser.name}}</v-spacer>
      <v-menu
        :close-on-content-click="false"
        v-model="menu"

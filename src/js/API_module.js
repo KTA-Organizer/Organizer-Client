@@ -10,9 +10,11 @@ export const logout = () => processReq("/auth/logout", {}, "POST");
 export const getCurrentUser = () => processReq("/users/current", {}, "get");
 
 export const getStudentsWithEdu = () =>
-  processReq("/studentenMetOpleiding", {}, "get");
+  processReq("/studentModules", {}, "get");
 
-export const getStudent = id => processReq(`/student/${id}`, {}, "get");
+export const getStudents = () => processReq("/students", {}, "get");
+
+export const getStudent = id => processReq(`/students/${id}`, {}, "get");
 
 export const getUser = id => processReq(`/users/${id}`, {}, "get");
 
@@ -63,7 +65,7 @@ export const updateEval = evalJson =>
   processReq("/updateEvaluatie", evalJson, "post");
 
 export const getEvalsByStudent = (modId, studId) =>
-  processReq("/getEvaluatiesPerStudent", { modId, studId }, "get");
+  processReq(`/evaluatie/${studId}/student`, {}, "get");
 
 export const getAllEvalsByStudent = studId =>
   processReq("/studentAllEvaluationsFull", { studId }, "get");
