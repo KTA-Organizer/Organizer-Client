@@ -1,4 +1,5 @@
 import { API_URL } from "../constants";
+import { ResponseError } from "../utils/ResponseError";
 const myStorage = window.localStorage;
 
 export const login = (email, password) =>
@@ -138,20 +139,16 @@ async function processReq(url, dataObj, method) {
       "Content-Type": "application/json"
     };
   }
+
+  const response = await fetch(`${API_URL}${url}`, conf);
+  let body;
   try {
-    const response = await fetch(`${API_URL}${url}`, conf);
-    if (response.ok) {
-      try {
-        return response.json();
-      } catch (error) {
-        return null;
-      }
-    } else {
-      console.log(response);
-      throw new Error(response.error);
-    }
+    body = await response.json();
   } catch (error) {
-    console.log(error);
-    throw new Error("Something went wrong...");
+  }
+  if (response.ok) {
+    return body;
+  } else {
+    throw new ResponseError(response.status, body);
   }
 }

@@ -1,12 +1,13 @@
 import Vue from 'vue';
 import App from './App.vue';
-import store from './store';
+import store from './store/index';
 import VueCookies from 'vue-cookies';
 import Vuetify from 'vuetify';
 import router from "./router/index";
 import * as api from "./services/organizer-api";
 import printer from "./services/printer";
 
+import('./css/style.css');
 import('../node_modules/vuetify/dist/vuetify.min.css');
 
 // Dependency injection

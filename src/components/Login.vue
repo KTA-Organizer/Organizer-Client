@@ -41,8 +41,6 @@
 
 
 <script>
-import * as api from "../services/organizer-api";
-
 export default {
   name: "Login",
   data: () => ({
@@ -58,17 +56,8 @@ export default {
     loginError: null
   }),
   methods: {
-    async onLogin() {
-      try {
-        const res = await api.login(this.email, this.password);
-        if (res) {
-          console.log("response " , res);
-          this.$router.push("/home");
-        }
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
+    onLogin() {
+      this.$store.dispatch("login", { email: this.email, password: this.password });
     }
   }
 };

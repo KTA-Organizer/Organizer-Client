@@ -24,7 +24,35 @@ Vue.component("datatableselects", DataTableSelects);
 Vue.component("datepicker", Datepicker);
 Vue.use(Router);
 
-import * as api from "../services/organizer-api";
+import store from "../store/index";
+
+function requireAuth(to, from, next) {
+  if (store.getters.isLoggedIn) {
+    next();
+  } else {
+    setTimeout(() => {
+      if (store.getters.isLoggedIn) {
+        next();
+      } else {
+        next("/login");
+      }
+    }, 200)
+  }
+}
+
+function requireUnauth(to, from, next) {
+  if (store.getters.isLoggedIn) {
+    next("/");
+  } else {
+    setTimeout(() => {
+      if (store.getters.isLoggedIn) {
+        next("/");
+      } else {
+        next();
+      }
+    }, 200)
+  }
+}
 
 export default new Router({
   routes: [
@@ -32,25 +60,7 @@ export default new Router({
       path: "/",
       name: "index",
       component: Index,
-      beforeEnter: async (to, from, next) => {
-        try {
-          const user = await api.getCurrentUser();
-          if (user == null) {
-            next({ path: "/login" });
-          } else {
-            next();
-          }
-        } catch (error) {
-          console.log("Not logged in");
-          next({ path: "/login" });
-        }
-        const user = await api.getCurrentUser();
-        if (user == null) {
-          next({ path: "/login" });
-        } else {
-          next();
-        }
-      },
+      beforeEnter: requireAuth,
       children: [
         {
           path: "/rapporten",
@@ -93,14 +103,7 @@ export default new Router({
       path: "/login",
       name: "login",
       component: Login,
-      beforeEnter: (to, from, next) => {
-        const user = $cookies.get("user-session");
-        if (user != null) {
-          next({ path: "/home" });
-        } else {
-          next();
-        }
-      }
+      beforeEnter: requireUnauth
     }
   ]
 });

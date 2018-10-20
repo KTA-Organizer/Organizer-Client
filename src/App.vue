@@ -1,13 +1,25 @@
 <template>
   <div id="app">
-    <router-view/>
+    <div class="app-container" v-if="checkedAuthentication">
+      <router-view/>
+    </div>
+    <div class="app-container" v-if="!checkedAuthentication">
+      <h1>Loading</h1>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import store from './store/index'
+
 export default {
-  name: 'app'
+  name: 'app',
+  computed: mapGetters([ "checkedAuthentication" ])
 }
+
+store.dispatch("checkAuthentication");
+
 </script>
 
 <style>

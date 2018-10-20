@@ -1,32 +1,30 @@
 <template>
-  <v-app>
-    <v-navigation-drawer persistent v-model="drawer" app v-if="['login'].indexOf($route.name)">
+<v-app>
+  <v-navigation-drawer persistent v-model="drawer" app v-if="isLoggedIn">
     <v-toolbar flat center height="150vh">
-        <img class="" src="../assets/CLW_Logo.png" height="100%">
+      <img class="" src="../assets/CLW_Logo.png" height="100%">
     </v-toolbar>
-     <v-divider></v-divider>
-     <v-list dense>
-       <v-list-tile v-for="item in navigation" :key="item" @click="route(item); drawer = false">
-         <v-list-tile-content>
-           <v-list-tile-title>{{ item }}</v-list-tile-title>
-         </v-list-tile-content>
-       </v-list-tile>
-     </v-list>
-   </v-navigation-drawer>
-   <v-toolbar color="indigo" dark fixed app v-if="['login'].indexOf($route.name)">
-        <v-icon large color="white" @click.stop="drawer = !drawer">{{ drawer? 'close':'menu' }}</v-icon>
-     <v-toolbar-title>Rapportensysteem</v-toolbar-title>
-     <v-spacer>Welcome {{currentUser.name}}</v-spacer>
-     <v-menu
-       :close-on-content-click="false"
-       v-model="menu"
-     >
-      <v-btn color="white" flat slot="activator">Account</v-btn><v-card>
+      <v-divider></v-divider>
+      <v-list dense>
+        <v-list-tile v-for="item in navigation" :key="item" @click="route(item); drawer = false">
+          <v-list-tile-content>
+            <v-list-tile-title>{{ item }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+  </v-navigation-drawer>
+  <v-toolbar color="indigo" dark fixed app v-if="isLoggedIn">
+    <v-icon large color="white" @click.stop="drawer = !drawer">{{ drawer? 'close':'menu' }}</v-icon>
+    <v-toolbar-title>Rapportensysteem</v-toolbar-title>
+    <v-spacer>Welcome {{currentUser.firstname}}</v-spacer>
+    <v-menu :close-on-content-click="false" v-model="menu">
+      <v-btn color="white" flat slot="activator">Account</v-btn>
+      <v-card>
         <v-list>
           <v-list-tile avatar>
-            <v-list-tile-content v-if="isLoaded">
+            <v-list-tile-content>
               <v-list-tile-title class="amber--text">{{ currentUser.role }}</v-list-tile-title>
-              <div>{{ currentUser.name }}</div>
+              <div>{{ currentUser.firstname + " " + currentUser.lastname }}</div>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -38,20 +36,23 @@
         </v-card-actions>
       </v-card>
 
-     </v-menu>
-   </v-toolbar>
-   <main>
-     <v-content class="pt-1">
-       <v-container grid-list-md fluid>
-          <router-view/>
-       </v-container>
-     </v-content>
-   </main>
-  </v-app>
+    </v-menu>
+  </v-toolbar>
+  <main>
+    <v-content class="pt-1">
+      <v-container grid-list-md fluid>
+        <router-view />
+      </v-container>
+    </v-content>
+  </main>
+</v-app>
 </template>
 
 <script>
-import * as api from "../services/organizer-api";
+import store from '../store/index'
+import {
+  mapGetters
+} from 'vuex'
 
 export default {
   name: "Index",
@@ -62,32 +63,17 @@ export default {
     menu: false,
     message: false,
     hints: true,
-    currentUser: {
-      id: "",
-      name: "",
-      role: ""
-    },
-    isLoaded: false
   }),
+  computed: mapGetters(["isLoggedIn", "currentUser"]),
   methods: {
     route(path) {
       this.$router.push(path);
     },
-    logout: function() {
-      var self = this;
-      self.menu = false;
-      api.logout();
-      this.$router.push("/login");
+    logout: function () {
+      this.menu = false;
+      this.$store.dispatch("logout");
     }
   },
-  created: async function() {
-    const user = await api.getCurrentUser();
-    console.log(user);
-    this.currentUser.id = user.id;
-    this.currentUser.name = `${user.firstname} ${user.lastname}`;
-    this.currentUser.role = user.role;
-    this.isLoaded = true;
-  }
 };
 </script>
 
