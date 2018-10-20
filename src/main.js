@@ -1,26 +1,25 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from "vue";
-import App from "./App";
-import router from "./router";
-import Vuetify from "vuetify";
-import printer from "./printer";
-import api from "./js/api.js";
-import VueCookies from "vue-cookies";
+import Vue from 'vue';
+import App from './App.vue';
+import store from './store';
+import VueCookies from 'vue-cookies';
+import Vuetify from 'vuetify';
+import router from "./router/index";
+import * as api from "./services/organizer-api";
+import printer from "./services/printer";
 
-// index.js or main.js
-import("../node_modules/vuetify/dist/vuetify.min.css");
-Vue.use(Vuetify);
+import('../node_modules/vuetify/dist/vuetify.min.css');
+
+// Dependency injection
 Vue.prototype.$printer = printer;
 Vue.prototype.$http = api;
+
 Vue.config.productionTip = false;
 
-/* eslint-disable no-new */
+Vue.use(Vuetify);
+Vue.use(VueCookies);
+
 new Vue({
-  el: "#app",
   router,
-  api,
-  VueCookies,
-  template: "<App/>",
-  components: { App }
-});
+  store,
+  render: h => h(App)
+}).$mount('#app');

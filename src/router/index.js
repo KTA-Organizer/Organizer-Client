@@ -23,7 +23,8 @@ Vue.component("subjecteditor", SubjectEditor);
 Vue.component("datatableselects", DataTableSelects);
 Vue.component("datepicker", Datepicker);
 Vue.use(Router);
-import * as api from "../js/API_module";
+
+import * as api from "../services/organizer-api";
 
 export default new Router({
   routes: [

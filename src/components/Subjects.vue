@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import * as api from "../js/API_module";
+import * as api from "../services/organizer-api";
 export default {
   name: "Subjects",
   data() {
