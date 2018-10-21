@@ -38,16 +38,15 @@ export const getEvalForStudent = id =>
 export const getModulesForStudent = studId =>
   processReq(`/modules/${studId}/student`, {}, "get");
 
-export const createUser = (firstname, lastname, email, pw, moduleIds, id) =>
+export const createStudent = (firstname, lastname, email, opleidingId, moduleIds) =>
   processReq(
-    "/createUser",
+    "/users",
     {
       firstname,
       lastname,
       email,
-      pw,
-      moduleIds,
-      id
+      opleidingId,
+      moduleIds
     },
     "post"
   );

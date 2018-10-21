@@ -50,11 +50,11 @@
               </v-form>
             </v-stepper-content>
             <v-stepper-content step="2">
-              <v-flex v-for="module in modules.modules" :key="module.id">
+              <v-flex v-for="module in modules" :key="module.id">
                 <h3>Module: {{ module.name}}</h3>
                 <v-divider></v-divider>
                   <v-expansion-panel popout expand>
-                   <v-flex xs12 v-for="categorie in module.categorieen" :key="categorie.id">
+                   <v-flex xs12 v-for="categorie in module.doelstellingCategories" :key="categorie.id">
                       <v-expansion-panel-content class="pt-0 pb-0">
                         <div slot="header">
                           <h5><v-icon class="mr-2">label_outline</v-icon>{{categorie.name}}</h5>
@@ -94,93 +94,89 @@
 </template>
 
 <script>
+import * as api from "../services/organizer-api";
 export default {
-  name: 'Addstudent',
-  data () {
+  name: "Addstudent",
+  data() {
     return {
       e1: 0,
       valid: true,
-      name: '',
-      nameRules: [
-        (v) => !!v || 'Naam moet ingevuld worden'
-      ],
-      firstname: '',
-      firstnameRules: [
-        (v) => !!v || 'Voornaam moet ingevuld worden'
-      ],
-      email: '',
+      name: "De Boevere",
+      nameRules: [v => !!v || "Naam moet ingevuld worden"],
+      firstname: "Ben",
+      firstnameRules: [v => !!v || "Voornaam moet ingevuld worden"],
+      email: "ben.deboevere@gmail.com",
       emailRules: [
-        (v) => !!v || 'E-mail moet ingevuld worden',
-        (v) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail moet geldig zijn'
+        v => !!v || "E-mail moet ingevuld worden",
+        v =>
+          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+          "E-mail moet geldig zijn"
       ],
-      select: '',
-      pageUse: ['toevoegen', 'toegevoegd'],
+      select: "",
+      pageUse: ["toevoegen", "toegevoegd"],
       receivedData: false,
       studentOplSet: false,
       opleidingen: [],
       opleidingenDropdown: [],
       modules: [],
-      succesfull: ''
-    }
+      succesfull: "",
+      selectedOpleidingId: 0
+    };
   },
   methods: {
-    submit () {
-      var self = this
+    async submit() {
+      var self = this;
       if (this.$refs.form.validate()) {
-        var select = this.select
-        console.log(select)
-        var result = this.opleidingen.filter(function (obj) {
-          return obj.name === select
-        })
-        this.$http.getFullOpleiding(result[0].id, function (data) {
-          self.modules = data
-        })
-        // this.callForModules(result[0].id)
-        this.e1 = 2
+        const select = this.select;
+        const selectedOpleiding = this.opleidingen.filter(function(obj) {
+          return obj.name === select;
+        });
+        const fullOpleiding = await api.getFullOpleiding(
+          selectedOpleiding[0].id
+        );
+        this.selectedOpleidingId = fullOpleiding.id;
+        this.modules = fullOpleiding.modules;
+        console.log(this.modules);
+        this.e1 = 2;
       }
     },
-    handleCreateStudent () {
-      var self = this
-      var moduleIds = []
-      this.modules.modules.forEach(function (item) {
-        moduleIds.push(item.id)
-      })
-      this.$http.createUser(self.firstname, self.name, self.email, self.pw, moduleIds, 2, function (data) {
-        self.succesfull = data
-        self.e1 = 3
-      })
+    async handleCreateStudent() {
+      var self = this;
+      var moduleIds = [];
+      this.modules.forEach(function(item) {
+        moduleIds.push(item.id);
+      });
+      await api.createStudent(this.firstname, this.lastname, this.email, this.selectedOpleidingId, moduleIds);
+      this.succesfull = true;
+      this.e1 = 3;
     }
   },
-  created () {
-    var self = this
-    this.$http.getOpleidingen(function (data) {
-      self.opleidingen = data
-      console.log(self.opleidingen)
-      for (var i = 0; i < self.opleidingen.length; i++) {
-        self.opleidingenDropdown.push(self.opleidingen[i].name)
-      }
-      console.log('dropdown: ' + self.opleidingenDropdown)
-      self.receivedData = true
-    })
+  async created() {
+    var self = this;
+    const opleidingen = await api.getOpleidingen();
+    this.opleidingen = opleidingen;
+    this.opleidingen.forEach(opleiding => {
+      this.opleidingenDropdown.push(opleiding.name);
+    });
+    this.receivedData = true;
     if (this.$route.query.id) {
-      self.pageUse = ['aanpassen', 'aangepast']
-      var studentId = this.$route.query.id
-      this.$http.getStudent(studentId, function (data) {
-        self.firstname = data.student.firstname
-        self.name = data.student.lastname
-        self.email = data.student.email
-        self.select = data.opleiding.name
-        console.log(self.select)
-        self.studentOplSet = true
-      })
+      self.pageUse = ["aanpassen", "aangepast"];
+      var studentId = this.$route.query.id;
+      this.$http.getStudent(studentId, function(data) {
+        self.firstname = data.student.firstname;
+        self.name = data.student.lastname;
+        self.email = data.student.email;
+        self.select = data.opleiding.name;
+        console.log(self.select);
+        self.studentOplSet = true;
+      });
     } else {
-      self.studentOplSet = true
+      self.studentOplSet = true;
     }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>
