@@ -125,7 +125,6 @@ export const updateDoelstelling = (doelstellingId, name) =>
   );
 
 async function processReq(url, dataObj, method) {
-  console.log(dataObj);
   const conf = {
     method: method,
     credentials: "include",

@@ -46,7 +46,7 @@ export default {
   data: () => ({
     password: "test",
     passwordRules: [v => !!v || "paswoord moet ingevuld worden"],
-    email: "student1@hotmail.com",
+    email: "kenny.depecker@student.howest.be",
     emailRules: [
       v => !!v || "E-mail moet ingevuld worden",
       v =>

@@ -101,11 +101,11 @@ export default {
     return {
       e1: 0,
       valid: true,
-      name: "De Boevere",
+      name: "",
       nameRules: [v => !!v || "Naam moet ingevuld worden"],
-      firstname: "Ben",
+      firstname: "",
       firstnameRules: [v => !!v || "Voornaam moet ingevuld worden"],
-      email: "ben.deboevere@gmail.com",
+      email: "",
       emailRules: [
         v => !!v || "E-mail moet ingevuld worden",
         v =>
@@ -113,19 +113,19 @@ export default {
           "E-mail moet geldig zijn"
       ],
       select: "",
-      pageUse: ["toevoegen", "toegevoegd"],
+      pageUse: [],
       receivedData: false,
       studentOplSet: false,
       opleidingen: [],
       opleidingenDropdown: [],
       modules: [],
       succesfull: "",
-      selectedOpleidingId: 0
+      selectedOpleidingId: 0,
+      update: false
     };
   },
   methods: {
     async submit() {
-      var self = this;
       if (this.$refs.form.validate()) {
         const select = this.select;
         const selectedOpleiding = this.opleidingen.filter(function(obj) {
@@ -141,18 +141,32 @@ export default {
       }
     },
     async handleCreateStudent() {
-      var self = this;
       var moduleIds = [];
       this.modules.forEach(function(item) {
         moduleIds.push(item.id);
       });
-      await api.createStudent(this.firstname, this.name, this.email, this.selectedOpleidingId, moduleIds);
+      if (this.update) {
+        await api.updateStudent(
+          this.firstname,
+          this.name,
+          this.email,
+          this.selectedOpleidingId,
+          moduleIds
+        );
+      } else {
+        await api.createStudent(
+          this.firstname,
+          this.name,
+          this.email,
+          this.selectedOpleidingId,
+          moduleIds
+        );
+      }
       this.succesfull = true;
       this.e1 = 3;
     }
   },
   async created() {
-    var self = this;
     const opleidingen = await api.getOpleidingen();
     this.opleidingen = opleidingen;
     this.opleidingen.forEach(opleiding => {
@@ -160,18 +174,20 @@ export default {
     });
     this.receivedData = true;
     if (this.$route.query.id) {
-      self.pageUse = ["aanpassen", "aangepast"];
+      this.pageUse = ["aanpassen", "aangepast"];
       var studentId = this.$route.query.id;
-      this.$http.getStudent(studentId, function(data) {
-        self.firstname = data.student.firstname;
-        self.name = data.student.lastname;
-        self.email = data.student.email;
-        self.select = data.opleiding.name;
-        console.log(self.select);
-        self.studentOplSet = true;
-      });
+      const student = await api.getUser(studentId);
+      this.firstname = student.firstname;
+      this.name = student.lastname;
+      this.email = student.email;
+      // TODO return only opleiding
+      let opleidingForStudent = await api.getStudentOpleiding(student.id);
+      opleidingForStudent = opleidingForStudent.opleiding;
+      this.select = opleidingForStudent.name;
+      this.studentOplSet = true;
     } else {
-      self.studentOplSet = true;
+      this.pageUse = ["toevoegen", "toegevoegd"];
+      this.studentOplSet = true;
     }
   }
 };
