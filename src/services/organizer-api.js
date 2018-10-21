@@ -40,7 +40,7 @@ export const getModulesForStudent = studId =>
 
 export const createStudent = (firstname, lastname, email, opleidingId, moduleIds) =>
   processReq(
-    "/users",
+    "/students",
     {
       firstname,
       lastname,
@@ -125,6 +125,7 @@ export const updateDoelstelling = (doelstellingId, name) =>
   );
 
 async function processReq(url, dataObj, method) {
+  console.log(dataObj);
   const conf = {
     method: method,
     credentials: "include",

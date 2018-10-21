@@ -146,7 +146,7 @@ export default {
       this.modules.forEach(function(item) {
         moduleIds.push(item.id);
       });
-      await api.createStudent(this.firstname, this.lastname, this.email, this.selectedOpleidingId, moduleIds);
+      await api.createStudent(this.firstname, this.name, this.email, this.selectedOpleidingId, moduleIds);
       this.succesfull = true;
       this.e1 = 3;
     }
