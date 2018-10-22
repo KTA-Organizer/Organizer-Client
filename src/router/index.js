@@ -15,6 +15,7 @@ import Login from "@/components/Login";
 import SubjectEditor from "@/components/SubjectEditor";
 import DataTableSelects from "@/components/DataTableSelects";
 import Datepicker from "vuejs-datepicker";
+import Meldingen from "@/components/Meldingen";
 
 Vue.component("fileInput", fileInput);
 Vue.component("checkboxes", checkboxes);
@@ -36,7 +37,7 @@ function requireAuth(to, from, next) {
       } else {
         next("/login");
       }
-    }, 200)
+    }, 200);
   }
 }
 
@@ -50,7 +51,7 @@ function requireUnauth(to, from, next) {
       } else {
         next();
       }
-    }, 200)
+    }, 200);
   }
 }
 
@@ -96,6 +97,11 @@ export default new Router({
           path: "/home",
           name: "home",
           component: Home
+        },
+        {
+          path: "/meldingen",
+          name: "meldingen",
+          component: Meldingen
         }
       ]
     },

@@ -78,7 +78,7 @@ export const updateStudent = (
     "put"
   );
 
-  export const deleteStudent = id => processReq(`/students/${id}`, {}, "delete");
+export const deleteStudent = id => processReq(`/students/${id}`, {}, "delete");
 
 export const createEval = evalJson =>
   processReq("/saveEvaluatie", evalJson, "post");
@@ -138,6 +138,10 @@ export const updateDoelstelling = (doelstellingId, name) =>
     },
     "patch"
   );
+
+export const getMeldingen = () => processReq("/meldingen", {}, "get");
+
+export const removeMelding = (id) => processReq(`/meldingen/${id}`, {}, "delete");
 
 async function processReq(url, dataObj, method) {
   const conf = {
