@@ -78,6 +78,8 @@ export const updateStudent = (
     "put"
   );
 
+  export const deleteStudent = id => processReq(`/students/${id}`, {}, "delete");
+
 export const createEval = evalJson =>
   processReq("/saveEvaluatie", evalJson, "post");
 
