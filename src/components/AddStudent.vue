@@ -146,12 +146,21 @@ export default {
         moduleIds.push(item.id);
       });
       if (this.update) {
+        console.log(
+          this.firstname,
+          this.name,
+          this.email,
+          this.selectedOpleidingId,
+          moduleIds,
+          this.studentId
+        );
         await api.updateStudent(
           this.firstname,
           this.name,
           this.email,
           this.selectedOpleidingId,
-          moduleIds
+          moduleIds,
+          this.studentId
         );
       } else {
         await api.createStudent(
@@ -175,8 +184,9 @@ export default {
     this.receivedData = true;
     if (this.$route.query.id) {
       this.pageUse = ["aanpassen", "aangepast"];
-      var studentId = this.$route.query.id;
-      const student = await api.getUser(studentId);
+      this.update = true;
+      this.studentId = this.$route.query.id;
+      const student = await api.getUser(this.studentId);
       this.firstname = student.firstname;
       this.name = student.lastname;
       this.email = student.email;
