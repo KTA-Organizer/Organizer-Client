@@ -93,8 +93,6 @@
 </template>
 
 <script>
-import * as api from "../services/organizer-api";
-
 function createStudentOpleidingMap(students, opleidingen) {
   return students.map(function(student) {
     const opleiding = opleidingen.find(x => x.id === student.opleidingId);
@@ -159,17 +157,17 @@ export default {
       }
     },
     async deleteStudent(id) {
-      await api.deleteStudent(id);
-      const studenten = await api.getStudents();
+      await this.$http.deleteStudent(id);
+      const studenten = await this.$http.getStudents();
       this.items = studenten;
       createStudentOpleidingMap(studenten, this.opleidingen);
     }
   },
   async created() {
     var self = this;
-    const studenten = await api.getStudents();
+    const studenten = await this.$http.getStudents();
     this.items = studenten;
-    const opleidingen = await api.getOpleidingen();
+    const opleidingen = await this.$http.getOpleidingen();
     this.opleidingen = opleidingen;
     createStudentOpleidingMap(studenten, opleidingen);
     this.receivedData = true;
