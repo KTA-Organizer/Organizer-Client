@@ -8,16 +8,6 @@
     <v-layout row wrap>
           <v-flex xs1 offset-xs4 class="mr-5">
           </v-flex>
-            <!-- <v-btn
-              slot="activator"
-              color="blue darken-2"
-              dark
-              fab
-              hover
-              class="left"
-            >
-              <v-icon>add</v-icon>
-            </v-btn> -->
             <router-link to="AddMelding" style="text-decoration: none">
               <v-btn
                 fab
@@ -39,7 +29,7 @@
                 <div slot="header" :active="true">
                     <!-- <i class="material-icons">sms_failed</i> -->
                     <h2>{{melding.titel}}</h2>
-                    <small>(geplaatst door {{melding.teacherId}} op {{melding.datum}})</small>
+                    <small>(geplaatst door {{melding.teacher.firstname}} {{melding.teacher.lastname}} op {{melding.datum}})</small>
                 </div>
                 <v-card>
                     <v-card-text>{{melding.tekst}}</v-card-text>
@@ -65,7 +55,11 @@ export default {
   },
   async created() {
     const meldingen = await this.$http.getMeldingen();
+    for (const melding of meldingen) {
+        melding.teacher = await this.$http.getUser(melding.teacherId);
+    }
     this.meldingen = meldingen;
+    console.log(this.meldingen);
   },
   methods: {
     async deleteMelding(id) {
