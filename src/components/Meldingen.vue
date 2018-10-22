@@ -8,7 +8,7 @@
     <v-layout row wrap>
           <v-flex xs1 offset-xs4 class="mr-5">
           </v-flex>
-            <v-btn
+            <!-- <v-btn
               slot="activator"
               color="blue darken-2"
               dark
@@ -17,7 +17,17 @@
               class="left"
             >
               <v-icon>add</v-icon>
-            </v-btn>
+            </v-btn> -->
+            <router-link to="AddMelding" style="text-decoration: none">
+              <v-btn
+                fab
+                dark
+                hover
+                color="blue darken-2"
+              >
+                 <v-icon>add</v-icon>
+              </v-btn>
+            </router-link>
       </v-layout>
     <v-layout>
         <v-flex>

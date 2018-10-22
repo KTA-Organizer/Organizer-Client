@@ -16,6 +16,7 @@ import SubjectEditor from "@/components/SubjectEditor";
 import DataTableSelects from "@/components/DataTableSelects";
 import Datepicker from "vuejs-datepicker";
 import Meldingen from "@/components/Meldingen";
+import AddMelding from "@/components/AddMelding";
 
 Vue.component("fileInput", fileInput);
 Vue.component("checkboxes", checkboxes);
@@ -102,6 +103,11 @@ export default new Router({
           path: "/meldingen",
           name: "meldingen",
           component: Meldingen
+        },
+        {
+          path: "/addMelding",
+          name: "addMelding",
+          component: AddMelding
         }
       ]
     },

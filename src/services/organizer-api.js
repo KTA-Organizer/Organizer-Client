@@ -141,6 +141,8 @@ export const updateDoelstelling = (doelstellingId, name) =>
 
 export const getMeldingen = () => processReq("/meldingen", {}, "get");
 
+export const createMelding = (meldingObj) => processReq("/meldingen", meldingObj, "post");
+
 export const removeMelding = (id) => processReq(`/meldingen/${id}`, {}, "delete");
 
 async function processReq(url, dataObj, method) {
