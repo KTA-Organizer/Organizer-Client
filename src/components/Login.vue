@@ -1,5 +1,9 @@
 <template>
   <v-app>
+    <v-toolbar color="indigo" dark fixed app>
+    <v-toolbar-title>Rapportensysteem</v-toolbar-title>
+    <v-spacer></v-spacer>
+  </v-toolbar>
     <v-layout column>
       <v-content>
       <v-container fluid fill-height>
@@ -7,7 +11,7 @@
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>Sign in</v-toolbar-title>
+                <v-toolbar-title>Log in</v-toolbar-title>
                 <v-spacer></v-spacer>
               </v-toolbar>
               <v-card-text>
@@ -23,14 +27,14 @@
                         required></v-text-field>
                   <v-text-field
                           name="paswoord"
-                          label="Password"
+                          label="Paswoord"
                           id="password"
                           type="password"
                           :rules="passwordRules"
                           v-model="password"
                           required></v-text-field>
                           <v-flex class="text-xs-center" mt-5>
-                            <v-btn color="primary" type="submit" v-on:click.prevent="onLogin">Sign In</v-btn>
+                            <v-btn color="primary" type="submit" v-on:click.prevent="onLogin">Log In</v-btn>
                             <p v-if="loginError" class="red--text">{{loginError}}</p>
                           </v-flex>
                 </v-form>
