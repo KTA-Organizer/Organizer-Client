@@ -12,7 +12,7 @@ export const getCurrentUser = () => processReq("/users/current", {}, "get");
 export const getStudentsWithEdu = () =>
   processReq("/studentModules", {}, "get");
 
-  export const getStudentOpleiding = studId =>
+export const getStudentOpleiding = studId =>
   processReq(`/studentModules/${studId}`, {}, "get");
 
 export const getStudents = () => processReq("/students", {}, "get");
@@ -38,7 +38,13 @@ export const getEvalForStudent = id =>
 export const getModulesForStudent = studId =>
   processReq(`/modules/${studId}/student`, {}, "get");
 
-export const createStudent = (firstname, lastname, email, opleidingId, moduleIds) =>
+export const createStudent = (
+  firstname,
+  lastname,
+  email,
+  opleidingId,
+  moduleIds
+) =>
   processReq(
     "/students",
     {
@@ -51,19 +57,28 @@ export const createStudent = (firstname, lastname, email, opleidingId, moduleIds
     "post"
   );
 
-export const updateUser = (firstname, lastname, email, pw, moduleIds, id) =>
+export const updateStudent = (
+  firstname,
+  lastname,
+  email,
+  opleidingId,
+  moduleIds,
+  id
+) =>
   processReq(
-    "/updateUser",
+    `/students/${id}`,
     {
       firstname,
       lastname,
       email,
-      pw,
+      opleidingId,
       moduleIds,
       id
     },
-    "patch"
+    "put"
   );
+
+export const deleteStudent = id => processReq(`/students/${id}`, {}, "delete");
 
 export const createEval = evalJson =>
   processReq("/saveEvaluatie", evalJson, "post");
@@ -71,7 +86,7 @@ export const createEval = evalJson =>
 export const updateEval = evalJson =>
   processReq("/updateEvaluatie", evalJson, "post");
 
-export const getEvalsByStudent = (studId) =>
+export const getEvalsByStudent = studId =>
   processReq(`/evaluaties/${studId}/student`, {}, "get");
 
 export const getAllEvalsByStudent = studId =>
@@ -124,15 +139,20 @@ export const updateDoelstelling = (doelstellingId, name) =>
     "patch"
   );
 
+export const getMeldingen = () => processReq("/meldingen", {}, "get");
+
+export const createMelding = (meldingObj) => processReq("/meldingen", meldingObj, "post");
+
+export const removeMelding = (id) => processReq(`/meldingen/${id}`, {}, "delete");
+
 async function processReq(url, dataObj, method) {
-  console.log(dataObj);
   const conf = {
     method: method,
     credentials: "include",
     mode: "cors",
     cache: "no-cache"
   };
-  if (method.toUpperCase() === "POST") {
+  if (method.toUpperCase() !== "GET") {
     conf.body = JSON.stringify(dataObj);
     conf.headers = {
       Accept: "application/json",
@@ -144,8 +164,7 @@ async function processReq(url, dataObj, method) {
   let body;
   try {
     body = await response.json();
-  } catch (error) {
-  }
+  } catch (error) {}
   if (response.ok) {
     return body;
   } else {

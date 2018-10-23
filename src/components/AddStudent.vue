@@ -2,7 +2,7 @@
   <div>
     <v-layout row wrap>
         <v-flex xs12 offset-xs1 class="text-xs-left">
-          <h1 class="display-3">Student {{pageUse[0]}}</h1>
+          <h1 class="display-3">Student {{pageType[0]}}</h1>
         </v-flex>
     </v-layout>
     <v-layout row wrap>
@@ -19,15 +19,16 @@
             <v-stepper-content step="1">
               <v-form v-model="valid" ref="form" lazy-validation>
                 <v-text-field
-                  label="Naam"
-                  v-model="name"
-                  :rules="nameRules"
-                  required
-                ></v-text-field>
-                <v-text-field
                   label="Voornaam"
                   v-model="firstname"
                   :rules="firstnameRules"
+                  required
+                  :autofocus="true"
+                ></v-text-field>
+                <v-text-field
+                  label="Naam"
+                  v-model="name"
+                  :rules="nameRules"
                   required
                 ></v-text-field>
                 <v-text-field
@@ -79,11 +80,12 @@
               <v-btn color="primary" @click.native="handleCreateStudent" >voltooien</v-btn>
             </v-stepper-content>
             <v-stepper-content step="3">
-              <h5>Student {{firstname}} {{name}} {{pageUse[1]}}:</h5>
+              <h5>Student {{firstname}} {{name}} {{pageType[1]}}:</h5>
               <p>Naam: {{firstname}} {{name}}</p>
               <p>Email: {{email}}</p>
               <p>Opleiding: {{select}}</p>
-              <p class="primary white--text">{{succesfull}}</p>
+              <p v-if="succesfull" class="primary white--text">Deze student is succesvol {{pageType[1]}}</p>
+              <p v-else class="primary red--text">Er liep iets mis bij het {{pageType[0]}} van de student</p>
               <router-link to="/studenten"><v-btn color="primary">Terug naar studenten</v-btn></router-link>
             </v-stepper-content>
           </v-stepper-items>
@@ -94,18 +96,17 @@
 </template>
 
 <script>
-import * as api from "../services/organizer-api";
 export default {
   name: "Addstudent",
   data() {
     return {
       e1: 0,
       valid: true,
-      name: "De Boevere",
+      name: "",
       nameRules: [v => !!v || "Naam moet ingevuld worden"],
-      firstname: "Ben",
+      firstname: "",
       firstnameRules: [v => !!v || "Voornaam moet ingevuld worden"],
-      email: "ben.deboevere@gmail.com",
+      email: "",
       emailRules: [
         v => !!v || "E-mail moet ingevuld worden",
         v =>
@@ -113,25 +114,25 @@ export default {
           "E-mail moet geldig zijn"
       ],
       select: "",
-      pageUse: ["toevoegen", "toegevoegd"],
+      pageType: [],
       receivedData: false,
       studentOplSet: false,
       opleidingen: [],
       opleidingenDropdown: [],
       modules: [],
       succesfull: "",
-      selectedOpleidingId: 0
+      selectedOpleidingId: 0,
+      update: false
     };
   },
   methods: {
     async submit() {
-      var self = this;
       if (this.$refs.form.validate()) {
         const select = this.select;
         const selectedOpleiding = this.opleidingen.filter(function(obj) {
           return obj.name === select;
         });
-        const fullOpleiding = await api.getFullOpleiding(
+        const fullOpleiding = await this.$http.getFullOpleiding(
           selectedOpleiding[0].id
         );
         this.selectedOpleidingId = fullOpleiding.id;
@@ -141,37 +142,65 @@ export default {
       }
     },
     async handleCreateStudent() {
-      var self = this;
       var moduleIds = [];
       this.modules.forEach(function(item) {
         moduleIds.push(item.id);
       });
-      await api.createStudent(this.firstname, this.name, this.email, this.selectedOpleidingId, moduleIds);
+      if (this.update) {
+        console.log(
+          this.firstname,
+          this.name,
+          this.email,
+          this.selectedOpleidingId,
+          moduleIds,
+          this.studentId
+        );
+        await this.$http.updateStudent(
+          this.firstname,
+          this.name,
+          this.email,
+          this.selectedOpleidingId,
+          moduleIds,
+          this.studentId
+        );
+      } else {
+        await this.$http.createStudent(
+          this.firstname,
+          this.name,
+          this.email,
+          this.selectedOpleidingId,
+          moduleIds
+        );
+      }
       this.succesfull = true;
       this.e1 = 3;
     }
   },
   async created() {
-    var self = this;
-    const opleidingen = await api.getOpleidingen();
+    const opleidingen = await this.$http.getOpleidingen();
     this.opleidingen = opleidingen;
     this.opleidingen.forEach(opleiding => {
       this.opleidingenDropdown.push(opleiding.name);
     });
     this.receivedData = true;
     if (this.$route.query.id) {
-      self.pageUse = ["aanpassen", "aangepast"];
-      var studentId = this.$route.query.id;
-      this.$http.getStudent(studentId, function(data) {
-        self.firstname = data.student.firstname;
-        self.name = data.student.lastname;
-        self.email = data.student.email;
-        self.select = data.opleiding.name;
-        console.log(self.select);
-        self.studentOplSet = true;
-      });
+      this.pageType = ["aanpassen", "aangepast"];
+      this.update = true;
+      this.studentId = this.$route.query.id;
+      const student = await this.$http.getUser(this.studentId);
+      this.firstname = student.firstname;
+      this.name = student.lastname;
+      this.email = student.email;
+      // TODO return only opleiding
+      let opleidingForStudent = await this.$http.getStudentOpleiding(
+        student.id
+      );
+      opleidingForStudent = opleidingForStudent.opleiding;
+      this.select = opleidingForStudent.name;
+      this.studentOplSet = true;
     } else {
-      self.studentOplSet = true;
+      this.pageType = ["toevoegen", "toegevoegd"];
+      this.studentOplSet = true;
     }
   }
 };

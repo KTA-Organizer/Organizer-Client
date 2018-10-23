@@ -6,7 +6,7 @@
           </v-flex>
       </v-layout>
       <v-layout row wrap>
-          <v-flex xs4 offset-xs1 ref="results" @>
+          <v-flex xs4 offset-xs1 ref="results">
             <searchbar @select-item="applySelection" :list="items" :concat_keys="keys" :labeltext="zoeklabel" :item_concat_key="item_name" :item_value="item_value"></searchbar>
           </v-flex>
           <v-flex xs1 offset-xs4 class="mr-5">
@@ -62,7 +62,7 @@
                 <td class="text-xs-left">{{ student.item.firstname + ' ' + student.item.lastname  }}</td>
                 <td class="text-xs-left">{{ student.item.opleidingsNaam }}</td>
                 <td>
-                  <v-btn color="error" class="ma-1 right" dark><v-icon dark>delete</v-icon></v-btn>
+                  <v-btn color="error" class="ma-1 right" dark v-on:click="deleteStudent(student.item.id)"><v-icon dark>delete</v-icon></v-btn>
                   <router-link :to="{ path: 'Addstudent', query: { id: student.item.id }}"><v-btn color="primary" class="ma-1 right" dark><v-icon dark>edit</v-icon></v-btn></router-link>
                     <router-link :to="{ path: 'rapporten', query: { id: student.item.id, name: student.item.firstname + ' ' + student.item.lastname }}"><v-btn color="primary" class="ma-1 right" dark>rapport<v-icon dark right>import_contacts</v-icon></v-btn></router-link>
                     <a :href="'#/Evaluate?id=' + student.item.id" target="_blank"><v-btn color="primary" class="ma-1 right" dark>Evaluatie<v-icon dark right>assignment</v-icon></v-btn></a>
@@ -93,12 +93,11 @@
 </template>
 
 <script>
-import * as api from "../services/organizer-api";
-
 function createStudentOpleidingMap(students, opleidingen) {
   return students.map(function(student) {
     const opleiding = opleidingen.find(x => x.id === student.opleidingId);
-    student.opleidingsNaam = (opleiding !== undefined) ? opleiding.name : "Geen opleiding gevonden.";
+    student.opleidingsNaam =
+      opleiding !== undefined ? opleiding.name : "Geen opleiding gevonden.";
     return student;
   });
 }
@@ -156,13 +155,19 @@ export default {
       } else {
         return false;
       }
+    },
+    async deleteStudent(id) {
+      await this.$http.deleteStudent(id);
+      const studenten = await this.$http.getStudents();
+      this.items = studenten;
+      createStudentOpleidingMap(studenten, this.opleidingen);
     }
   },
   async created() {
     var self = this;
-    const studenten = await api.getStudents();
+    const studenten = await this.$http.getStudents();
     this.items = studenten;
-    const opleidingen = await api.getOpleidingen();
+    const opleidingen = await this.$http.getOpleidingen();
     this.opleidingen = opleidingen;
     createStudentOpleidingMap(studenten, opleidingen);
     this.receivedData = true;
