@@ -15,6 +15,7 @@ import Login from "@/components/Login";
 import SubjectEditor from "@/components/SubjectEditor";
 import DataTableSelects from "@/components/DataTableSelects";
 import Datepicker from "vuejs-datepicker";
+import Users from "@/components/Users";
 
 Vue.component("fileInput", fileInput);
 Vue.component("checkboxes", checkboxes);
@@ -96,6 +97,11 @@ export default new Router({
           path: "/home",
           name: "home",
           component: Home
+        },
+        {
+          path: "/Gebruikers",
+          name: "Gebruikers",
+          component: Users
         }
       ]
     },

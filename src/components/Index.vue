@@ -49,10 +49,8 @@
 </template>
 
 <script>
-import store from '../store/index'
-import {
-  mapGetters
-} from 'vuex'
+import store from "../store/index";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Index",
@@ -62,18 +60,24 @@ export default {
     fav: true,
     menu: false,
     message: false,
-    hints: true,
+    hints: true
   }),
   computed: mapGetters(["isLoggedIn", "currentUser"]),
   methods: {
     route(path) {
       this.$router.push(path);
     },
-    logout: function () {
+    logout: function() {
       this.menu = false;
       this.$store.dispatch("logout");
     }
   },
+  mounted() {
+    console.log(this.currentUser);
+    if (this.currentUser.role === "ADMIN") {
+      this.navigation.push("Gebruikers");
+    }
+  }
 };
 </script>
 
