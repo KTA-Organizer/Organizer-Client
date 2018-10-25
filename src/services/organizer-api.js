@@ -21,6 +21,8 @@ export const getStudent = id => processReq(`/students/${id}`, {}, "get");
 
 export const getUser = id => processReq(`/users/${id}`, {}, "get");
 
+export const getUsers = () => processReq("/users", {}, "get");
+
 export const getOpleidingen = () => processReq("/opleidingen", {}, "get");
 
 export const getOpleiding = id => processReq(`/opleidingen/${id}`, {}, "get");

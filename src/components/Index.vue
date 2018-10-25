@@ -73,7 +73,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.currentUser);
     if (this.currentUser.role === "ADMIN") {
       this.navigation.push("Gebruikers");
     }
