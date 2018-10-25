@@ -44,7 +44,7 @@
                     <v-icon>edit</v-icon>
                   </v-btn>
                 </v-list-tile>
-                <v-list-tile class="blue-grey darken-2" v-for="(categorie,categorieIndex) in module.categorieen" v-bind:key="categorieIndex" @click="payload=categorieIndex">
+                <v-list-tile class="blue-grey darken-2" v-for="(categorie,categorieIndex) in module.doelstellingCategories" v-bind:key="categorieIndex" @click="payload=categorieIndex">
                   <v-list-tile-content @click="setCategorie(categorie)" v-if="!editingCategorie || categorieIndex != payload">
                     <v-list-tile-title>{{ categorie.indexes.toString().replace(/,/g, ".") + ' ' + categorie.name}}</v-list-tile-title>
                   </v-list-tile-content>
