@@ -27,27 +27,24 @@
       <!-- MODULES & CATEGORIEEN DISPLAY-->
       <v-flex xs3 class="mr-0 pa-0">
           <v-list dark class="blue darken-3 pa-0">
-              <v-list-group v-for="(item, moduleIndex) in opleiding" :value="item.active" v-bind:key="item.name" v-if="editingModule">
-                <v-list-tile slot="item">
+              <!--<v-list-group v-for="(module, moduleIndex) in opleiding" :value="module.active" v-bind:key="module.name" v-if="editingModule">-->
+                <!--<v-list-tile>-->
+                  <!--<v-list-tile-content>-->
+                    <!--<v-list-tile-title v-if="moduleIndex !== payload">{{ moduleIndex + 1 + ' ' + module.name }}</v-list-tile-title>-->
+                    <!--<v-text-field @keyup.enter="editModule(null)" dark autofocus v-if="moduleIndex === payload" name="module" label="Module naam" v-model="module.name" single-line></v-text-field>-->
+                  <!--</v-list-tile-content>-->
+                <!--</v-list-tile>-->
+              <!--</v-list-group>-->
+              <v-list-group uid="0" class="blue darken-3" dark v-for="(module, moduleIndex) in opleiding" :value="module.active" v-bind:key="module.name" v-if="!editingModule">
+                <v-list-tile slot="activator">
                   <v-list-tile-content>
-                    <v-list-tile-title v-if="moduleIndex !== payload">{{ moduleIndex + 1 + ' ' + item.name }}</v-list-tile-title>
-                    <v-text-field @keyup.enter="editModule(null)" dark autofocus v-if="moduleIndex === payload" name="module" label="Module naam" v-model="item.name" single-line></v-text-field>
-                  </v-list-tile-content>
-                </v-list-tile>
-              </v-list-group>
-              <v-list-group uid="0" class="blue darken-3" dark v-for="(item, moduleIndex) in opleiding" :value="item.active" v-bind:key="item.name" v-if="!editingModule">
-                <v-list-tile slot="item">
-                  <v-list-tile-content>
-                    <v-list-tile-title>{{ moduleIndex +1 + ' ' + item.name }}</v-list-tile-title>
+                    <v-list-tile-title>{{module.name}}</v-list-tile-title>
                   </v-list-tile-content>
                   <v-btn flat icon color="blue lighten-2" @click="editModule(moduleIndex)">
                     <v-icon>edit</v-icon>
                   </v-btn>
-                  <v-list-tile-action @click="hideCategorie()">
-                    <v-icon>keyboard_arrow_down</v-icon>
-                  </v-list-tile-action>
                 </v-list-tile>
-                <v-list-tile class="blue-grey darken-2" v-for="(categorie,categorieIndex) in item.categorieen" v-bind:key="categorieIndex" @click="payload=categorieIndex">
+                <v-list-tile class="blue-grey darken-2" v-for="(categorie,categorieIndex) in module.categorieen" v-bind:key="categorieIndex" @click="payload=categorieIndex">
                   <v-list-tile-content @click="setCategorie(categorie)" v-if="!editingCategorie || categorieIndex != payload">
                     <v-list-tile-title>{{ categorie.indexes.toString().replace(/,/g, ".") + ' ' + categorie.name}}</v-list-tile-title>
                   </v-list-tile-content>
@@ -61,7 +58,7 @@
                     class="pb-2"
                     auto-focus
                     v-if="addCategorieActive"
-                    @keyup.enter="enterAddition(CategorieAddString, item.categorieen, 'categorie', item.indexes)"
+                    @keyup.enter="enterAddition(CategorieAddString, module.categorieen, 'categorie', module.indexes)"
                     prepend-icon="add"
                     label="Nieuwe Categorie"
                     v-model="CategorieAddString"
@@ -72,6 +69,7 @@
                   <v-btn flat color="white darken-1" v-if="!addCategorieActive" @click="addCategorieActive = true">+ Nieuwe Categorie</v-btn>
                 </v-list-tile>
               </v-list-group>
+
               <v-list-tile class="white--text">
                 <v-text-field
                   class="pb-2"
