@@ -44,6 +44,7 @@ export const createStudent = (
   firstname,
   lastname,
   email,
+  gender,
   opleidingId,
   moduleIds
 ) =>
@@ -53,6 +54,7 @@ export const createStudent = (
       firstname,
       lastname,
       email,
+      gender,
       opleidingId,
       moduleIds
     },
@@ -63,6 +65,7 @@ export const updateStudent = (
   firstname,
   lastname,
   email,
+  gender,
   opleidingId,
   moduleIds,
   id
@@ -73,6 +76,7 @@ export const updateStudent = (
       firstname,
       lastname,
       email,
+      gender,
       opleidingId,
       moduleIds,
       id
@@ -143,9 +147,10 @@ export const updateDoelstelling = (doelstellingId, name) =>
 
 export const getMeldingen = () => processReq("/meldingen", {}, "get");
 
-export const createMelding = (meldingObj) => processReq("/meldingen", meldingObj, "post");
+export const createMelding = meldingObj =>
+  processReq("/meldingen", meldingObj, "post");
 
-export const removeMelding = (id) => processReq(`/meldingen/${id}`, {}, "delete");
+export const removeMelding = id => processReq(`/meldingen/${id}`, {}, "delete");
 
 async function processReq(url, dataObj, method) {
   const conf = {
@@ -170,6 +175,11 @@ async function processReq(url, dataObj, method) {
   if (response.ok) {
     return body;
   } else {
+    if (response.status === 401) {
+      if (!window.location.toLowerCase().includes("login")) {
+        window.location = "/";
+      }
+    }
     throw new ResponseError(response.status, body);
   }
 }

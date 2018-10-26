@@ -38,6 +38,13 @@
                   required
                 ></v-text-field>
                 <v-select
+                label="Geslacht"
+                v-model="gender"
+                required
+                :items="genders"
+                >
+                </v-select>
+                <v-select
                   v-if="receivedData && studentOplSet"
                   label="Opleiding"
                   v-model="select"
@@ -107,6 +114,12 @@ export default {
       firstname: "",
       firstnameRules: [v => !!v || "Voornaam moet ingevuld worden"],
       email: "",
+      gender: "",
+      genders: ["M", "V"],
+      genderKeys: {
+        M: "M",
+        V: "F"
+      },
       emailRules: [
         v => !!v || "E-mail moet ingevuld worden",
         v =>
@@ -146,19 +159,21 @@ export default {
       this.modules.forEach(function(item) {
         moduleIds.push(item.id);
       });
+      console.log(
+        this.firstname,
+        this.name,
+        this.email,
+        this.genderKeys[this.gender],
+        this.selectedOpleidingId,
+        moduleIds,
+        this.studentId
+      );
       if (this.update) {
-        console.log(
-          this.firstname,
-          this.name,
-          this.email,
-          this.selectedOpleidingId,
-          moduleIds,
-          this.studentId
-        );
         await this.$http.updateStudent(
           this.firstname,
           this.name,
           this.email,
+          this.genderKeys[this.gender],
           this.selectedOpleidingId,
           moduleIds,
           this.studentId
@@ -168,6 +183,7 @@ export default {
           this.firstname,
           this.name,
           this.email,
+          this.genderKeys[this.gender],
           this.selectedOpleidingId,
           moduleIds
         );

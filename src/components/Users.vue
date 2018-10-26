@@ -249,10 +249,10 @@ export default {
         : false;
       const genderFiltertje = this.genderKeys[this.genderFilter];
       const statusFiltertje = this.statussesKeys[this.statusFilter];
-      console.log(naamFiltertje, rolFiltertje, genderFiltertje);
+      console.log(naamFiltertje, rolFiltertje, genderFiltertje, statusFiltertje);
+      console.log(this.gebruikers)
       this.filteredGebruikers = this.gebruikers
         .filter(x => {
-          console.log(x.gender, genderFiltertje);
           if (!genderFiltertje) {
             return true;
           }
@@ -288,13 +288,12 @@ export default {
       const stamp = timeStamp.split("T");
       const date = stamp[0].split("-");
       const time = stamp[1].split(":");
-      console.log(date, time);
       let day = date[2];
       let month = date[1];
       const year = date[0];
       let hour = time[0];
       let minutes = time[1];
-      return `${day}/${month}/${year}, ${hour}:${minutes}`;
+      return `${day}/${month}/${year}, ${+hour+2}:${minutes}`;
     },
     getKeyByValue(object, value) {
       return Object.keys(object).find(key => object[key] === value);
@@ -302,6 +301,7 @@ export default {
   },
   async created() {
     const gebruikers = await this.$http.getUsers();
+    console.log(gebruikers)
     this.gebruikers = gebruikers;
     for (const gebruiker of this.gebruikers) {
       gebruiker.naam = `${gebruiker.firstname} ${gebruiker.lastname}`;
