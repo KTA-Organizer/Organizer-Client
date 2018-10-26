@@ -20,7 +20,8 @@ import Meldingen from "@/components/Meldingen";
 import AddMelding from "@/components/AddMelding";
 import UserDetail from "@/components/userComponents/UserDataTable";
 import AddUser from "@/components/userComponents/AddUser";
-import UserOverview from "@/components/userComponents/UserOverview";
+import UsersOverview from "@/components/userComponents/UsersOverview";
+import DetailUser from "@/components/userComponents/DetailUser";
 
 Vue.component("fileInput", fileInput);
 Vue.component("checkboxes", checkboxes);
@@ -106,18 +107,22 @@ export default new Router({
         },
         {
           path: "/Gebruikers",
-          name: "Gebruikers",
           component: Users,
           children: [
             {
-              path: "/",
-              name: "userViews",
-              component: UserOverview
+              path: "",
+              name: "Gebruikers",
+              component: UsersOverview
             },
             {
               path: "Toevoegen",
               name: "addUser",
               component: AddUser
+            },
+            {
+              path: ":id",
+              name: "detailUser",
+              component: DetailUser
             }
           ]
         },

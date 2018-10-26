@@ -21,7 +21,10 @@ export const getStudent = id => processReq(`/students/${id}`, {}, "get");
 
 export const getUser = id => processReq(`/users/${id}`, {}, "get");
 
-export const getUsers = () => processReq("/users", {}, "get");
+// export const getUsers = () => processReq("/users", {}, "get");
+export const getUsers = () => {return JSON.parse(localStorage.getItem("gebruikers"))};
+
+export const createUser = newUser => processReq("/users", newUser, "post");
 
 export const getOpleidingen = () => processReq("/opleidingen", {}, "get");
 

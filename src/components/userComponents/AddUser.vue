@@ -28,9 +28,19 @@
             <v-select
               label="Geslacht"
               v-model="gender"
+              :rules="selectRules"
               required
               :items="genders"
             ></v-select>
+            <v-select
+              label="Rol"
+              v-model="role"
+              :rules="selectRules"
+              required
+              :items="roles"
+            ></v-select>
+            <router-link to="/Gebruikers"><v-btn color="secondary">Terug naar overzicht</v-btn></router-link>
+            <v-btn color="primary" :disabled="!valid" @click="createUser">Voltooien</v-btn>
           </v-form>
       </v-flex>
     </v-layout>
@@ -38,28 +48,55 @@
 </template>
 
 <script>
+import store from "../../store/index";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
       valid: true,
-      name: "",
-      nameRules: [v => !!v || "Naam moet ingevuld worden"],
       firstname: "",
-      firstnameRules: [v => !!v || "Voornaam moet ingevuld worden"],
+      name: "",
       email: "",
-      gender: "",
-      genders: ["Man", "Vrouw"],
-      genderKeys: {
-        Man: "M",
-        Vrouw: "F"
-      },
+      gender: undefined,
+      role: undefined,
+      genders: [],
+      genderKeys: {},
+      roles: [],
+      roleKeys: {},
+      firstnameRules: [v => !!v || "Voornaam moet ingevuld worden"],
+      nameRules: [v => !!v || "Naam moet ingevuld worden"],
       emailRules: [
         v => !!v || "E-mail moet ingevuld worden",
         v =>
           /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
           "E-mail moet geldig zijn"
-      ]
+      ],
+      selectRules: [v => !!v || "Veld moet ingevuld worden"],
     };
-  }
+  },
+  methods: {
+    createUser() {
+      const newUser = {
+        firstname: this.firstname,
+        lastname: this.lastname,
+        email: this.email,
+        gender: this.gender,
+        role: this.role,
+
+      };
+      console.log(newUser);
+      //const userId = await this.$http.createUser(newUser);
+      const userId = 1;
+      this.$router.push(`${userId}`);
+    }
+  },
+  created() {
+    console.log(this.constants);
+    this.genders = this.constants.genders;
+    this.genderKeys = this.constants.genderKeys;
+    this.roles = this.constants.roles;
+    this.roleKeys = this.constants.roleKeys;
+  },
+  computed: mapGetters(["isLoggedIn", "currentUser", "constants"])
 };
 </script>

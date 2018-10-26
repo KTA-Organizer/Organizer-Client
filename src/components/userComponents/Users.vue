@@ -13,3 +13,10 @@
     </main>
   </v-container>
 </template>
+
+<script>
+export default {
+  name: "Users"
+}
+</script>
+
