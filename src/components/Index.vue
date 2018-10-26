@@ -16,7 +16,7 @@
   <v-toolbar color="indigo" dark fixed app v-if="isLoggedIn">
     <v-icon large color="white" @click.stop="drawer = !drawer">{{ drawer? 'close':'menu' }}</v-icon>
     <v-toolbar-title>Rapportensysteem</v-toolbar-title>
-    <v-spacer>Welcome {{currentUser.firstname}}</v-spacer>
+    <v-spacer></v-spacer>
     <v-menu :close-on-content-click="false" v-model="menu">
       <v-btn color="white" flat slot="activator">Account</v-btn>
       <v-card>
@@ -58,7 +58,7 @@ export default {
   name: "Index",
   data: () => ({
     drawer: false,
-    navigation: ["Rapporten", "Studenten", "Opleidingen", "Afdrukken"],
+    navigation: ["Rapporten", "Studenten", "Opleidingen", "Meldingen", "Afdrukken"],
     fav: true,
     menu: false,
     message: false,

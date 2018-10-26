@@ -1,17 +1,16 @@
 <template>
  <v-flex xs12 sm12 class="ma-0">
-    <v-select
+    <v-autocomplete
                   :items="searchable_data"
                   :item-text="`${item_concat_key}`"
                   :item-value="`${item_value}`"
                   v-model="selecteditem"
                   :label="`Zoek een ${labeltext}`"
                   no-data-text="Er werd niets gevonden"
-                  autocomplete
                   clearable
                   @input="selectItem()"
                   @update:searchInput="checkSelected"
-                ></v-select>
+                ></v-autocomplete>
 </v-flex>
 </template>
 

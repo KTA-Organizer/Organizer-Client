@@ -60,7 +60,9 @@
             <v-list two-line v-if="moduleSelected && !newEvalTable && gotEvals">
                 <v-subheader>{{'Evaluaties van ' + student.firstname + ' ' + student.name}}</v-subheader>
                 <template v-for="evaluation in prevEvals[0].evaluaties.slice().reverse()">
-                    <v-divider></v-divider>
+                    <v-divider
+                    :key="evaluation.id"
+                    ></v-divider>
                     <v-list-tile v-bind:key="evaluation.id" @click="getEvaluation(evaluation.id)">
                         <v-list-tile-content>
                             <v-list-tile-title>{{evaluation.date}} {{evaluation.name}} </v-list-tile-title>

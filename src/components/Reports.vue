@@ -122,7 +122,8 @@
             <v-list two-line v-if="currentstudent != null && currentreport === null">
               <v-subheader>{{'Rapporten van ' + currentstudent.student.firstname + ' ' + currentstudent.student.lastname}}</v-subheader>
               <template v-for="report in current_student_reports">
-                <v-divider></v-divider>
+                <v-divider
+                :key="report.id"></v-divider>
                 <v-list-tile v-bind:key="report.id" @click="getReport(report.id)">
                   <v-list-tile-content>
                       <v-list-tile-title><span style="border-right: solid 1px gray; padding-right: 5px">{{report.startdate}} - {{report.enddate}}</span> {{report.name}}</v-list-tile-title>
@@ -148,7 +149,10 @@
                    </v-layout>
                  </v-container>
                  <v-flex>
-                   <v-btn @click="" large color="primary"><v-icon>get_app</v-icon></v-btn>
+                   <!-- TODO fix this on click -->
+                   <!-- <v-btn @click="" large color="primary"><v-icon>get_app</v-icon></v-btn> -->
+                   <v-btn large color="primary"><v-icon>get_app</v-icon></v-btn>
+                   <!-- TODO fix this on click -->
                    <v-btn @click="print" large color="primary"><v-icon>print</v-icon></v-btn>
                    <v-btn v-if="!edit" @click="edit = true" large class="right" color="primary"><v-icon>edit</v-icon></v-btn>
                    <v-btn v-if="edit" @click="updateReport()" large class="right" color="primary"><v-icon>save</v-icon></v-btn>
@@ -158,7 +162,7 @@
             </v-layout>
             <!-- REPORT MODULES -->
             <template v-for="module in currentreport.modules">
-            <v-layout row-wrap>
+            <v-layout :key="module.id" row-wrap>
               <v-flex xs12>
                 <v-card color="blue-grey darken-3" class="display-2 white--text text-xs-left">
                   <v-container fluid grid-list-lg>
@@ -277,30 +281,30 @@
 
 <script>
 export default {
-  name: 'Reports',
-  data () {
+  name: "Reports",
+  data() {
     return {
       items: [],
       filters: [],
-      keys: ['firstname', 'lastname'],
-      item_name: 'fullname',
-      item_value: 'id',
-      zoeklabel: 'student',
+      keys: ["firstname", "lastname"],
+      item_name: "fullname",
+      item_value: "id",
+      zoeklabel: "student",
       currentstudent: null,
       currentreport: null,
       current_student_reports: null,
       usercredentials: {
-        username: 'thomas.de.nil@student.howest.be',
-        password: 'Student'
+        username: "thomas.de.nil@student.howest.be",
+        password: "Student"
       },
       headers: {
-        'Content-Type': 'text/plain'
+        "Content-Type": "text/plain"
       },
-      possibleScores: ['G', 'V', 'OV', 'RO', 'NVT'],
+      possibleScores: ["G", "V", "OV", "RO", "NVT"],
       reportGen: false,
-      format: 'dd/MM/yyyy',
-      date1: '09/01/2017',
-      dateFormatted1: '09/01/2017',
+      format: "dd/MM/yyyy",
+      date1: "09/01/2017",
+      dateFormatted1: "09/01/2017",
       date2: null,
       dateFormatted2: null,
       reportError: null,
@@ -320,155 +324,227 @@ export default {
       loadbarStep: 0,
       uniqueNameNr: 0,
       updatedReportName: null
-    }
+    };
   },
   methods: {
-    print () {
-      this.$printer.print(this.currentstudent, this.currentreport)
+    print() {
+      this.$printer.print(this.currentstudent, this.currentreport);
     },
-    applySelection (payload) {
-      var self = this
-      this.$http.getStudent(payload, function (data) {
-        self.currentstudent = data
-        self.currentreport = null
-        self.getCurrentStudentReports()
-      })
+    applySelection(payload) {
+      var self = this;
+      this.$http.getStudent(payload, function(data) {
+        self.currentstudent = data;
+        self.currentreport = null;
+        self.getCurrentStudentReports();
+      });
     },
-    updateIds (payload) {
-      this.studentIdsFromSelect = payload
+    updateIds(payload) {
+      this.studentIdsFromSelect = payload;
     },
-    getCurrentStudentReports () {
-      var self = this
-      this.$http.getStudentReports(self.currentstudent.student.id, function (data) {
-        self.current_student_reports = data.slice().reverse()
-      })
+    getCurrentStudentReports() {
+      var self = this;
+      this.$http.getStudentReports(self.currentstudent.student.id, function(
+        data
+      ) {
+        self.current_student_reports = data.slice().reverse();
+      });
     },
-    getReport (rapportid) {
-      var self = this
-      this.$http.getStudentReport(rapportid, function (data) {
-        self.currentreport = data
-        self.dateFormatted1 = data.startdate
-        self.dateFormatted2 = data.enddate
-      })
+    getReport(rapportid) {
+      var self = this;
+      this.$http.getStudentReport(rapportid, function(data) {
+        self.currentreport = data;
+        self.dateFormatted1 = data.startdate;
+        self.dateFormatted2 = data.enddate;
+      });
     },
-    makeReports: function (singleReport) {
-      var self = this
-      self.currentreport = null
-      self.studentIds = []
-      self.updatedReportName = self.reportName
+    makeReports: function(singleReport) {
+      var self = this;
+      self.currentreport = null;
+      self.studentIds = [];
+      self.updatedReportName = self.reportName;
       if (singleReport) {
-        self.studentIds.push(self.currentstudent.student.id)
+        self.studentIds.push(self.currentstudent.student.id);
       } else {
-        self.studentIds = self.studentIdsFromSelect
+        self.studentIds = self.studentIdsFromSelect;
       }
       if (self.loopStudentIds === 0) {
-        self.loadbarStep = 100 / self.studentIds.length
-        self.loadbarShow = true
+        self.loadbarStep = 100 / self.studentIds.length;
+        self.loadbarShow = true;
       }
-      var id = self.studentIds[self.loopStudentIds]
+      var id = self.studentIds[self.loopStudentIds];
       if (id !== undefined) {
-        self.loopStudentIds++
-        self.generateReport(id, singleReport)
+        self.loopStudentIds++;
+        self.generateReport(id, singleReport);
       } else {
-        self.loopStudentIds = 0
+        self.loopStudentIds = 0;
         if (singleReport) {
-          self.getCurrentStudentReports()
+          self.getCurrentStudentReports();
         }
       }
     },
-    generateReport: function (id, singleReport) {
-      var self = this
-      self.reportGen = false
-      var dateformat1 = document.querySelector('.datepicker1 input').value
-      var dateformat2 = document.querySelector('.datepicker2 input').value
-      var d1 = document.querySelector('.datepicker1 input').value.split('/')
-      var d2 = document.querySelector('.datepicker2 input').value.split('/')
-      var start = new Date(d1[2], parseInt(d1[1]) - 1, d1[0])
-      var end = new Date(d2[2], parseInt(d2[1]) - 1, d2[0])
-      if (dateformat1 !== null && dateformat2 !== null && self.reportName !== null && start < end) {
-        var isUnique = true
-        this.$http.getStudentReports(id, function (data) {
+    generateReport: function(id, singleReport) {
+      var self = this;
+      self.reportGen = false;
+      var dateformat1 = document.querySelector(".datepicker1 input").value;
+      var dateformat2 = document.querySelector(".datepicker2 input").value;
+      var d1 = document.querySelector(".datepicker1 input").value.split("/");
+      var d2 = document.querySelector(".datepicker2 input").value.split("/");
+      var start = new Date(d1[2], parseInt(d1[1]) - 1, d1[0]);
+      var end = new Date(d2[2], parseInt(d2[1]) - 1, d2[0]);
+      if (
+        dateformat1 !== null &&
+        dateformat2 !== null &&
+        self.reportName !== null &&
+        start < end
+      ) {
+        var isUnique = true;
+        this.$http.getStudentReports(id, function(data) {
           for (var x = 0; x < data.length; x++) {
             if (data[x].name === self.updatedReportName) {
-              self.updatedReportName = self.reportName
-              isUnique = false
-              self.uniqueNameNr++
-              self.updatedReportName += ' (' + self.uniqueNameNr + ')'
+              self.updatedReportName = self.reportName;
+              isUnique = false;
+              self.uniqueNameNr++;
+              self.updatedReportName += " (" + self.uniqueNameNr + ")";
             }
           }
           if (isUnique) {
-            self.uniqueNameNr = 0
-            self.reportError = null
-            self.$http.getEvalForStudent(id, function (data) {
-              self.opleiding = data
-              self.currentreport = {}
-              self.currentreport['commentaarAlgemeen'] = ''
-              self.currentreport['commentaarKlassenraad'] = ''
-              self.currentreport['commentaarWerkplaats'] = ''
-              self.currentreport['klas'] = ''
-              self.currentreport['name'] = self.updatedReportName
-              self.currentreport['startdate'] = dateformat1
-              self.currentreport['enddate'] = dateformat2
-              self.currentreport['studentId'] = id
-              var modules = []
+            self.uniqueNameNr = 0;
+            self.reportError = null;
+            self.$http.getEvalForStudent(id, function(data) {
+              self.opleiding = data;
+              self.currentreport = {};
+              self.currentreport["commentaarAlgemeen"] = "";
+              self.currentreport["commentaarKlassenraad"] = "";
+              self.currentreport["commentaarWerkplaats"] = "";
+              self.currentreport["klas"] = "";
+              self.currentreport["name"] = self.updatedReportName;
+              self.currentreport["startdate"] = dateformat1;
+              self.currentreport["enddate"] = dateformat2;
+              self.currentreport["studentId"] = id;
+              var modules = [];
               for (var i = 0; i < self.opleiding.modules.length; i++) {
-                var module = self.opleiding.modules[i]
-                modules[i] = {naam: module.name, id: module.id, doelstellingscategories: [], commentaar: null}
-                for (var j = 0; j < self.opleiding.modules[i].categorieen.length; j++) {
-                  var doelstellingscategorie = self.opleiding.modules[i].categorieen[j]
-                  modules[i]['doelstellingscategories'][j] = {name: doelstellingscategorie.name, id: doelstellingscategorie.id, doelstellingen: []}
-                  for (var k = 0; k < self.opleiding.modules[i].categorieen[j].doelstellingen.length; k++) {
-                    var doelstelling = self.opleiding.modules[i].categorieen[j].doelstellingen[k]
-                    modules[i]['doelstellingscategories'][j]['doelstellingen'][k] = {name: doelstelling.name, id: doelstelling.id, opmerking: null, score: null}
+                var module = self.opleiding.modules[i];
+                modules[i] = {
+                  naam: module.name,
+                  id: module.id,
+                  doelstellingscategories: [],
+                  commentaar: null
+                };
+                for (
+                  var j = 0;
+                  j < self.opleiding.modules[i].categorieen.length;
+                  j++
+                ) {
+                  var doelstellingscategorie =
+                    self.opleiding.modules[i].categorieen[j];
+                  modules[i]["doelstellingscategories"][j] = {
+                    name: doelstellingscategorie.name,
+                    id: doelstellingscategorie.id,
+                    doelstellingen: []
+                  };
+                  for (
+                    var k = 0;
+                    k <
+                    self.opleiding.modules[i].categorieen[j].doelstellingen
+                      .length;
+                    k++
+                  ) {
+                    var doelstelling =
+                      self.opleiding.modules[i].categorieen[j].doelstellingen[
+                        k
+                      ];
+                    modules[i]["doelstellingscategories"][j]["doelstellingen"][
+                      k
+                    ] = {
+                      name: doelstelling.name,
+                      id: doelstelling.id,
+                      opmerking: null,
+                      score: null
+                    };
                   }
                 }
               }
-              self.calculateScores(start, end, singleReport, id)
-              self.currentreport['modules'] = modules
-            })
+              self.calculateScores(start, end, singleReport, id);
+              self.currentreport["modules"] = modules;
+            });
           } else {
-            self.generateReport(id, singleReport)
+            self.generateReport(id, singleReport);
           }
-        })
+        });
       } else if (dateformat1 === null || dateformat2 === null) {
-        self.reportError = 'Beide Datums moeten worden ingevuld'
-        self.loadbarShow = false
-        self.loadbarValue = 0
-        self.loadbarStep = 0
+        self.reportError = "Beide Datums moeten worden ingevuld";
+        self.loadbarShow = false;
+        self.loadbarValue = 0;
+        self.loadbarStep = 0;
       } else if (start >= end) {
-        self.reportError = 'De startdatum kan niet na de einddatum komen'
-        self.loadbarShow = false
-        self.loadbarValue = 0
-        self.loadbarStep = 0
+        self.reportError = "De startdatum kan niet na de einddatum komen";
+        self.loadbarShow = false;
+        self.loadbarValue = 0;
+        self.loadbarStep = 0;
       } else {
-        self.reportError = 'Je moet een rapportnaam opgeven'
-        self.loadbarShow = false
-        self.loadbarValue = 0
-        self.loadbarStep = 0
+        self.reportError = "Je moet een rapportnaam opgeven";
+        self.loadbarShow = false;
+        self.loadbarValue = 0;
+        self.loadbarStep = 0;
       }
     },
-    calculateScores: function (start, end, singleReport, id) {
-      var self = this
-      var scores = {}
-      self.$http.getAllEvalsByStudent(id, function (data) {
+    calculateScores: function(start, end, singleReport, id) {
+      var self = this;
+      var scores = {};
+      self.$http.getAllEvalsByStudent(id, function(data) {
         for (var i = 0; i < self.currentreport.modules.length; i++) {
-          for (var j = 0; j < self.currentreport.modules[i].doelstellingscategories.length; j++) {
-            for (var k = 0; k < self.currentreport.modules[i].doelstellingscategories[j].doelstellingen.length; k++) {
-              var doelstelling = self.currentreport.modules[i].doelstellingscategories[j].doelstellingen[k]
-              var doelstellingId = doelstelling.id
+          for (
+            var j = 0;
+            j < self.currentreport.modules[i].doelstellingscategories.length;
+            j++
+          ) {
+            for (
+              var k = 0;
+              k <
+              self.currentreport.modules[i].doelstellingscategories[j]
+                .doelstellingen.length;
+              k++
+            ) {
+              var doelstelling =
+                self.currentreport.modules[i].doelstellingscategories[j]
+                  .doelstellingen[k];
+              var doelstellingId = doelstelling.id;
               for (var l = 0; l < data.length; l++) {
-                var c = data[l].date.split('/')
-                var check = new Date(c[2], parseInt(c[1]) - 1, c[0])
+                var c = data[l].date.split("/");
+                var check = new Date(c[2], parseInt(c[1]) - 1, c[0]);
                 if (check >= start && check <= end) {
-                  for (var m = 0; m < data[l].doelstellingscategories.length; m++) {
-                    for (var n = 0; n < data[l].doelstellingscategories[m].doelstellingen.length; n++) {
-                      var doel = data[l].doelstellingscategories[m].doelstellingen[n]
-                      var doelId = doel.id
+                  for (
+                    var m = 0;
+                    m < data[l].doelstellingscategories.length;
+                    m++
+                  ) {
+                    for (
+                      var n = 0;
+                      n <
+                      data[l].doelstellingscategories[m].doelstellingen.length;
+                      n++
+                    ) {
+                      var doel =
+                        data[l].doelstellingscategories[m].doelstellingen[n];
+                      var doelId = doel.id;
                       if (doelId === doelstellingId) {
-                        scores[doelId] = []
-                        for (var o = 0; o < doel.evaluatiecriteria.length; o++) {
-                          for (var p = 0; p < doel.evaluatiecriteria[o].beoordelingsaspecten.length; p++) {
-                            scores[doelId].push(doel.evaluatiecriteria[o].beoordelingsaspecten[p].score)
+                        scores[doelId] = [];
+                        for (
+                          var o = 0;
+                          o < doel.evaluatiecriteria.length;
+                          o++
+                        ) {
+                          for (
+                            var p = 0;
+                            p <
+                            doel.evaluatiecriteria[o].beoordelingsaspecten
+                              .length;
+                            p++
+                          ) {
+                            scores[doelId].push(
+                              doel.evaluatiecriteria[o].beoordelingsaspecten[p]
+                                .score
+                            );
                           }
                         }
                       }
@@ -476,76 +552,75 @@ export default {
                   }
                 }
               }
-              doelstelling.score = self.getAvgScore(scores[doelstellingId])
+              doelstelling.score = self.getAvgScore(scores[doelstellingId]);
             }
           }
         }
-        self.$http.saveReport(self.currentreport, function (data) {
-          self.makeReports(singleReport)
-          self.loadbarValue += self.loadbarStep
+        self.$http.saveReport(self.currentreport, function(data) {
+          self.makeReports(singleReport);
+          self.loadbarValue += self.loadbarStep;
           if (self.loadbarValue === 100) {
-            self.loadbarShow = false
-            self.loadbarValue = 0
-            self.loadbarStep = 0
+            self.loadbarShow = false;
+            self.loadbarValue = 0;
+            self.loadbarStep = 0;
           }
-        })
-      })
+        });
+      });
     },
-    updateReport: function () {
-      var self = this
-      self.edit = false
-      self.$http.updateReport(self.currentreport, function (data) {
-        console.log('report updated')
-      })
+    updateReport: function() {
+      var self = this;
+      self.edit = false;
+      self.$http.updateReport(self.currentreport, function(data) {
+        console.log("report updated");
+      });
     },
-    getAvgScore: function (scores) {
+    getAvgScore: function(scores) {
       if (scores) {
-        var l = scores.length
-        var sum = 0
+        var l = scores.length;
+        var sum = 0;
         for (var i = 0; i < l; i++) {
-          sum += parseInt(scores[i])
+          sum += parseInt(scores[i]);
         }
         if (sum / l >= 0.75) {
-          return this.possibleScores[0]
-        } else if (sum / l >= 0.50 && sum / l < 0.75) {
-          return this.possibleScores[1]
-        } else if (sum / l >= 0.25 && sum / l < 0.50) {
-          return this.possibleScores[2]
+          return this.possibleScores[0];
+        } else if (sum / l >= 0.5 && sum / l < 0.75) {
+          return this.possibleScores[1];
+        } else if (sum / l >= 0.25 && sum / l < 0.5) {
+          return this.possibleScores[2];
         } else if (sum / l < 0.25) {
-          return this.possibleScores[3]
+          return this.possibleScores[3];
         } else if (isNaN(sum / l)) {
-          return this.possibleScores[4]
+          return this.possibleScores[4];
         }
       } else {
-        return this.possibleScores[4]
+        return this.possibleScores[4];
       }
     }
   },
-  created () {
-    var self = this
+  created() {
+    var self = this;
     if (self.$route.query.id) {
-      self.applySelection(self.$route.query.id)
+      self.applySelection(self.$route.query.id);
     }
-    var d = new Date()
-    var month = d.getMonth() + 1
+    var d = new Date();
+    var month = d.getMonth() + 1;
     if (month < 10) {
-      month = '0' + month
+      month = "0" + month;
     }
-    self.date2 = month + '/' + d.getDate() + '/' + d.getFullYear()
-    self.$forceUpdate()
-    this.$http.getStudentsWithEdu(function (data) {
-      self.items = data
-    })
+    self.date2 = month + "/" + d.getDate() + "/" + d.getFullYear();
+    self.$forceUpdate();
+    this.$http.getStudentsWithEdu(function(data) {
+      self.items = data;
+    });
   },
-  mounted () {
-    var sheet = document.createElement('style')
-    sheet.innerHTML = 'div.menu__content--autocomplete {top:165px !important;}'
-    document.body.appendChild(sheet)
+  mounted() {
+    var sheet = document.createElement("style");
+    sheet.innerHTML = "div.menu__content--autocomplete {top:165px !important;}";
+    document.body.appendChild(sheet);
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>
