@@ -115,10 +115,10 @@ export default {
       firstnameRules: [v => !!v || "Voornaam moet ingevuld worden"],
       email: "",
       gender: "",
-      genders: ["M", "V"],
+      genders: ["Man", "Vrouw"],
       genderKeys: {
-        M: "M",
-        V: "F"
+        Man: "M",
+        Vrouw: "F"
       },
       emailRules: [
         v => !!v || "E-mail moet ingevuld worden",

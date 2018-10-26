@@ -1,35 +1,7 @@
 <template>
   <div>
       <v-layout row wrap>
-          <v-flex xs12 offset-xs1 class="text-xs-left">
-            <h1 class="display-3">Gebruikers</h1>
-          </v-flex>
-      </v-layout>
-      <v-layout row wrap>
-          <v-flex row ref="results" @>
-              <v-text-field type="text" placeholder="Filter op naam" v-model="nameFilter" v-on:input="applyFilters()"></v-text-field>
-              <v-select
-                :items="roles"
-                v-model="roleFilter"
-                label="Filter op rol"
-                v-on:input="applyFilters()"
-              ></v-select>
-              <v-select
-                :items="genders"
-                v-model="genderFilter"
-                label="Filter op geslacht"
-                v-on:input="applyFilters()"
-              ></v-select>
-              <v-select
-                v-model="statusFilter"
-                label="Filter op status"
-                :items="statusses"
-                v-on:input="applyFilters()"
-              >
-              </v-select>
-          </v-flex>
-          <v-flex xs1 offset-xs4 class="mr-5">
-          </v-flex>
+          <v-flex :align-end="true">
           <v-speed-dial
             hover
             direction="left"
@@ -53,7 +25,7 @@
             >
               <v-icon>file_upload</v-icon>
             </v-btn>
-            <router-link to="AddStudent" style="text-decoration: none">
+            <router-link to="Gebruikers/Toevoegen" style="text-decoration: none">
               <v-btn
                 fab
                 dark
@@ -64,33 +36,46 @@
               </v-btn>
             </router-link>
           </v-speed-dial>
+          </v-flex>
       </v-layout>
       <v-layout row wrap>
-          <v-flex class="mt-4">
-            <v-data-table
-            v-bind:headers="headers"
-            :items="filteredGebruikers"
-            hide-actions
-            class="elevation-1"
-            >
-              <template slot="items" slot-scope="gebruiker"><!-- .item must be here, don't ask questions -->
-                <tr >
-                <td class="text-xs-left">{{ gebruiker.item.naam }}</td>
-                <td class="text-xs-left">{{ getKeyByValue(roleKeys, gebruiker.item.role) }}</td>
-                <td class="text-xs-left">{{ gebruiker.item.email }}</td>
-                <td class="text-xs-left">{{ gebruiker.item.gender }}</td>
-                <td class="text-xs-left">{{ gebruiker.item.status }}</td>
-                <td class="text-xs-left">{{ readableDate(gebruiker.item.accountCreatedTimestamp) }}</td>
-                <!-- <td>
-                    <a :href="'#/Evaluate?id=' + gebruiker.item.id" target="_blank"><v-btn color="primary" class="ma-1" dark>Evaluatie<v-icon dark right>assignment</v-icon></v-btn></a>
-                    <router-link :to="{ path: 'Rapporten', query: { id: gebruiker.item.id, name: gebruiker.item.naam}}"><v-btn color="primary" class="ma-1" dark>rapport<v-icon dark right>import_contacts</v-icon></v-btn></router-link>
-                    <router-link :to="{ path: 'Addstudent', query: { id: gebruiker.item.id }}"><v-btn color="primary" class="ma-1" dark><v-icon dark>edit</v-icon></v-btn></router-link>
-                    <v-btn color="error" class="ma-1" dark @click="makeDialog(gebruiker.item)"><v-icon dark>delete</v-icon></v-btn>
-                </td> -->
-              </tr>
-              </template>
-            </v-data-table>
+      <v-layout row wrap>
+          <v-flex xs12 sm6 md3>
+              <v-text-field autofocus="autofocus" type="text" placeholder="Filter op naam" v-model="nameFilter" v-on:input="applyFilters()"></v-text-field>
           </v-flex>
+          <v-flex xs12 sm6 md3>    
+              <v-select
+                :items="roles"
+                v-model="roleFilter"
+                label="Filter op rol"
+                v-on:input="applyFilters()"
+              ></v-select>
+          </v-flex>
+          <v-flex xs12 sm6 md3>
+              <v-select
+                :items="genders"
+                v-model="genderFilter"
+                label="Filter op geslacht"
+                v-on:input="applyFilters()"
+              ></v-select>
+          </v-flex>
+            <v-flex xs12 sm6 md3>  
+              <v-select
+                v-model="statusFilter"
+                label="Filter op status"
+                :items="statusses"
+                v-on:input="applyFilters()"
+              >
+              </v-select>
+          </v-flex>
+          </v-layout>
+          <v-flex xs1 offset-xs4 class="mr-5">
+          </v-flex>
+      </v-layout>
+      <v-layout row wrap>
+        
+          <userdetail :headers="headers" :users="filteredGebruikers"></userdetail>
+
           <v-dialog v-model="addStudentsFile">
             <v-card>
               <v-card-title><span class="headline">Studenten toevoegen</span></v-card-title>
@@ -151,8 +136,6 @@
 </template>
 
 <script>
-import * as api from "../services/organizer-api";
-import * as _ from "lodash";
 
 function createStudentOpleidingMap(students, opleidingen) {
   return students.map(function(student) {
@@ -216,18 +199,18 @@ export default {
         "Leerkracht",
         "Geen rol toegekent"
       ],
-      genders: ["Geen filter", "M", "V"],
+      genders: ["Geen filter", "Man", "Vrouw"],
       genderKeys: {
         "Geen filter": false,
-        M: "M",
-        V: "F"
+        Man: "M",
+        Vrouw: "F"
       },
       statusses: ["Geen filter", "Actief", "Wacht op activatie", "Niet actief"],
-      statussesKeys: {
+      statusKeys: {
         "Geen filter": false,
         Actief: "ACTIVE",
-        "Wacht op activatie": "AWAIT_ACTIVATION",
-        "Niet actief": "DISABLES"
+        "Wacht op activatie": "WAIT_ACTIVATION",
+        "Niet actief": "DISABLED"
       }
     };
   },
@@ -248,7 +231,7 @@ export default {
         ? this.roleKeys[this.roleFilter].toLowerCase()
         : false;
       const genderFiltertje = this.genderKeys[this.genderFilter];
-      const statusFiltertje = this.statussesKeys[this.statusFilter];
+      const statusFiltertje = this.statusKeys[this.statusFilter];
       console.log(naamFiltertje, rolFiltertje, genderFiltertje, statusFiltertje);
       console.log(this.gebruikers)
       this.filteredGebruikers = this.gebruikers

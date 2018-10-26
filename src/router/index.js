@@ -15,9 +15,12 @@ import Login from "@/components/Login";
 import SubjectEditor from "@/components/SubjectEditor";
 import DataTableSelects from "@/components/DataTableSelects";
 import Datepicker from "vuejs-datepicker";
-import Users from "@/components/Users";
+import Users from "@/components/userComponents/Users";
 import Meldingen from "@/components/Meldingen";
 import AddMelding from "@/components/AddMelding";
+import UserDetail from "@/components/userComponents/UserDataTable";
+import AddUser from "@/components/userComponents/AddUser";
+import UserOverview from "@/components/userComponents/UserOverview";
 
 Vue.component("fileInput", fileInput);
 Vue.component("checkboxes", checkboxes);
@@ -25,6 +28,7 @@ Vue.component("searchbar", SearchBar);
 Vue.component("subjecteditor", SubjectEditor);
 Vue.component("datatableselects", DataTableSelects);
 Vue.component("datepicker", Datepicker);
+Vue.component("userdetail", UserDetail);
 Vue.use(Router);
 
 import store from "../store/index";
@@ -103,7 +107,19 @@ export default new Router({
         {
           path: "/Gebruikers",
           name: "Gebruikers",
-          component: Users
+          component: Users,
+          children: [
+            {
+              path: "/",
+              name: "userViews",
+              component: UserOverview
+            },
+            {
+              path: "Toevoegen",
+              name: "addUser",
+              component: AddUser
+            }
+          ]
         },
         {
           path: "/meldingen",

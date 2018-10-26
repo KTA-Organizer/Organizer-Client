@@ -65,7 +65,7 @@ export default {
   computed: mapGetters(["isLoggedIn", "currentUser"]),
   methods: {
     route(path) {
-      this.$router.push(path);
+      this.$router.push(`/${path}`);
     },
     logout: function() {
       this.menu = false;
