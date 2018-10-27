@@ -96,10 +96,10 @@ export const deleteEval = id =>
   processReq("/deleteEvaluatie", { id }, "delete");
 
 export const createOpleiding = (creatorId, name) =>
-  processReq("/opleidingen", { creatorId, active= 1, name }, "post");
+  processReq("/opleidingen", { creatorId, active: 1, name }, "post");
 
 export const updateOpleiding = (opleidingId, name) =>
-  processReq("/opleidingen" + opleidingId, { name }, "put");
+  processReq("/opleidingen/" + opleidingId, { name }, "put");
 
 export const createModule = (name, opleidingId, teacherId, creatorId) =>
   processReq(
@@ -109,12 +109,12 @@ export const createModule = (name, opleidingId, teacherId, creatorId) =>
   );
 
 export const updateModule = (moduleId, name) =>
-  processReq("/modules" + moduleId, { name }, "put");
+  processReq("/modules/" + moduleId, { name }, "put");
 
 export const createDoelstellingscategorie = (name, moduleId, creatorId) =>
   processReq(
     "/doelstellingsCategorie",
-    { name, moduleId, inGebruik= 1, creatorId },
+    { name, moduleId, inGebruik: 1, creatorId },
     "post"
   );
 
@@ -133,7 +133,7 @@ export const createDoelstelling = (name, doelstellingscategorieId, creatorId) =>
     {
       name,
       doelstellingscategorieId,
-      inGebruik = 1,
+      inGebruik: 1,
       creatorId
     },
     "post"
