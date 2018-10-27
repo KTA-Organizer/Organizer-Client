@@ -178,11 +178,11 @@ async function processReq(url, dataObj, method) {
   if (response.ok) {
     return body;
   } else {
-    if (response.status === 401) {
-      if (!window.location.toLowerCase().includes("login")) {
-        window.location = "/";
-      }
-    }
+    // if (response.status === 401) {
+    //   if (!window.location.href.toLowerCase().includes("login")) {
+    //     window.location = "/";
+    //   }
+    // }
     throw new ResponseError(response.status, body);
   }
 }

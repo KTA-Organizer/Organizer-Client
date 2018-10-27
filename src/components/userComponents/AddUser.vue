@@ -75,19 +75,18 @@ export default {
     };
   },
   methods: {
-    createUser() {
+    async createUser() {
       const newUser = {
         firstname: this.firstname,
-        lastname: this.lastname,
+        lastname: this.name,
         email: this.email,
-        gender: this.gender,
-        role: this.role,
-
+        gender: this.genderKeys[this.gender],
+        role: this.roleKeys[this.role],
       };
       console.log(newUser);
-      //const userId = await this.$http.createUser(newUser);
-      const userId = 1;
-      this.$router.push(`${userId}`);
+      const userIdObj = await this.$http.createUser(newUser);
+      // const userId = 1;
+      this.$router.push(`${userIdObj.newId}`);
     }
   },
   created() {
