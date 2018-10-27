@@ -109,7 +109,7 @@
                 </v-btn>
                 <v-text-field v-if="editingDoelstelling && payload === doelstellingIndex" @keyup.enter="editDoelstelling(null)" dark autofocus name="doelstelling" label="Doelstelling naam" v-model="doelstelling.name" single-line></v-text-field>
               </v-list-tile>
-              <v-list-tile class="blue-grey darken-2" v-for="(criteria, criteriaIndex) in doelstelling.evaluatieCriteria" v-bind:key="criteriaIndex" @click="setCriteria(criteria)">
+              <v-list-tile class="blue-grey darken-2"  v-for="(criteria, criteriaIndex) in doelstelling.evaluatieCriteria" v-bind:key="criteriaIndex" @click="setCriteria(criteria)">
                 <v-list-tile-content @click="setCriteria(criteriaIndex)" v-if="!editingCriteria || criteriaIndex != payload">
                   <v-list-tile-title>{{ criteria.name}}</v-list-tile-title>
                 </v-list-tile-content>
