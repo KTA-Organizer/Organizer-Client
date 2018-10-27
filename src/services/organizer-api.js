@@ -155,6 +155,7 @@ export const updateDoelstelling = (doelstellingId, name) =>
       name,
       doelstellingId,
       inGebruik: 1,
+      gewicht: 1,
       creatorId
     },
     "post"
@@ -163,6 +164,28 @@ export const updateDoelstelling = (doelstellingId, name) =>
 export const updateCriteria = (criteriaId, name) =>
   processReq(
     "/evaluatieCriteria/" + criteriaId,
+    {
+      name
+    },
+    "put"
+  );
+
+  export const createAspect = (name, criteriaId, creatorId) =>
+  processReq(
+    "/aspecten",
+    {
+      name,
+      criteriaId,
+      inGebruik: 1,
+      gewicht: 1,
+      creatorId
+    },
+    "post"
+  );
+
+export const updateAspect = (aspectId, name) =>
+  processReq(
+    "/aspecten/" + aspectId,
     {
       name
     },

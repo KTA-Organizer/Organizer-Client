@@ -164,14 +164,15 @@
                 <!--</v-list-tile-content>-->
               <!--</v-list-tile>-->
             <!--</v-list-group>-->
-            <v-list-group v-if="!editingAspect" class="blue darken-3" dark v-for="(aspect, aspectIndex) in selectedcriteria.aspecten" :value="aspect.active" v-bind:key="aspect.name">
+            <v-list-group class="blue darken-3" dark v-for="(aspect, aspectIndex) in selectedcriteria.aspecten" :value="aspect.active" v-bind:key="aspect.name">
               <v-list-tile slot="activator" @click="enterAddition('', opleiding)">
-                <v-list-tile-content>
+                <v-list-tile-content v-if="!editingAspect || aspectIndex != payload">
                   <v-list-tile-title>{{ aspect.name }}</v-list-tile-title>
                 </v-list-tile-content>
-                <v-btn flat icon color="blue lighten-2" @click="editAspect(aspectIndex)">
+                <v-btn flat icon color="blue lighten-2" v-if="!editingAspect" @click="editAspect(aspectIndex)">
                   <v-icon>edit</v-icon>
                 </v-btn>
+                <v-text-field v-if="editingAspect && payload === aspectIndex" @keyup.enter="editAspect(null)" dark autofocus name="aspect" label="Aspect naam" v-model="aspect.name" single-line></v-text-field>
               </v-list-tile>
             </v-list-group>
             <v-list-tile class="white--text">
@@ -327,6 +328,36 @@ export default {
         self.saveModules();
       });
     },
+    saveAspect(criteria) {
+      var self = this;
+      criteria.aspecten.forEach(function(aspect) {
+        if (aspect.id && !aspect.new) {
+          self.$http.updateAspect(
+            aspect.id,
+            aspect.name
+            /*function(response) {
+              console.log(response);
+              console.log(response.data);
+            }*/
+          );
+        } else {
+          self.$http.createAspect(
+            aspect.name,
+            criteria.id,
+            3,
+            1
+            /*function(response) {
+              console.log(response);
+              console.log(response.data);
+              doelstelling["id"] = response.data;
+              doelstelling.new = false;
+            }*/
+          );
+          aspect["id"] = response.data;
+          aspect.new = false;
+        }
+      });
+    },
     saveCriteria(doelstelling) {
       var self = this;
       doelstelling.evaluatieCriteria.forEach(function(criteria) {
@@ -343,7 +374,8 @@ export default {
           self.$http.createCriteria(
             criteria.name,
             doelstelling.id,
-            3
+            3,
+            1
             /*function(response) {
               console.log(response);
               console.log(response.data);
@@ -354,6 +386,7 @@ export default {
           criteria["id"] = response.data;
           criteria.new = false;
         }
+        self.saveAspect(criteria);
       });
     },
     saveDoelstellingen(doelstellingscategorie) {
