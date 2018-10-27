@@ -38,7 +38,7 @@
 
               <v-list-group uid="0" class="blue darken-3" dark v-for="(module, moduleIndex) in opleiding" :value="module.active" v-bind:key="module.name">
                 <v-list-tile slot="activator">
-                  <v-list-tile-content @click="setModule(module)" v-if="!editingModule || moduleIndex != payload">
+                  <v-list-tile-content v-if="!editingModule || moduleIndex != payload">
                     <v-list-tile-title>{{module.name}}</v-list-tile-title>
                   </v-list-tile-content>
                   <v-btn flat icon color="blue lighten-2" v-if="!editingModule" @click="editModule(moduleIndex)">
@@ -102,7 +102,7 @@
             <!--</v-list-group>-->
             <v-list-group class="blue darken-3" dark v-for="(doelstelling, doelstellingIndex) in selectedcategorie.doelstellingen"  :value="doelstelling.active" v-bind:key="doelstelling.name">
               <v-list-tile slot="activator" @click="hideAspects">
-                <v-list-tile-content @click="setDoelstelling(doelstelling)" v-if="!editingDoelstelling || doelstellingIndex != payload">
+                <v-list-tile-content  v-if="!editingDoelstelling || doelstellingIndex != payload">
                   <v-list-tile-title>{{ doelstelling.name }}</v-list-tile-title>
                 </v-list-tile-content>
                 <v-btn flat icon color="blue lighten-2" v-if="!editingDoelstelling" @click="editDoelstelling(doelstellingIndex)">
@@ -358,7 +358,7 @@ export default {
     },
     saveDoelstellingscategorieen(module) {
       var self = this;
-      module.categorieen.forEach(function(categorie) {
+      module.doelstellingCategories.forEach(function(categorie) {
         if (categorie.id && !categorie.new) {
           self.$http.updateDoelstellingscategorie(
             categorie.id,
@@ -367,7 +367,7 @@ export default {
               self.saveDoelstellingen(categorie);
             }*/
           );
-          self.saveDoelstellingen(categorie);
+          //self.saveDoelstellingen(categorie);
         } else {
           self.$http.createDoelstellingscategorie(
             categorie.name,
@@ -395,7 +395,7 @@ export default {
             /*function(response) {
             self.saveDoelstellingscategorieen(module);}*/
             );
-            //self.saveDoelstellingscategorieen(module);
+            self.saveDoelstellingscategorieen(module);
         } else {
           self.$http.createModule(
             module.name,
