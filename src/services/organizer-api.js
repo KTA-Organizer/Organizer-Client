@@ -96,34 +96,44 @@ export const deleteEval = id =>
   processReq("/deleteEvaluatie", { id }, "delete");
 
 export const createOpleiding = (creatorId, name) =>
-  processReq("/createOpleiding", { creatorId, name }, "post");
+  processReq("/opleidingen", { creatorId, active= 1, name }, "post");
 
 export const updateOpleiding = (opleidingId, name) =>
-  processReq("/updateOpleiding", { opleidingId, name }, "patch");
+  processReq("/opleidingen" + opleidingId, { name }, "put");
 
 export const createModule = (name, opleidingId, teacherId, creatorId) =>
   processReq(
-    "/createModule",
+    "/modules",
     { name, opleidingId, teacherId, creatorId },
     "post"
   );
 
 export const updateModule = (moduleId, name) =>
-  processReq("/updateModule", { moduleId, name }, "patch");
+  processReq("/modules" + moduleId, { name }, "put");
 
 export const createDoelstellingscategorie = (name, moduleId, creatorId) =>
   processReq(
-    "/createDoelstellingscategorie",
-    { name, moduleId, creatorId },
+    "/doelstellingsCategorie",
+    { name, moduleId, inGebruik= 1, creatorId },
     "post"
+  );
+
+  export const updateDoelstellingscategorie = (doelstellingscategorieId, name) =>
+  processReq(
+    "/doelstellingsCategorie/" + doelstellingscategorieId,
+    {
+      name
+    },
+    "put"
   );
 
 export const createDoelstelling = (name, doelstellingscategorieId, creatorId) =>
   processReq(
-    "/createDoelstelling",
+    "/doelstellingen",
     {
       name,
       doelstellingscategorieId,
+      inGebruik = 1,
       creatorId
     },
     "post"
@@ -137,6 +147,7 @@ export const updateDoelstelling = (doelstellingId, name) =>
     },
     "put"
   );
+
 
 export const getMeldingen = () => processReq("/meldingen", {}, "get");
 
