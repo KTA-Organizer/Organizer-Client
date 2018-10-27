@@ -148,6 +148,27 @@ export const updateDoelstelling = (doelstellingId, name) =>
     "put"
   );
 
+  export const createCriteria = (name, doelstellingId, creatorId) =>
+  processReq(
+    "/evaluatieCriteria",
+    {
+      name,
+      doelstellingId,
+      inGebruik: 1,
+      creatorId
+    },
+    "post"
+  );
+
+export const updateCriteria = (criteriaId, name) =>
+  processReq(
+    "/evaluatieCriteria/" + criteriaId,
+    {
+      name
+    },
+    "put"
+  );
+
 
 export const getMeldingen = () => processReq("/meldingen", {}, "get");
 

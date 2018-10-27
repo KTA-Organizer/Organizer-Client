@@ -327,6 +327,35 @@ export default {
         self.saveModules();
       });
     },
+    saveCriteria(doelstelling) {
+      var self = this;
+      doelstelling.evaluatieCriteria.forEach(function(criteria) {
+        if (criteria.id && !criteria.new) {
+          self.$http.updateCriteria(
+            criteria.id,
+            criteria.name
+            /*function(response) {
+              console.log(response);
+              console.log(response.data);
+            }*/
+          );
+        } else {
+          self.$http.createCriteria(
+            criteria.name,
+            doelstelling.id,
+            3
+            /*function(response) {
+              console.log(response);
+              console.log(response.data);
+              doelstelling["id"] = response.data;
+              doelstelling.new = false;
+            }*/
+          );
+          criteria["id"] = response.data;
+          criteria.new = false;
+        }
+      });
+    },
     saveDoelstellingen(doelstellingscategorie) {
       var self = this;
       doelstellingscategorie.doelstellingen.forEach(function(doelstelling) {
@@ -354,7 +383,7 @@ export default {
           doelstelling["id"] = response.data;
           doelstelling.new = false;
         }
-
+        self.saveCriteria(doelstelling);
       });
     },
     saveDoelstellingscategorieen(module) {
