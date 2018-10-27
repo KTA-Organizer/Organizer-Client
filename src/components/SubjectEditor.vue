@@ -354,6 +354,7 @@ export default {
           doelstelling["id"] = response.data;
           doelstelling.new = false;
         }
+
       });
     },
     saveDoelstellingscategorieen(module) {
@@ -367,7 +368,6 @@ export default {
               self.saveDoelstellingen(categorie);
             }*/
           );
-          //self.saveDoelstellingen(categorie);
         } else {
           self.$http.createDoelstellingscategorie(
             categorie.name,
@@ -381,8 +381,8 @@ export default {
           );
           categorie["id"] = response.data;
           categorie.new = false;
-          self.saveDoelstellingen(categorie);
         }
+        self.saveDoelstellingen(categorie);
       });
     },
     saveModules() {
@@ -395,7 +395,6 @@ export default {
             /*function(response) {
             self.saveDoelstellingscategorieen(module);}*/
             );
-            self.saveDoelstellingscategorieen(module);
         } else {
           self.$http.createModule(
             module.name,
@@ -410,8 +409,8 @@ export default {
           );
           module["id"] = response.data;
           module.new = false;
-          self.saveDoelstellingscategorieen(module);
         }
+        self.saveDoelstellingscategorieen(module);
       });
       this.loading = null;
     },
@@ -429,9 +428,9 @@ export default {
             //self.saveModules();*/
           //}
         );
-        self.saveModules();
-        this.loading = false;
       }
+      self.saveModules();
+      this.loading = false;
     }
   },
   watch: {},
