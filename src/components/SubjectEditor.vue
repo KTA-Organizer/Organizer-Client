@@ -99,14 +99,15 @@
                 <!--</v-list-tile-content>-->
               <!--</v-list-tile>-->
             <!--</v-list-group>-->
-            <v-list-group v-if="!editingDoelstelling" class="blue darken-3" dark v-for="(doelstelling, doelstellingIndex) in selectedcategorie.doelstellingen" :value="doelstelling.active" v-bind:key="doelstelling.name">
+            <v-list-group class="blue darken-3" dark v-for="(doelstelling, doelstellingIndex) in selectedcategorie.doelstellingen"  :value="doelstelling.active" v-bind:key="doelstelling.name">
               <v-list-tile slot="activator" @click="hideAspects">
-                <v-list-tile-content>
+                <v-list-tile-content v-if="!editingDoelstelling || doelstellingIndex != payload">
                   <v-list-tile-title>{{ doelstelling.name }}</v-list-tile-title>
                 </v-list-tile-content>
-                <v-btn flat icon color="blue lighten-2" @click="editDoelstelling(doelstellingIndex)">
+                <v-btn flat icon color="blue lighten-2" v-if="!editingDoelstelling" @click="editDoelstelling(doelstellingIndex)">
                   <v-icon>edit</v-icon>
                 </v-btn>
+                <v-text-field v-if="editingDoelstelling && payload === doelstellingIndex" @keyup.enter="editDoelstelling(null)" dark autofocus name="doelstelling" label="Doelstelling naam" v-model="doelstelling.name" single-line></v-text-field>
               </v-list-tile>
               <v-list-tile class="blue-grey darken-2" v-for="(criteria, criteriaIndex) in doelstelling.evaluatieCriteria" v-bind:key="criteriaIndex" @click="setCriteria(criteria)">
                 <v-list-tile-content @click="setCriteria(criteriaIndex)" v-if="!editingCriteria || criteriaIndex != payload">
@@ -133,6 +134,7 @@
                 <v-btn flat color="white darken-1" v-if="!addCriteriaActive" @click="addCriteriaActive = true">+ Nieuwe Criteria</v-btn>
               </v-list-tile>
             </v-list-group>
+
             <v-list-tile class="white--text">
               <v-text-field
                 class="pb-2"

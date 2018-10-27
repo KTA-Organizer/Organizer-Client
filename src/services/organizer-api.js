@@ -131,12 +131,11 @@ export const createDoelstelling = (name, doelstellingscategorieId, creatorId) =>
 
 export const updateDoelstelling = (doelstellingId, name) =>
   processReq(
-    "/updateDoelstelling",
+    "/doelstellingen/" + doelstellingId,
     {
-      doelstellingId,
       name
     },
-    "patch"
+    "put"
   );
 
 export const getMeldingen = () => processReq("/meldingen", {}, "get");
