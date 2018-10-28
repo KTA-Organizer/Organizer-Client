@@ -1,6 +1,9 @@
 <template>
   <div>
       <v-layout row wrap>
+        <v-flex xs11 sm8 md10 class="text-xs-left">
+            <h1 class="display-3">Overzicht van gebruikers</h1>
+        </v-flex>
           <v-flex :align-end="true">
           <v-speed-dial
             hover

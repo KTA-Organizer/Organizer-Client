@@ -1,8 +1,10 @@
 <template>
   <div>
-    <v-flex xs12 offset-xs1 class="text-xs-left">
-          <h1 class="display-3">toevoegen</h1>
-    </v-flex>
+    <v-layout row wrap>
+      <v-flex xs11 sm8 md10 class="text-xs-left">
+        <h1 class="display-3">Gebruiker toevoegen</h1>
+      </v-flex>
+    </v-layout>
     <v-layout row wrap>
         <v-flex xs10 offset-xs1>
           <v-form v-model="valid" ref="form" lazy-validation>
@@ -96,6 +98,6 @@ export default {
     this.roles = this.constants.roles;
     this.roleKeys = this.constants.roleKeys;
   },
-  computed: mapGetters(["isLoggedIn", "currentUser", "constants"])
+  computed: mapGetters(["constants"])
 };
 </script>
