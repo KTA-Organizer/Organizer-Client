@@ -7,6 +7,8 @@ export const login = (email, password) =>
 
 export const logout = () => processReq("/auth/logout", {}, "POST");
 
+export const requestPasswordReset = (email) => processReq("/auth/forgot", { email }, "post");
+
 export const putNewPassword = (token, password) => processReq(`/auth/token/${token}`, { password }, "put");
 
 export const getAccessToken = (token) => processReq(`/auth/token/${token}`);
