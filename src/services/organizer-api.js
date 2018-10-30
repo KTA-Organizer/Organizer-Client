@@ -11,36 +11,36 @@ export const resetPassword = (token, password) => processReq("/auth/reset", { to
 
 export const acceptInvitation = (token, password) => processReq("/auth/invitation", { token, password }, "post");
 
-export const getCurrentUser = () => processReq("/users/current", {}, "get");
+export const getCurrentUser = () => processReq("/users/current");
 
 export const getStudentsWithEdu = () =>
-  processReq("/studentModules", {}, "get");
+  processReq("/studentModules");
 
 export const getStudentOpleiding = studId =>
-  processReq(`/studentModules/${studId}`, {}, "get");
+  processReq(`/studentModules/${studId}`);
 
-export const getStudents = () => processReq("/students", {}, "get");
+export const getStudents = () => processReq("/students");
 
-export const getStudent = id => processReq(`/students/${id}`, {}, "get");
+export const getStudent = id => processReq(`/students/${id}`);
 
-export const getUser = id => processReq(`/users/${id}`, {}, "get");
+export const getUser = id => processReq(`/users/${id}`);
 
-export const getOpleidingen = () => processReq("/opleidingen", {}, "get");
+export const getOpleidingen = () => processReq("/opleidingen");
 
-export const getOpleiding = id => processReq(`/opleidingen/${id}`, {}, "get");
+export const getOpleiding = id => processReq(`/opleidingen/${id}`);
 
 export const saveReport = () => processReq("/saveReport", report, "post");
 
 export const updateReport = () => processReq("/updateReport", report, "patch");
 
 export const getFullOpleiding = id =>
-  processReq(`/opleidingen/${id}/full`, {}, "get");
+  processReq(`/opleidingen/${id}/full`);
 
 export const getEvalForStudent = id =>
   processReq("/evaluatieVoorStudent", { id }, "get");
 
 export const getModulesForStudent = studId =>
-  processReq(`/modules/${studId}/student`, {}, "get");
+  processReq(`/modules/${studId}/student`);
 
 export const createStudent = (
   firstname,
@@ -91,7 +91,7 @@ export const updateEval = evalJson =>
   processReq("/updateEvaluatie", evalJson, "post");
 
 export const getEvalsByStudent = studId =>
-  processReq(`/evaluaties/${studId}/student`, {}, "get");
+  processReq(`/evaluaties/${studId}/student`);
 
 export const getAllEvalsByStudent = studId =>
   processReq("/studentAllEvaluationsFull", { studId }, "get");
@@ -197,13 +197,13 @@ export const updateAspect = (aspectId, name) =>
   );
 
 
-export const getMeldingen = () => processReq("/meldingen", {}, "get");
+export const getMeldingen = () => processReq("/meldingen");
 
 export const createMelding = (meldingObj) => processReq("/meldingen", meldingObj, "post");
 
 export const removeMelding = (id) => processReq(`/meldingen/${id}`, {}, "delete");
 
-async function processReq(url, dataObj, method) {
+async function processReq(url, dataObj={}, method="GET") {
   const conf = {
     method: method,
     credentials: "include",
