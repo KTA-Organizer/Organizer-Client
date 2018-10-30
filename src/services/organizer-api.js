@@ -7,9 +7,9 @@ export const login = (email, password) =>
 
 export const logout = () => processReq("/auth/logout", {}, "POST");
 
-export const resetPassword = (token, password) => processReq("/auth/reset", { token, password }, "post");
+export const putNewPassword = (token, password) => processReq(`/auth/token/${token}`, { password }, "put");
 
-export const acceptInvitation = (token, password) => processReq("/auth/invitation", { token, password }, "post");
+export const getAccessToken = (token) => processReq(`/auth/token/${token}`);
 
 export const getCurrentUser = () => processReq("/users/current");
 

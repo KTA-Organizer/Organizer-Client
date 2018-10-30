@@ -9,12 +9,13 @@
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
-            <v-card class="elevation-12">
+            <v-card v-if="!!accessToken" class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>Nieuw Wachtwoord instellen</v-toolbar-title>
+                <v-toolbar-title>Wachtwoord instellen voor {{accessToken.user.firstname}}</v-toolbar-title>
                 <v-spacer></v-spacer>
               </v-toolbar>
               <v-card-text>
+                <v-card-title v-if="accessToken.type === 'INVITATION'">Welkom {{accessToken.user.firstname}}, om te beginnen op het platform moet je een wachtwoord instellen.</v-card-title>
                 <v-form>
                   <v-text-field name="paswoord" label="Nieuw Wachtwoord" id="password" type="password" :rules="passwordRules" v-model="password" required></v-text-field>
                   <v-text-field name="passwordRepeat" label="Herhaal Wachtwoord" id="passwordRepeat" type="password" :rules="passwordRepeatRules" v-model="passwordRepeat" required></v-text-field>
@@ -38,7 +39,7 @@ export default {
   name: "ChoosePassword",
   data: function () {
     return ({
-      accessToken: "",
+      accessToken: undefined,
       password: "",
       passwordRepeat: "",
       passwordRules: [
@@ -56,12 +57,8 @@ export default {
   },
   methods: {
     async onSubmit() {
-      let method = {
-        "reset": this.$http.resetPassword,
-        "invitation": this.$http.acceptInvitation,
-      }[this.$route.name];
       try {
-        await method(this.accessToken, this.password);
+        await this.$http.putNewPassword(this.accessToken.token, this.password);
         this.succes = true;
         this.$router.push("/login");
       } catch (err) {
@@ -69,9 +66,15 @@ export default {
       }
     }
   },
-  created() {
-    this.accessToken = this.$route.query.token;
-    if (!this.accessToken) {
+  async created() {
+    const hash = this.$route.query.token;
+    if (!hash) {
+      this.$router.push("/login");
+      return;
+    }
+    try {
+      this.accessToken = await this.$http.getAccessToken(hash);
+    } catch(err) {
       this.$router.push("/login");
     }
   }
