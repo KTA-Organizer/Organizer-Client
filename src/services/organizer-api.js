@@ -7,6 +7,10 @@ export const login = (email, password) =>
 
 export const logout = () => processReq("/auth/logout", {}, "POST");
 
+export const resetPassword = (token, password) => processReq("/auth/reset", { token, password }, "post");
+
+export const acceptInvitation = (token, password) => processReq("/auth/invitation", { token, password }, "post");
+
 export const getCurrentUser = () => processReq("/users/current", {}, "get");
 
 export const getStudentsWithEdu = () =>

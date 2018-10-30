@@ -17,6 +17,7 @@ import DataTableSelects from "@/components/DataTableSelects";
 import Datepicker from "vuejs-datepicker";
 import Meldingen from "@/components/Meldingen";
 import AddMelding from "@/components/AddMelding";
+import ChoosePassword from "@/components/ChoosePassword";
 
 Vue.component("fileInput", fileInput);
 Vue.component("checkboxes", checkboxes);
@@ -115,6 +116,18 @@ export default new Router({
       path: "/login",
       name: "login",
       component: Login,
+      beforeEnter: requireUnauth
+    },
+    {
+      path: "/reset",
+      name: "reset",
+      component: ChoosePassword,
+      beforeEnter: requireUnauth
+    },
+    {
+      path: "/invitation",
+      name: "invitation",
+      component: ChoosePassword,
       beforeEnter: requireUnauth
     }
   ]
