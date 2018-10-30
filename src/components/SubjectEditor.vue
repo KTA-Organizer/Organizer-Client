@@ -36,14 +36,15 @@
                 <!--</v-list-tile>-->
               <!--</v-list-group>-->
 
-              <v-list-group uid="0" class="blue darken-3" dark v-for="(module, moduleIndex) in opleiding" :value="module.active" v-bind:key="module.name" v-if="!editingModule">
+              <v-list-group uid="0" class="blue darken-3" dark v-for="(module, moduleIndex) in opleiding" :value="module.active" v-bind:key="module.name">
                 <v-list-tile slot="activator">
-                  <v-list-tile-content>
+                  <v-list-tile-content v-if="!editingModule || moduleIndex != payload">
                     <v-list-tile-title>{{module.name}}</v-list-tile-title>
                   </v-list-tile-content>
-                  <v-btn flat icon color="blue lighten-2" @click="editModule(moduleIndex)">
+                  <v-btn flat icon color="blue lighten-2" v-if="!editingModule" @click="editModule(moduleIndex)">
                     <v-icon>edit</v-icon>
                   </v-btn>
+                  <v-text-field v-if="editingModule && payload === moduleIndex" @keyup.enter="editModule(null)" dark autofocus name="module" label="Module naam" v-model="module.name" single-line></v-text-field>
                 </v-list-tile>
                 <v-list-tile class="blue-grey darken-2" v-for="(categorie,categorieIndex) in module.doelstellingCategories" v-bind:key="categorieIndex" @click="payload=categorieIndex">
                   <v-list-tile-content @click="setCategorie(categorie)" v-if="!editingCategorie || categorieIndex != payload">
@@ -99,16 +100,17 @@
                 <!--</v-list-tile-content>-->
               <!--</v-list-tile>-->
             <!--</v-list-group>-->
-            <v-list-group v-if="!editingDoelstelling" class="blue darken-3" dark v-for="(doelstelling, doelstellingIndex) in selectedcategorie.doelstellingen" :value="doelstelling.active" v-bind:key="doelstelling.name">
+            <v-list-group class="blue darken-3" dark v-for="(doelstelling, doelstellingIndex) in selectedcategorie.doelstellingen"  :value="doelstelling.active" v-bind:key="doelstelling.name">
               <v-list-tile slot="activator" @click="hideAspects">
-                <v-list-tile-content>
+                <v-list-tile-content  v-if="!editingDoelstelling || doelstellingIndex != payload">
                   <v-list-tile-title>{{ doelstelling.name }}</v-list-tile-title>
                 </v-list-tile-content>
-                <v-btn flat icon color="blue lighten-2" @click="editDoelstelling(doelstellingIndex)">
+                <v-btn flat icon color="blue lighten-2" v-if="!editingDoelstelling" @click="editDoelstelling(doelstellingIndex)">
                   <v-icon>edit</v-icon>
                 </v-btn>
+                <v-text-field v-if="editingDoelstelling && payload === doelstellingIndex" @keyup.enter="editDoelstelling(null)" dark autofocus name="doelstelling" label="Doelstelling naam" v-model="doelstelling.name" single-line></v-text-field>
               </v-list-tile>
-              <v-list-tile class="blue-grey darken-2" v-for="(criteria, criteriaIndex) in doelstelling.evaluatieCriteria" v-bind:key="criteriaIndex" @click="setCriteria(criteria)">
+              <v-list-tile class="blue-grey darken-2"  v-for="(criteria, criteriaIndex) in doelstelling.evaluatieCriteria" v-bind:key="criteriaIndex" @click="setCriteria(criteria)">
                 <v-list-tile-content @click="setCriteria(criteriaIndex)" v-if="!editingCriteria || criteriaIndex != payload">
                   <v-list-tile-title>{{ criteria.name}}</v-list-tile-title>
                 </v-list-tile-content>
@@ -133,6 +135,7 @@
                 <v-btn flat color="white darken-1" v-if="!addCriteriaActive" @click="addCriteriaActive = true">+ Nieuwe Criteria</v-btn>
               </v-list-tile>
             </v-list-group>
+
             <v-list-tile class="white--text">
               <v-text-field
                 class="pb-2"
@@ -161,14 +164,15 @@
                 <!--</v-list-tile-content>-->
               <!--</v-list-tile>-->
             <!--</v-list-group>-->
-            <v-list-group v-if="!editingAspect" class="blue darken-3" dark v-for="(aspect, aspectIndex) in selectedcriteria.aspecten" :value="aspect.active" v-bind:key="aspect.name">
+            <v-list-group class="blue darken-3" dark v-for="(aspect, aspectIndex) in selectedcriteria.aspecten" :value="aspect.active" v-bind:key="aspect.name">
               <v-list-tile slot="activator" @click="enterAddition('', opleiding)">
-                <v-list-tile-content>
+                <v-list-tile-content v-if="!editingAspect || aspectIndex != payload">
                   <v-list-tile-title>{{ aspect.name }}</v-list-tile-title>
                 </v-list-tile-content>
-                <v-btn flat icon color="blue lighten-2" @click="editAspect(aspectIndex)">
+                <v-btn flat icon color="blue lighten-2" v-if="!editingAspect" @click="editAspect(aspectIndex)">
                   <v-icon>edit</v-icon>
                 </v-btn>
+                <v-text-field v-if="editingAspect && payload === aspectIndex" @keyup.enter="editAspect(null)" dark autofocus name="aspect" label="Aspect naam" v-model="aspect.name" single-line></v-text-field>
               </v-list-tile>
             </v-list-group>
             <v-list-tile class="white--text">
@@ -324,78 +328,151 @@ export default {
         self.saveModules();
       });
     },
+    saveAspect(criteria) {
+      var self = this;
+      criteria.aspecten.forEach(function(aspect) {
+        if (aspect.id && !aspect.new) {
+          self.$http.updateAspect(
+            aspect.id,
+            aspect.name
+            /*function(response) {
+              console.log(response);
+              console.log(response.data);
+            }*/
+          );
+        } else {
+          self.$http.createAspect(
+            aspect.name,
+            criteria.id,
+            3,
+            1
+            /*function(response) {
+              console.log(response);
+              console.log(response.data);
+              doelstelling["id"] = response.data;
+              doelstelling.new = false;
+            }*/
+          );
+          aspect["id"] = response.data;
+          aspect.new = false;
+        }
+      });
+    },
+    saveCriteria(doelstelling) {
+      var self = this;
+      doelstelling.evaluatieCriteria.forEach(function(criteria) {
+        if (criteria.id && !criteria.new) {
+          self.$http.updateCriteria(
+            criteria.id,
+            criteria.name
+            /*function(response) {
+              console.log(response);
+              console.log(response.data);
+            }*/
+          );
+        } else {
+          self.$http.createCriteria(
+            criteria.name,
+            doelstelling.id,
+            3,
+            1
+            /*function(response) {
+              console.log(response);
+              console.log(response.data);
+              doelstelling["id"] = response.data;
+              doelstelling.new = false;
+            }*/
+          );
+          criteria["id"] = response.data;
+          criteria.new = false;
+        }
+        self.saveAspect(criteria);
+      });
+    },
     saveDoelstellingen(doelstellingscategorie) {
       var self = this;
       doelstellingscategorie.doelstellingen.forEach(function(doelstelling) {
         if (doelstelling.id && !doelstelling.new) {
           self.$http.updateDoelstelling(
             doelstelling.id,
-            doelstelling.name,
-            function(response) {
+            doelstelling.name
+            /*function(response) {
               console.log(response);
               console.log(response.data);
-            }
+            }*/
           );
         } else {
           self.$http.createDoelstelling(
             doelstelling.name,
             doelstellingscategorie.id,
-            3,
-            function(response) {
+            3
+            /*function(response) {
               console.log(response);
               console.log(response.data);
               doelstelling["id"] = response.data;
               doelstelling.new = false;
-            }
+            }*/
           );
+          doelstelling["id"] = response.data;
+          doelstelling.new = false;
         }
+        self.saveCriteria(doelstelling);
       });
     },
     saveDoelstellingscategorieen(module) {
       var self = this;
-      module.categorieen.forEach(function(categorie) {
+      module.doelstellingCategories.forEach(function(categorie) {
         if (categorie.id && !categorie.new) {
           self.$http.updateDoelstellingscategorie(
             categorie.id,
-            categorie.name,
-            function(response) {
+            categorie.name
+            /*function(response) {
               self.saveDoelstellingen(categorie);
-            }
+            }*/
           );
         } else {
           self.$http.createDoelstellingscategorie(
             categorie.name,
             module.id,
-            3,
-            function(response) {
+            3
+            /*function(response) {
               categorie["id"] = response.data;
               categorie.new = false;
               self.saveDoelstellingen(categorie);
-            }
+            }*/
           );
+          categorie["id"] = response.data;
+          categorie.new = false;
         }
+        self.saveDoelstellingen(categorie);
       });
     },
     saveModules() {
       var self = this;
       this.opleiding.forEach(function(module) {
         if (module.id && !module.new) {
-          self.$http.updateModule(module.id, module.name, function(response) {
-            self.saveDoelstellingscategorieen(module);
-          });
+          self.$http.updateModule(
+            module.id,
+            module.name
+            /*function(response) {
+            self.saveDoelstellingscategorieen(module);}*/
+            );
         } else {
           self.$http.createModule(
             module.name,
             self.givenmajor.id,
             13,
-            3,
-            function(response) {
+            3
+            /*function(response) {
               module["id"] = response.data;
               module.new = false;
               self.saveDoelstellingscategorieen(module);
-            }
+            }*/
           );
+          module["id"] = response.data;
+          module.new = false;
         }
+        self.saveDoelstellingscategorieen(module);
       });
       this.loading = null;
     },
@@ -407,12 +484,15 @@ export default {
       } else {
         this.$http.updateOpleiding(
           this.givenmajor.id,
-          this.opleidingsnaam,
-          function(response) {
-            self.saveModules();
-          }
+          this.opleidingsnaam
+          /*function(response) {
+            console.log(response);
+            //self.saveModules();*/
+          //}
         );
       }
+      self.saveModules();
+      this.loading = false;
     }
   },
   watch: {},

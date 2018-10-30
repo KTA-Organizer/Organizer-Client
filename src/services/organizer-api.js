@@ -100,34 +100,44 @@ export const deleteEval = id =>
   processReq("/deleteEvaluatie", { id }, "delete");
 
 export const createOpleiding = (creatorId, name) =>
-  processReq("/createOpleiding", { creatorId, name }, "post");
+  processReq("/opleidingen", { creatorId, active: 1, name }, "post");
 
 export const updateOpleiding = (opleidingId, name) =>
-  processReq("/updateOpleiding", { opleidingId, name }, "patch");
+  processReq("/opleidingen/" + opleidingId, { name }, "put");
 
 export const createModule = (name, opleidingId, teacherId, creatorId) =>
   processReq(
-    "/createModule",
+    "/modules",
     { name, opleidingId, teacherId, creatorId },
     "post"
   );
 
 export const updateModule = (moduleId, name) =>
-  processReq("/updateModule", { moduleId, name }, "patch");
+  processReq("/modules/" + moduleId, { name }, "put");
 
 export const createDoelstellingscategorie = (name, moduleId, creatorId) =>
   processReq(
-    "/createDoelstellingscategorie",
-    { name, moduleId, creatorId },
+    "/doelstellingsCategorie",
+    { name, moduleId, inGebruik: 1, creatorId },
     "post"
+  );
+
+  export const updateDoelstellingscategorie = (doelstellingscategorieId, name) =>
+  processReq(
+    "/doelstellingsCategorie/" + doelstellingscategorieId,
+    {
+      name
+    },
+    "put"
   );
 
 export const createDoelstelling = (name, doelstellingscategorieId, creatorId) =>
   processReq(
-    "/createDoelstelling",
+    "/doelstellingen",
     {
       name,
       doelstellingscategorieId,
+      inGebruik: 1,
       creatorId
     },
     "post"
@@ -135,13 +145,57 @@ export const createDoelstelling = (name, doelstellingscategorieId, creatorId) =>
 
 export const updateDoelstelling = (doelstellingId, name) =>
   processReq(
-    "/updateDoelstelling",
+    "/doelstellingen/" + doelstellingId,
     {
-      doelstellingId,
       name
     },
-    "patch"
+    "put"
   );
+
+  export const createCriteria = (name, doelstellingId, creatorId) =>
+  processReq(
+    "/evaluatieCriteria",
+    {
+      name,
+      doelstellingId,
+      inGebruik: 1,
+      gewicht: 1,
+      creatorId
+    },
+    "post"
+  );
+
+export const updateCriteria = (criteriaId, name) =>
+  processReq(
+    "/evaluatieCriteria/" + criteriaId,
+    {
+      name
+    },
+    "put"
+  );
+
+  export const createAspect = (name, criteriaId, creatorId) =>
+  processReq(
+    "/aspecten",
+    {
+      name,
+      criteriaId,
+      inGebruik: 1,
+      gewicht: 1,
+      creatorId
+    },
+    "post"
+  );
+
+export const updateAspect = (aspectId, name) =>
+  processReq(
+    "/aspecten/" + aspectId,
+    {
+      name
+    },
+    "put"
+  );
+
 
 export const getMeldingen = () => processReq("/meldingen", {}, "get");
 
