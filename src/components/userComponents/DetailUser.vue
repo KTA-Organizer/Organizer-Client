@@ -4,7 +4,7 @@
             <h1 class="display-3">Details van gebruiker:</h1>
             <v-layout align-center justify-space-between row mb-5> 
                 <h2 class="display-1">{{user.firstname}} {{user.lastname}}</h2>
-                <v-btn color="error" class="ma-1 right" dark><v-icon dark>delete</v-icon></v-btn>
+                <v-btn color="error" class="ma-1 right" dark @click="deleteDialog = true"><v-icon dark>delete</v-icon></v-btn>
             </v-layout>
         </div>
         <v-form ref="form" lazy-validation mt-5>
@@ -58,24 +58,93 @@
                 <v-btn v-if="fieldDisabled.select" color="primary" class="ma-1 right" dark @click="fieldDisabled.select = !fieldDisabled.select"><v-icon dark>edit</v-icon></v-btn>
                 <v-btn v-else class="ma-1 right light-green accent-4" dark @click="fieldDisabled.select = !fieldDisabled.select"><v-icon dark>save</v-icon></v-btn>
             </v-layout>
-            <v-layout align-center justify-space-between row fill-height> 
-                
-            </v-layout>
-            <div>
-                <h3>Voeg een opleiding to aan deze gebruiker:</h3>
-                <v-layout v-if="user.role !== 'ADMIN'" align-center justify-space-between row fill-height>
+            <div v-if="constants.roleKeys[user.role] !== 'ADMIN'">
+                <h3>Voeg een opleiding toe aan deze gebruiker:</h3>
+                <v-layout align-center justify-space-between row fill-height>
                     <v-select
                         label="Opleiding"
                         v-model="opleiding"
                         :rules="selectRules"
                         required
                         :items="opleidingnames"
+                        :disabled="fieldDisabled.opleiding"
                     ></v-select>
+                    <v-btn v-if="fieldDisabled.opleiding" color="primary" class="ma-1 right" dark @click="fieldDisabled.opleiding = !fieldDisabled.opleiding"><v-icon dark>edit</v-icon></v-btn>
+                    <v-btn v-else class="ma-1 right light-green accent-4" dark @click="fieldDisabled.opleiding = !fieldDisabled.opleiding"><v-icon dark>save</v-icon></v-btn>
                 </v-layout>
             </div>
-
-            <v-btn color="primary">Opslaan</v-btn>
+            <v-btn @click="updateUser" color="primary">Opslaan</v-btn>
         </v-form>
+        <v-dialog
+      width="500"
+      v-model="deleteDialog"
+    >
+      <v-card>
+        <v-card-title
+          class="headline grey lighten-2"
+          primary-title
+        >
+          Opgelet!
+        </v-card-title>
+
+        <v-card-text>
+          <p>U staat op het punt om <strong>{{ user.firstname + ' ' + user.lastname  }}</strong> te verwijderen.</p>
+          <p>Bent u dit zeker?</p>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            flat
+            :disabled="!loadingDelete"
+            v-on:click="deleteDialog = false"
+          >
+            Annuleer
+          </v-btn>
+          <v-btn
+            color="error"
+            flat
+            :loading="loadingDelete"
+            v-on:click="deleteUser(user.id)"
+          >
+            Bevestig
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog
+      width="500"
+      v-model="confirmDeleteDialog"
+    >
+      <v-card>
+        <v-card-title
+          class="headline grey lighten-2"
+          primary-title
+        >
+          Verwijderd!
+        </v-card-title>
+
+        <v-card-text>
+          <p><strong>{{ user.firstname + ' ' + user.lastname  }}</strong> is verwijderd.</p>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            flat
+            v-on:click="$router.push('/Gebruikers')"
+          >
+            Terug naar overzicht
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     </v-container>
 </template>
 
@@ -99,20 +168,34 @@ export default {
       fieldDisabled: {
         name: true,
         email: true,
-        select: true
+        select: true,
+        opleiding: false
       },
       opleidingen: [],
       opleidingnames: [],
       opleiding: undefined,
+      deleteDialog: false,
+      confirmDeleteDialog: false,
+      loadingDelete: false
     };
   },
   methods: {
+    async deleteUser(id) {
+      console.log(`Gebruiker met id: ${id} wordt verwijderd`);
+      this.loadingDelete = true;
+      await this.$http.deleteUser(id);
+      this.deleteDialog = false;
+      this.confirmDeleteDialog = true;
+    },
     getKeyByValue(object, value) {
       return Object.keys(object).find(key => object[key] === value);
+    },
+    updateUser() {
+      // TODO do actual update
+      console.log(this.user);
     }
   },
   async created() {
-    console.log(this.constants);
     const userId = this.$route.params.id;
     const user = await this.$http.getUser(userId);
     user.gender = this.getKeyByValue(this.constants.genderKeys, user.gender);
@@ -120,10 +203,14 @@ export default {
     this.user = user;
     if (this.user.role !== "ADMIN") {
       const opleidingen = await this.$http.getOpleidingen();
+      const opleidingForUser = await this.$http.getOpleidingForStudent(userId);
+      if (opleidingForUser) {
+        this.opleiding = opleidingForUser.name;
+        this.fieldDisabled.opleiding = true;
+      }
       this.opleidingen = opleidingen;
       this.opleidingnames = [];
       for (const opleiding of opleidingen) {
-        console.log(opleiding.name);
         this.opleidingnames.push(opleiding.name);
       }
     }

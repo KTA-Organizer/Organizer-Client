@@ -22,13 +22,20 @@ export const getStudent = id => processReq(`/students/${id}`, {}, "get");
 export const getUser = id => processReq(`/users/${id}`, {}, "get");
 
 // export const getUsers = () => processReq("/users", {}, "get");
-export const getUsers = () => {return JSON.parse(localStorage.getItem("gebruikers"))};
+export const getUsers = () => {
+  return JSON.parse(localStorage.getItem("gebruikers"));
+};
 
 export const createUser = newUser => processReq("/users", newUser, "post");
+
+export const deleteUser = id => processReq(`/users/${id}`, {}, "delete");
 
 export const getOpleidingen = () => processReq("/opleidingen", {}, "get");
 
 export const getOpleiding = id => processReq(`/opleidingen/${id}`, {}, "get");
+
+export const getOpleidingForStudent = id =>
+  processReq(`/opleidingen/${id}/student`, {}, "get");
 
 export const saveReport = () => processReq("/saveReport", report, "post");
 
@@ -178,11 +185,6 @@ async function processReq(url, dataObj, method) {
   if (response.ok) {
     return body;
   } else {
-    // if (response.status === 401) {
-    //   if (!window.location.href.toLowerCase().includes("login")) {
-    //     window.location = "/";
-    //   }
-    // }
     throw new ResponseError(response.status, body);
   }
 }

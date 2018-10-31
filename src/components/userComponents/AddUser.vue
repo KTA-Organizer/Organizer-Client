@@ -85,14 +85,12 @@ export default {
         gender: this.genderKeys[this.gender],
         role: this.roleKeys[this.role],
       };
-      console.log(newUser);
       const userIdObj = await this.$http.createUser(newUser);
       // const userId = 1;
       this.$router.push(`${userIdObj.newId}`);
     }
   },
   created() {
-    console.log(this.constants);
     this.genders = this.constants.genders;
     this.genderKeys = this.constants.genderKeys;
     this.roles = this.constants.roles;

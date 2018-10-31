@@ -96,44 +96,6 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog
-      width="500"
-      v-model="dialogUser.show"
-    >
-      <v-card>
-        <v-card-title
-          class="headline grey lighten-2"
-          primary-title
-        >
-          Opgelet!
-        </v-card-title>
-
-        <v-card-text>
-          <p>U staat op het punt om <strong>{{ dialogUser.firstname + ' ' + dialogUser.lastname  }}</strong> te verwijderen.</p>
-          <p>Bent u dit zeker?</p>
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            flat
-            v-on:click="dialogUser.show = false"
-          >
-            Annuleer
-          </v-btn>
-          <v-btn
-            color="error"
-            flat
-            v-on:click="deleteUser(dialogUser.userId)"
-          >
-            Bevestig
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
       </v-layout>
   </div>
 </template>
@@ -178,12 +140,6 @@ export default {
         { text: "Status", align: "left", value: "status", sortable: true },
         { text: "Datum aangemaakt", value: "accountCreatedTimestamp" }
       ],
-      dialogUser: {
-        firstname: "",
-        lastname: "",
-        userId: "",
-        show: false
-      },
       nameFilter: "",
       roleFilter: "",
       genderFilter: "",
@@ -218,12 +174,6 @@ export default {
     };
   },
   methods: {
-    makeDialog(gebruiker) {
-      this.dialogUser.firstname = gebruiker.firstname;
-      this.dialogUser.lastname = gebruiker.lastname;
-      this.dialogUser.userId = gebruiker.id;
-      this.dialogUser.show = true;
-    },
     uploadFiles() {
       const form = this.formData;
       console.log(form);
@@ -235,8 +185,6 @@ export default {
         : false;
       const genderFiltertje = this.genderKeys[this.genderFilter];
       const statusFiltertje = this.statusKeys[this.statusFilter];
-      console.log(naamFiltertje, rolFiltertje, genderFiltertje, statusFiltertje);
-      console.log(this.gebruikers)
       this.filteredGebruikers = this.gebruikers
         .filter(x => {
           if (!genderFiltertje) {
@@ -263,13 +211,6 @@ export default {
           return x.status === statusFiltertje;
         });
     },
-    deleteUser(id) {
-      console.log(`Gebruiker met id: ${id} wordt verwijderd`);
-      this.dialogUser.firstname = "";
-      this.dialogUser.lastname = "";
-      this.dialogUser.userId = "";
-      this.dialogUser.show = false;
-    },
     readableDate(timeStamp) {
       const stamp = timeStamp.split("T");
       const date = stamp[0].split("-");
@@ -287,7 +228,6 @@ export default {
   },
   async created() {
     const gebruikers = await this.$http.getUsers();
-    console.log(gebruikers)
     this.gebruikers = gebruikers;
     for (const gebruiker of this.gebruikers) {
       gebruiker.naam = `${gebruiker.firstname} ${gebruiker.lastname}`;
