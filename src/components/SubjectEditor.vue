@@ -27,29 +27,28 @@
       <!-- MODULES & CATEGORIEEN DISPLAY-->
       <v-flex xs3 class="mr-0 pa-0">
           <v-list dark class="blue darken-3 pa-0">
-              <v-list-group v-for="(item, moduleIndex) in opleiding" :value="item.active" v-bind:key="item.name" v-if="editingModule">
-                <v-list-tile slot="item">
-                  <v-list-tile-content>
-                    <v-list-tile-title v-if="moduleIndex !== payload">{{ moduleIndex + 1 + ' ' + item.name }}</v-list-tile-title>
-                    <v-text-field @keyup.enter="editModule(null)" dark autofocus v-if="moduleIndex === payload" name="module" label="Module naam" v-model="item.name" single-line></v-text-field>
+              <!--<v-list-group v-for="(module, moduleIndex) in opleiding" :value="module.active" v-bind:key="module.name" v-if="editingModule">-->
+                <!--<v-list-tile>-->
+                  <!--<v-list-tile-content>-->
+                    <!--<v-list-tile-title v-if="moduleIndex !== payload">{{ moduleIndex + 1 + ' ' + module.name }}</v-list-tile-title>-->
+                    <!--<v-text-field @keyup.enter="editModule(null)" dark autofocus v-if="moduleIndex === payload" name="module" label="Module naam" v-model="module.name" single-line></v-text-field>-->
+                  <!--</v-list-tile-content>-->
+                <!--</v-list-tile>-->
+              <!--</v-list-group>-->
+
+              <v-list-group uid="0" class="blue darken-3" dark v-for="(module, moduleIndex) in opleiding" :value="module.active" v-bind:key="module.name">
+                <v-list-tile slot="activator">
+                  <v-list-tile-content v-if="!editingModule || moduleIndex != payload">
+                    <v-list-tile-title>{{module.name}}</v-list-tile-title>
                   </v-list-tile-content>
-                </v-list-tile>
-              </v-list-group>
-              <v-list-group uid="0" class="blue darken-3" dark v-for="(item, moduleIndex) in opleiding" :value="item.active" v-bind:key="item.name" v-if="!editingModule">
-                <v-list-tile slot="item">
-                  <v-list-tile-content>
-                    <v-list-tile-title>{{ moduleIndex +1 + ' ' + item.name }}</v-list-tile-title>
-                  </v-list-tile-content>
-                  <v-btn flat icon color="blue lighten-2" @click="editModule(moduleIndex)">
+                  <v-btn flat icon color="blue lighten-2" v-if="!editingModule" @click="editModule(moduleIndex)">
                     <v-icon>edit</v-icon>
                   </v-btn>
-                  <v-list-tile-action @click="hideCategorie()">
-                    <v-icon>keyboard_arrow_down</v-icon>
-                  </v-list-tile-action>
+                  <v-text-field v-if="editingModule && payload === moduleIndex" @keyup.enter="editModule(null)" dark autofocus name="module" label="Module naam" v-model="module.name" single-line></v-text-field>
                 </v-list-tile>
-                <v-list-tile class="blue-grey darken-2" v-for="(categorie,categorieIndex) in item.categorieen" v-bind:key="categorieIndex" @click="payload=categorieIndex">
+                <v-list-tile class="blue-grey darken-2" v-for="(categorie,categorieIndex) in module.doelstellingCategories" v-bind:key="categorieIndex" @click="payload=categorieIndex">
                   <v-list-tile-content @click="setCategorie(categorie)" v-if="!editingCategorie || categorieIndex != payload">
-                    <v-list-tile-title>{{ categorie.indexes.toString().replace(/,/g, ".") + ' ' + categorie.name}}</v-list-tile-title>
+                    <v-list-tile-title>{{ categorie.name}}</v-list-tile-title>
                   </v-list-tile-content>
                   <v-btn flat icon color="blue lighten-2 text-xs-right" v-if="!editingCategorie" @click="editCategorie(categorieIndex)">
                     <v-icon>edit</v-icon>
@@ -61,7 +60,7 @@
                     class="pb-2"
                     auto-focus
                     v-if="addCategorieActive"
-                    @keyup.enter="enterAddition(CategorieAddString, item.categorieen, 'categorie', item.indexes)"
+                    @keyup.enter="enterAddition(CategorieAddString, module.categorieen, 'categorie', module.indexes)"
                     prepend-icon="add"
                     label="Nieuwe Categorie"
                     v-model="CategorieAddString"
@@ -72,6 +71,7 @@
                   <v-btn flat color="white darken-1" v-if="!addCategorieActive" @click="addCategorieActive = true">+ Nieuwe Categorie</v-btn>
                 </v-list-tile>
               </v-list-group>
+
               <v-list-tile class="white--text">
                 <v-text-field
                   class="pb-2"
@@ -92,29 +92,27 @@
       <!-- DOELSTELLINGEN & EVALUATIECRITERIA DISPLAY-->
       <v-flex xs4 class="mr-0 pa-0" v-if="selectedcategorie != null">
         <v-list dark class="blue darken-3 pa-0">
-            <v-list-group v-for="(item, doelstellingIndex) in selectedcategorie.doelstellingen" :value="item.active" v-bind:key="item.name" v-if="editingDoelstelling">
-              <v-list-tile slot="item">
-                <v-list-tile-content>
-                  <v-list-tile-title v-if="doelstellingIndex !== payload">{{ item.indexes.toString().replace(/,/g, ".") + ' ' + item.name }}</v-list-tile-title>
-                  <v-text-field @keyup.enter="editDoelstelling(null)" dark autofocus v-if="doelstellingIndex === payload" name="module" label="Doelstelling naam" v-model="item.name" single-line></v-text-field>
+            <!--<v-list-group v-for="(doelstelling, doelstellingIndex) in selectedcategorie.doelstellingen" :value="doelstelling.active" v-bind:key="doelstelling.name" v-if="editingDoelstelling">-->
+              <!--<v-list-tile slot="activator">-->
+                <!--<v-list-tile-content>-->
+                  <!--<v-list-tile-title v-if="doelstellingIndex !== payload">{{doelstelling.id}}</v-list-tile-title>-->
+                  <!--<v-text-field @keyup.enter="editDoelstelling(null)" dark autofocus v-if="doelstellingIndex === payload" name="module" label="Doelstelling naam" v-model="doelstelling.name" single-line></v-text-field>-->
+                <!--</v-list-tile-content>-->
+              <!--</v-list-tile>-->
+            <!--</v-list-group>-->
+            <v-list-group class="blue darken-3" dark v-for="(doelstelling, doelstellingIndex) in selectedcategorie.doelstellingen"  :value="doelstelling.active" v-bind:key="doelstelling.name">
+              <v-list-tile slot="activator" @click="hideAspects">
+                <v-list-tile-content  v-if="!editingDoelstelling || doelstellingIndex != payload">
+                  <v-list-tile-title>{{ doelstelling.name }}</v-list-tile-title>
                 </v-list-tile-content>
-              </v-list-tile>
-            </v-list-group>
-            <v-list-group v-if="!editingDoelstelling" class="blue darken-3" dark v-for="(item, doelstellingIndex) in selectedcategorie.doelstellingen" :value="item.active" v-bind:key="item.name">
-              <v-list-tile slot="item" @click="hideAspects">
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ item.indexes.toString().replace(/,/g, ".") + ' ' + item.name }}</v-list-tile-title>
-                </v-list-tile-content>
-                <v-btn flat icon color="blue lighten-2" @click="editDoelstelling(doelstellingIndex)">
+                <v-btn flat icon color="blue lighten-2" v-if="!editingDoelstelling" @click="editDoelstelling(doelstellingIndex)">
                   <v-icon>edit</v-icon>
                 </v-btn>
-                <v-list-tile-action>
-                  <v-icon>keyboard_arrow_down</v-icon>
-                </v-list-tile-action>
+                <v-text-field v-if="editingDoelstelling && payload === doelstellingIndex" @keyup.enter="editDoelstelling(null)" dark autofocus name="doelstelling" label="Doelstelling naam" v-model="doelstelling.name" single-line></v-text-field>
               </v-list-tile>
-              <v-list-tile class="blue-grey darken-2" v-for="(criteria, criteriaIndex) in item.criteria" v-bind:key="criteriaIndex" @click="setCriteria(criteria)">
+              <v-list-tile class="blue-grey darken-2"  v-for="(criteria, criteriaIndex) in doelstelling.evaluatieCriteria" v-bind:key="criteriaIndex" @click="setCriteria(criteria)">
                 <v-list-tile-content @click="setCriteria(criteriaIndex)" v-if="!editingCriteria || criteriaIndex != payload">
-                  <v-list-tile-title>{{ criteria.indexes.toString().replace(/,/g, ".") + ' ' + criteria.name}}</v-list-tile-title>
+                  <v-list-tile-title>{{ criteria.name}}</v-list-tile-title>
                 </v-list-tile-content>
                 <v-btn flat icon color="blue lighten-2 text-xs-right" v-if="!editingCriteria" @click="editCriteria(criteriaIndex)">
                   <v-icon>edit</v-icon>
@@ -126,7 +124,7 @@
                   class="pb-2"
                   auto-focus
                   v-if="addCriteriaActive"
-                  @keyup.enter="enterAddition(CriteriaAddString, item.criteria, 'criteria', item.indexes)"
+                  @keyup.enter="enterAddition(CriteriaAddString, doelstelling.criteria, 'criteria', doelstelling.indexes)"
                   prepend-icon="add"
                   label="Nieuwe Criteria"
                   v-model="CriteriaAddString"
@@ -137,6 +135,7 @@
                 <v-btn flat color="white darken-1" v-if="!addCriteriaActive" @click="addCriteriaActive = true">+ Nieuwe Criteria</v-btn>
               </v-list-tile>
             </v-list-group>
+
             <v-list-tile class="white--text">
               <v-text-field
                 class="pb-2"
@@ -157,22 +156,23 @@
       <!-- DOELSTELLINGEN & EVALUATIECRITERIA DISPLAY-->
       <v-flex xs4 class="mr-0 pa-0" v-if="selectedcriteria != null">
         <v-list dark class="blue darken-3 pa-0">
-            <v-list-group v-for="(aspect, aspectIndex) in selectedcriteria.aspecten" :value="aspect.active" v-bind:key="aspect.name" v-if="editingAspect">
-              <v-list-tile slot="item">
-                <v-list-tile-content>
-                  <v-list-tile-title v-if="aspectIndex !== payload">{{ aspect.indexes.toString().replace(/,/g, ".") + ' ' + aspect.name }}</v-list-tile-title>
-                  <v-text-field @keyup.enter="editAspect(null)" dark autofocus v-if="aspectIndex === payload" name="module" label="Aspect naam" v-model="aspect.name" single-line></v-text-field>
+            <!--<v-list-group v-for="(aspect, aspectIndex) in selectedcriteria.aspecten" :value="aspect.active" v-bind:key="aspect.name" v-if="editingAspect">-->
+              <!--<v-list-tile slot="activator">-->
+                <!--<v-list-tile-content>-->
+                  <!--<v-list-tile-title v-if="aspectIndex !== payload">{{ aspect.indexes.toString().replace(/,/g, ".") + ' ' + aspect.name }}</v-list-tile-title>-->
+                  <!--<v-text-field @keyup.enter="editAspect(null)" dark autofocus v-if="aspectIndex === payload" name="module" label="Aspect naam" v-model="aspect.name" single-line></v-text-field>-->
+                <!--</v-list-tile-content>-->
+              <!--</v-list-tile>-->
+            <!--</v-list-group>-->
+            <v-list-group class="blue darken-3" dark v-for="(aspect, aspectIndex) in selectedcriteria.aspecten" :value="aspect.active" v-bind:key="aspect.name">
+              <v-list-tile slot="activator" @click="enterAddition('', opleiding)">
+                <v-list-tile-content v-if="!editingAspect || aspectIndex != payload">
+                  <v-list-tile-title>{{ aspect.name }}</v-list-tile-title>
                 </v-list-tile-content>
-              </v-list-tile>
-            </v-list-group>
-            <v-list-group v-if="!editingAspect" class="blue darken-3" dark v-for="(aspect, aspectIndex) in selectedcriteria.aspecten" :value="aspect.active" v-bind:key="aspect.name">
-              <v-list-tile slot="item" @click="enterAddition('', opleiding)">
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ aspect.indexes.toString().replace(/,/g, ".") + ' ' + aspect.name }}</v-list-tile-title>
-                </v-list-tile-content>
-                <v-btn flat icon color="blue lighten-2" @click="editAspect(aspectIndex)">
+                <v-btn flat icon color="blue lighten-2" v-if="!editingAspect" @click="editAspect(aspectIndex)">
                   <v-icon>edit</v-icon>
                 </v-btn>
+                <v-text-field v-if="editingAspect && payload === aspectIndex" @keyup.enter="editAspect(null)" dark autofocus name="aspect" label="Aspect naam" v-model="aspect.name" single-line></v-text-field>
               </v-list-tile>
             </v-list-group>
             <v-list-tile class="white--text">
@@ -328,78 +328,151 @@ export default {
         self.saveModules();
       });
     },
+    saveAspect(criteria) {
+      var self = this;
+      criteria.aspecten.forEach(function(aspect) {
+        if (aspect.id && !aspect.new) {
+          self.$http.updateAspect(
+            aspect.id,
+            aspect.name
+            /*function(response) {
+              console.log(response);
+              console.log(response.data);
+            }*/
+          );
+        } else {
+          self.$http.createAspect(
+            aspect.name,
+            criteria.id,
+            3,
+            1
+            /*function(response) {
+              console.log(response);
+              console.log(response.data);
+              doelstelling["id"] = response.data;
+              doelstelling.new = false;
+            }*/
+          );
+          aspect["id"] = response.data;
+          aspect.new = false;
+        }
+      });
+    },
+    saveCriteria(doelstelling) {
+      var self = this;
+      doelstelling.evaluatieCriteria.forEach(function(criteria) {
+        if (criteria.id && !criteria.new) {
+          self.$http.updateCriteria(
+            criteria.id,
+            criteria.name
+            /*function(response) {
+              console.log(response);
+              console.log(response.data);
+            }*/
+          );
+        } else {
+          self.$http.createCriteria(
+            criteria.name,
+            doelstelling.id,
+            3,
+            1
+            /*function(response) {
+              console.log(response);
+              console.log(response.data);
+              doelstelling["id"] = response.data;
+              doelstelling.new = false;
+            }*/
+          );
+          criteria["id"] = response.data;
+          criteria.new = false;
+        }
+        self.saveAspect(criteria);
+      });
+    },
     saveDoelstellingen(doelstellingscategorie) {
       var self = this;
       doelstellingscategorie.doelstellingen.forEach(function(doelstelling) {
         if (doelstelling.id && !doelstelling.new) {
           self.$http.updateDoelstelling(
             doelstelling.id,
-            doelstelling.name,
-            function(response) {
+            doelstelling.name
+            /*function(response) {
               console.log(response);
               console.log(response.data);
-            }
+            }*/
           );
         } else {
           self.$http.createDoelstelling(
             doelstelling.name,
             doelstellingscategorie.id,
-            3,
-            function(response) {
+            3
+            /*function(response) {
               console.log(response);
               console.log(response.data);
               doelstelling["id"] = response.data;
               doelstelling.new = false;
-            }
+            }*/
           );
+          doelstelling["id"] = response.data;
+          doelstelling.new = false;
         }
+        self.saveCriteria(doelstelling);
       });
     },
     saveDoelstellingscategorieen(module) {
       var self = this;
-      module.categorieen.forEach(function(categorie) {
+      module.doelstellingCategories.forEach(function(categorie) {
         if (categorie.id && !categorie.new) {
           self.$http.updateDoelstellingscategorie(
             categorie.id,
-            categorie.name,
-            function(response) {
+            categorie.name
+            /*function(response) {
               self.saveDoelstellingen(categorie);
-            }
+            }*/
           );
         } else {
           self.$http.createDoelstellingscategorie(
             categorie.name,
             module.id,
-            3,
-            function(response) {
+            3
+            /*function(response) {
               categorie["id"] = response.data;
               categorie.new = false;
               self.saveDoelstellingen(categorie);
-            }
+            }*/
           );
+          categorie["id"] = response.data;
+          categorie.new = false;
         }
+        self.saveDoelstellingen(categorie);
       });
     },
     saveModules() {
       var self = this;
       this.opleiding.forEach(function(module) {
         if (module.id && !module.new) {
-          self.$http.updateModule(module.id, module.name, function(response) {
-            self.saveDoelstellingscategorieen(module);
-          });
+          self.$http.updateModule(
+            module.id,
+            module.name
+            /*function(response) {
+            self.saveDoelstellingscategorieen(module);}*/
+            );
         } else {
           self.$http.createModule(
             module.name,
             self.givenmajor.id,
             13,
-            3,
-            function(response) {
+            3
+            /*function(response) {
               module["id"] = response.data;
               module.new = false;
               self.saveDoelstellingscategorieen(module);
-            }
+            }*/
           );
+          module["id"] = response.data;
+          module.new = false;
         }
+        self.saveDoelstellingscategorieen(module);
       });
       this.loading = null;
     },
@@ -411,12 +484,15 @@ export default {
       } else {
         this.$http.updateOpleiding(
           this.givenmajor.id,
-          this.opleidingsnaam,
-          function(response) {
-            self.saveModules();
-          }
+          this.opleidingsnaam
+          /*function(response) {
+            console.log(response);
+            //self.saveModules();*/
+          //}
         );
       }
+      self.saveModules();
+      this.loading = false;
     }
   },
   watch: {},

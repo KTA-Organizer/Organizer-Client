@@ -22,6 +22,7 @@ import UserDetail from "@/components/userComponents/UserDataTable";
 import AddUser from "@/components/userComponents/AddUser";
 import UsersOverview from "@/components/userComponents/UsersOverview";
 import DetailUser from "@/components/userComponents/DetailUser";
+import ChoosePassword from "@/components/ChoosePassword";
 
 Vue.component("fileInput", fileInput);
 Vue.component("checkboxes", checkboxes);
@@ -142,6 +143,18 @@ export default new Router({
       path: "/login",
       name: "login",
       component: Login,
+      beforeEnter: requireUnauth
+    },
+    {
+      path: "/reset",
+      name: "reset",
+      component: ChoosePassword,
+      beforeEnter: requireUnauth
+    },
+    {
+      path: "/invitation",
+      name: "invitation",
+      component: ChoosePassword,
       beforeEnter: requireUnauth
     }
   ]
