@@ -4,7 +4,8 @@
             <h1 class="display-3">Details van gebruiker:</h1>
             <v-layout align-center justify-space-between row mb-5> 
                 <h2 class="display-1">{{user.firstname}} {{user.lastname}}</h2>
-                <v-btn color="error" class="ma-1 right" dark @click="deleteDialog = true"><v-icon dark>delete</v-icon></v-btn>
+                <v-btn v-if="user.status === 'ACTIVE'" color="error" class="ma-1 right" dark @click="deleteDialog = true"><v-icon dark>delete</v-icon></v-btn>
+                <v-btn v-else class="ma-1 right light-green accent-4" dark @click="activateDialog = true">activeer</v-btn>
             </v-layout>
         </div>
         <v-form ref="form" lazy-validation mt-5>
@@ -33,7 +34,7 @@
                     :rules="emailRules"
                     required
                     :readonly="fieldDisabled.email"
-                    :disabled="true"
+                    :disabled="fieldDisabled.email"
                 ></v-text-field>
                 <v-btn v-if="fieldDisabled.email" color="primary" class="ma-1 right" dark @click="fieldDisabled.email = !fieldDisabled.email"><v-icon dark>edit</v-icon></v-btn>
                 <v-btn v-else class="ma-1 right light-green accent-4" dark @click="fieldDisabled.email = !fieldDisabled.email"><v-icon dark>save</v-icon></v-btn>
@@ -58,7 +59,8 @@
                 <v-btn v-if="fieldDisabled.select" color="primary" class="ma-1 right" dark @click="fieldDisabled.select = !fieldDisabled.select"><v-icon dark>edit</v-icon></v-btn>
                 <v-btn v-else class="ma-1 right light-green accent-4" dark @click="fieldDisabled.select = !fieldDisabled.select"><v-icon dark>save</v-icon></v-btn>
             </v-layout>
-            <div v-if="constants.roleKeys[user.role] !== 'ADMIN'">
+            <v-btn @click="updateUser" color="primary">Opslaan</v-btn>
+            <div v-if="constants.roleKeys[user.role] === 'STUDENT'">
                 <h3>Voeg een opleiding toe aan deze gebruiker:</h3>
                 <v-layout align-center justify-space-between row fill-height>
                     <v-select
@@ -72,9 +74,10 @@
                     <v-btn v-if="fieldDisabled.opleiding" color="primary" class="ma-1 right" dark @click="fieldDisabled.opleiding = !fieldDisabled.opleiding"><v-icon dark>edit</v-icon></v-btn>
                     <v-btn v-else class="ma-1 right light-green accent-4" dark @click="fieldDisabled.opleiding = !fieldDisabled.opleiding"><v-icon dark>save</v-icon></v-btn>
                 </v-layout>
+                <v-btn @click="updateOpleiding" color="primary">Voeg opleiding toe</v-btn>
             </div>
-            <v-btn @click="updateUser" color="primary">Opslaan</v-btn>
         </v-form>
+            <router-link to="/Gebruikers"><v-btn color="primary">Terug naar overzicht</v-btn></router-link>
         <v-dialog
       width="500"
       v-model="deleteDialog"
@@ -99,7 +102,6 @@
           <v-btn
             color="primary"
             flat
-            :disabled="!loadingDelete"
             v-on:click="deleteDialog = false"
           >
             Annuleer
@@ -107,7 +109,6 @@
           <v-btn
             color="error"
             flat
-            :loading="loadingDelete"
             v-on:click="deleteUser(user.id)"
           >
             Bevestig
@@ -145,6 +146,44 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog
+      width="500"
+      v-model="activateDialog"
+    >
+      <v-card>
+        <v-card-title
+          class="headline grey lighten-2"
+          primary-title
+        >
+          Opgelet!
+        </v-card-title>
+
+        <v-card-text>
+          <p>U staat op het punt om <strong>{{ user.firstname + ' ' + user.lastname  }}</strong> te activeren.</p>
+          <p>Bent u dit zeker?</p>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            flat
+            v-on:click="activateDialog = false"
+          >
+            Annuleer
+          </v-btn>
+          <v-btn
+            color="error"
+            flat
+            v-on:click="activateUser(user.id)"
+          >
+            Bevestig
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     </v-container>
 </template>
 
@@ -176,13 +215,12 @@ export default {
       opleiding: undefined,
       deleteDialog: false,
       confirmDeleteDialog: false,
-      loadingDelete: false
+      activateDialog: false
     };
   },
   methods: {
     async deleteUser(id) {
       console.log(`Gebruiker met id: ${id} wordt verwijderd`);
-      this.loadingDelete = true;
       await this.$http.deleteUser(id);
       this.deleteDialog = false;
       this.confirmDeleteDialog = true;
@@ -190,9 +228,32 @@ export default {
     getKeyByValue(object, value) {
       return Object.keys(object).find(key => object[key] === value);
     },
-    updateUser() {
-      // TODO do actual update
-      console.log(this.user);
+    async updateUser() {
+      // TODO do opleiding update
+      this.user.gender = this.constants.genderKeys[this.user.gender];
+      this.user.roles = [this.constants.roleKeys[this.user.role]];
+      console.log("before", this.user);
+      await this.$http.updateUser(this.user);
+      this.user.gender = this.getKeyByValue(
+        this.constants.genderKeys,
+        this.user.gender
+      );
+      this.user.role = this.getKeyByValue(
+        this.constants.roleKeys,
+        this.user.roles[0]
+      );
+      console.log("after", this.user);
+    },
+    async activateUser(id) {
+      await this.$http.activateUser(id);
+      const user = await this.$http.getUser(id);
+      user.gender = this.getKeyByValue(this.constants.genderKeys, user.gender);
+      user.role = this.getKeyByValue(this.constants.roleKeys, user.role);
+      this.user = user;
+      this.activateDialog = false;
+    },
+    async updateOpleiding() {
+        //TODO
     }
   },
   async created() {

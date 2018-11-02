@@ -21,14 +21,22 @@ export const getStudent = id => processReq(`/students/${id}`, {}, "get");
 
 export const getUser = id => processReq(`/users/${id}`, {}, "get");
 
-// export const getUsers = () => processReq("/users", {}, "get");
-export const getUsers = () => {
-  return JSON.parse(localStorage.getItem("gebruikers"));
-};
+export const getUsers = () => processReq("/users", {}, "get");
 
 export const createUser = newUser => processReq("/users", newUser, "post");
 
 export const deleteUser = id => processReq(`/users/${id}`, {}, "delete");
+
+export const activateUser = id => processReq(`/users/${id}/activate`, {}, "put");
+
+export const updateUser = (user) => processReq(`/users/${user.id}`, {
+  id: user.id,
+  firstname: user.firstname,
+  lastname: user.lastname,
+  email: user.email,
+  gender: user.gender,
+  roles: user.roles
+}, "put");
 
 export const getOpleidingen = () => processReq("/opleidingen", {}, "get");
 
