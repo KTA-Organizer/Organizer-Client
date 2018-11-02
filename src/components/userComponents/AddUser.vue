@@ -83,7 +83,7 @@ export default {
         lastname: this.name,
         email: this.email,
         gender: this.genderKeys[this.gender],
-        role: this.roleKeys[this.role],
+        roles: [this.roleKeys[this.role]]
       };
       const userIdObj = await this.$http.createUser(newUser);
       // const userId = 1;
