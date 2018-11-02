@@ -87,7 +87,7 @@ export default {
       };
       const userIdObj = await this.$http.createUser(newUser);
       // const userId = 1;
-      this.$router.push(`${userIdObj.newId}`);
+      this.$router.push(`${userIdObj.id}`);
     }
   },
   created() {
