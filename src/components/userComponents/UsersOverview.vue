@@ -227,7 +227,7 @@ export default {
     }
   },
   async created() {
-    const gebruikers = await this.$http.getUsers();
+    const gebruikers = await this.$http.paginateUsers({ page: 1, perPage: 1000 });
     this.gebruikers = gebruikers;
     for (const gebruiker of this.gebruikers) {
       gebruiker.naam = `${gebruiker.firstname} ${gebruiker.lastname}`;

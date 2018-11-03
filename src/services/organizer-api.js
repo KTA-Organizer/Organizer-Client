@@ -20,13 +20,13 @@ export const getStudentsWithEdu = () =>
 export const getStudentOpleiding = studId =>
   processReq(`/studentModules/${studId}`);
 
-export const getStudents = () => processReq("/students");
-
 export const getStudent = id => processReq(`/students/${id}`);
 
 export const getUser = id => processReq(`/users/${id}`);
 
-export const getUsers = () => processReq("/users", {}, "get");
+export const paginateUsers = ({ page, perPage, role, gender, status, search }) => processReq("/users", {
+  page, perpage: perPage, role, gender, status, search
+}, "get");
 
 export const createUser = newUser => processReq("/users", newUser, "post");
 
