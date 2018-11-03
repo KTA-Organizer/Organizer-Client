@@ -225,7 +225,8 @@ export default {
       AspectenAddString: "",
       opleiding: [],
       loader: null,
-      loading: false
+      loading: false,
+      currentUserId: this.$store.getters.currentUser.id
     };
   },
   methods: {
@@ -319,7 +320,7 @@ export default {
     },
     createOpleiding() {
       var self = this;
-      this.$http.createOpleiding(3, this.opleidingsnaam, function(response) {
+      this.$http.createOpleiding(this.currentUserId, this.opleidingsnaam, function(response) {
         if (!isNaN(response.data)) {
           self.givenmajor.id = response.data;
           self.givenmajor.name = self.opleidingsnaam;
@@ -361,7 +362,7 @@ export default {
             module.name,
             self.givenmajor.id,
             13,
-            this.$store.getters.currentUser,
+            self.currentUserId,
             function(response) {
               module["id"] = response.data;
               module.new = false;
@@ -387,7 +388,7 @@ export default {
           self.$http.createDoelstellingscategorie(
             categorie.name,
             module.id,
-            this.$store.getters.currentUser,
+            self.currentUserId,
             function(response) {
               categorie["id"] = response.data;
               categorie.new = false;
@@ -411,7 +412,7 @@ export default {
           self.$http.createDoelstelling(
             doelstelling.name,
             doelstellingscategorie.id,
-            this.$store.getters.currentUser,
+            self.currentUserId,
             function(response) {
               doelstelling["id"] = response.data;
               doelstelling.new = false;
@@ -435,7 +436,7 @@ export default {
           self.$http.createCriteria(
             criteria.name,
             doelstelling.id,
-            this.$store.getters.currentUser,
+            self.currentUserId,
             1,
             function(response) {
               doelstelling["id"] = response.data;
@@ -461,7 +462,7 @@ export default {
           self.$http.createAspect(
             aspect.name,
             criteria.id,
-            this.$store.getters.currentUser,
+            self.currentUserId,
             function(response) {
                 aspect["id"] = response.data;
                 aspect.new = false;
