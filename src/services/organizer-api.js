@@ -202,12 +202,12 @@ export const updateCriteria = (criteriaId, name) =>
     "put"
   );
 
-  export const createAspect = (name, criteriaId, creatorId) =>
+  export const createAspect = (name, evaluatiecriteriumId, creatorId) =>
   processReq(
     "/aspecten",
     {
       name,
-      criteriaId,
+      evaluatiecriteriumId,
       inGebruik: 1,
       gewicht: 1,
       creatorId

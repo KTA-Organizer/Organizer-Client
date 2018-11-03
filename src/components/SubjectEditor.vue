@@ -456,26 +456,18 @@ export default {
           self.$http.updateAspect(
             aspect.id,
             aspect.name
-            /*function(response) {
-              console.log(response);
-              console.log(response.data);
-            }*/
           );
         } else {
           self.$http.createAspect(
             aspect.name,
             criteria.id,
             3,
-            1
-            /*function(response) {
-              console.log(response);
-              console.log(response.data);
-              doelstelling["id"] = response.data;
-              doelstelling.new = false;
-            }*/
+            function(response) {
+                aspect["id"] = response.data;
+                aspect.new = false;
+            }
           );
-          aspect["id"] = response.data;
-          aspect.new = false;
+
         }
       });
     }
