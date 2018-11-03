@@ -63,6 +63,9 @@ export const getEvalForStudent = id =>
 export const getModulesForStudent = studId =>
   processReq(`/modules/${studId}/student`);
 
+  export const getModule = moduleId =>
+  processReq(`/modules/${moduleId}`);
+
 export const createStudent = (
   firstname,
   lastname,

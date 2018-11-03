@@ -421,6 +421,7 @@ export default {
     },
     saveDoelstellingscategorieen(module) {
       var self = this;
+      console.log(module);
       module.doelstellingCategories.forEach(function(categorie) {
         if (categorie.id && !categorie.new) {
           self.$http.updateDoelstellingscategorie(
@@ -462,17 +463,16 @@ export default {
             module.name,
             self.givenmajor.id,
             13,
-            3
-            /*function(response) {
+            3,
+            function(response) {
               module["id"] = response.data;
               module.new = false;
-              self.saveDoelstellingscategorieen(module);
-            }*/
+            }
           );
-          module["id"] = response.data;
-          module.new = false;
         }
-        self.saveDoelstellingscategorieen(module);
+        if(module.doelstellingCategories){
+          self.saveDoelstellingscategorieen(module); 
+        }
       });
       this.loading = null;
     },
