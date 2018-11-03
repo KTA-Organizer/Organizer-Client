@@ -373,28 +373,23 @@ export default {
     },
     saveDoelstellingscategorieen(module) {
       var self = this;
-      console.log(JSON.stringify(module) + " MODULE");
       module.doelstellingCategories.forEach(function(categorie) {
-        console.log(JSON.stringify(categorie) + " CATEGORIE");
         if (categorie.id && !categorie.new) {
           self.$http.updateDoelstellingscategorie(
             categorie.id,
             categorie.name
-          );
+          ).then(function(response){
+              self.saveDoelstellingen(categorie);
+          });
         } else {
-          console.log("IDDDDDDDDDDDDDDDDDD ", module.id);
           self.$http.createDoelstellingscategorie(
             categorie.name,
             module.id,
-            self.currentUserId,
-            function(response) {
-              categorie["id"] = response.data;
+            self.currentUserId
+          ).then(function(response) {
+              categorie["id"] = response[0];
               categorie.new = false;
-            }
-          );
-        }
-        if(categorie.doelstellingen){
-          self.saveDoelstellingen(categorie);
+            });
         }
       });
     },
