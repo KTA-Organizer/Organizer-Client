@@ -225,14 +225,15 @@ export default {
       AspectenAddString: "",
       opleiding: [],
       loader: null,
-      loading: false
+      loading: false,
+      currentUserId: this.$store.getters.currentUser.id
     };
   },
   methods: {
     enterAddition(title, object, level, parentIndexes) {
       if (title !== "") {
         if (level === "module") {
-          object.push({ name: title, new: true, indexes: [], categorieen: [] });
+          object.push({ name: title, new: true, indexes: [], doelstellingCategories: [] });
           object[object.length - 1].indexes.push(object.length);
         } else if (level === "categorie") {
           var array = [];
@@ -251,7 +252,7 @@ export default {
           parentIndexes.forEach(function(item) {
             array.push(item);
           });
-          object.push({ name: title, new: true, indexes: array, criteria: [] });
+          object.push({ name: title, new: true, indexes: array, evaluatieCriteria: [] });
           object[object.length - 1].indexes.push(object.length);
         } else if (level === "criteria") {
           array = [];
@@ -319,12 +320,11 @@ export default {
     },
     createOpleiding() {
       var self = this;
-      this.$http.createOpleiding(3, this.opleidingsnaam, function(response) {
-        if (!isNaN(response.data)) {
-          self.givenmajor.id = response.data;
+      this.$http.createOpleiding(this.currentUserId, this.opleidingsnaam).then(function(response) {
+        if (!isNaN(response[0])) {
+          self.givenmajor.id = response[0];
           self.givenmajor.name = self.opleidingsnaam;
         }
-        console.log("opleiding gemaakt met id: " + response.data);
         self.saveModules();
       });
     },
@@ -353,49 +353,44 @@ export default {
           self.$http.updateModule(
             module.id,
             module.name
-            /*function(response) {
-            self.saveDoelstellingscategorieen(module);}*/
-            );
+            ).then(function(response){
+              self.saveDoelstellingscategorieen(module);
+            });
         } else {
           self.$http.createModule(
             module.name,
             self.givenmajor.id,
             13,
-            3,
-            function(response) {
-              module["id"] = response.data;
+            self.currentUserId
+          ).then(function(response) {
+              module["id"] = response[0];
               module.new = false;
-            }
-          );
-        }
-        if(module.doelstellingCategories){
-          self.saveDoelstellingscategorieen(module); 
+              self.saveDoelstellingscategorieen(module); 
+            });
         }
       });
       this.loading = null;
     },
     saveDoelstellingscategorieen(module) {
       var self = this;
-      console.log(module);
       module.doelstellingCategories.forEach(function(categorie) {
         if (categorie.id && !categorie.new) {
           self.$http.updateDoelstellingscategorie(
             categorie.id,
             categorie.name
-          );
+          ).then(function(response){
+              self.saveDoelstellingen(categorie);
+          });
         } else {
           self.$http.createDoelstellingscategorie(
             categorie.name,
             module.id,
-            3,
-            function(response) {
-              categorie["id"] = response.data;
+            self.currentUserId
+          ).then(function(response) {
+              categorie["id"] = response[0];
               categorie.new = false;
-            }
-          );
-        }
-        if(categorie.doelstellingen){
-          self.saveDoelstellingen(categorie);
+              self.saveDoelstellingen(categorie);
+            });
         }
       });
     },
@@ -406,20 +401,19 @@ export default {
           self.$http.updateDoelstelling(
             doelstelling.id,
             doelstelling.name
-          );
+          ).then(function(response){
+            self.saveCriteria(doelstelling);
+          });
         } else {
           self.$http.createDoelstelling(
             doelstelling.name,
             doelstellingscategorie.id,
-            3,
-            function(response) {
-              doelstelling["id"] = response.data;
+            self.currentUserId
+          ).then(function(response) {
+              doelstelling["id"] = response[0];
               doelstelling.new = false;
-            }
-          );
-        }
-        if(doelstelling.evaluatieCriteria){
-          self.saveCriteria(doelstelling);
+              self.saveCriteria(doelstelling);
+            });
         }
       });
     },
@@ -430,23 +424,21 @@ export default {
           self.$http.updateCriteria(
             criteria.id,
             criteria.name
-          );
+          ).then(function(response){
+            self.saveAspect(criteria);
+          });
         } else {
           self.$http.createCriteria(
             criteria.name,
             doelstelling.id,
-            3,
-            1,
-            function(response) {
-              doelstelling["id"] = response.data;
-              doelstelling.new = false;
-            }
-          );
-        }
-        if(criteria.aspecten){
-          self.saveAspect(criteria);
-        }
-        
+            self.currentUserId,
+            1
+          ).then(function(response) {
+              criteria["id"] = response[0];
+              criteria.new = false;
+              self.saveAspect(criteria);
+            });
+        }   
       });
     },
     saveAspect(criteria) {
@@ -461,13 +453,11 @@ export default {
           self.$http.createAspect(
             aspect.name,
             criteria.id,
-            3,
-            function(response) {
-                aspect["id"] = response.data;
+            self.currentUserId
+          ).then(function(response) {
+                aspect["id"] = response[0];
                 aspect.new = false;
-            }
-          );
-
+            });
         }
       });
     }
