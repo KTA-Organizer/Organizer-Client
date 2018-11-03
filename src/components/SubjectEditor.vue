@@ -48,7 +48,7 @@
                 </v-list-tile>
                 <v-list-tile class="blue-grey darken-2" v-for="(categorie,categorieIndex) in module.doelstellingCategories" v-bind:key="categorieIndex" @click="payload=categorieIndex">
                   <v-list-tile-content @click="setCategorie(categorie)" v-if="!editingCategorie || categorieIndex != payload">
-                    <v-list-tile-title>{{ categorie.name}}</v-list-tile-title>
+                    <v-list-tile-title>{{ categorie.name }}</v-list-tile-title>
                   </v-list-tile-content>
                   <v-btn flat icon color="blue lighten-2 text-xs-right" v-if="!editingCategorie" @click="editCategorie(categorieIndex)">
                     <v-icon>edit</v-icon>
@@ -60,7 +60,7 @@
                     class="pb-2"
                     auto-focus
                     v-if="addCategorieActive"
-                    @keyup.enter="enterAddition(CategorieAddString, module.categorieen, 'categorie', module.indexes)"
+                    @keyup.enter="enterAddition(CategorieAddString, module.doelstellingCategories, 'categorie', module.indexes)"
                     prepend-icon="add"
                     label="Nieuwe Categorie"
                     v-model="CategorieAddString"
@@ -382,25 +382,21 @@ export default {
           self.$http.updateDoelstellingscategorie(
             categorie.id,
             categorie.name
-            /*function(response) {
-              self.saveDoelstellingen(categorie);
-            }*/
           );
         } else {
           self.$http.createDoelstellingscategorie(
             categorie.name,
             module.id,
-            3
-            /*function(response) {
+            3,
+            function(response) {
               categorie["id"] = response.data;
               categorie.new = false;
-              self.saveDoelstellingen(categorie);
-            }*/
+            }
           );
-          categorie["id"] = response.data;
-          categorie.new = false;
         }
-        self.saveDoelstellingen(categorie);
+        if(categorie.doelstellingen){
+          self.saveDoelstellingen(categorie);
+        }
       });
     },
     saveDoelstellingen(doelstellingscategorie) {
