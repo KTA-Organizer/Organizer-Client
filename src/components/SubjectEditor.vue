@@ -410,7 +410,7 @@ export default {
             doelstellingscategorie.id,
             self.currentUserId
           ).then(function(response) {
-              doelstelling["id"] = response.data;
+              doelstelling["id"] = response[0];
               doelstelling.new = false;
               self.saveCriteria(doelstelling);
             });
@@ -434,8 +434,8 @@ export default {
             self.currentUserId,
             1
           ).then(function(response) {
-              doelstelling["id"] = response.data;
-              doelstelling.new = false;
+              criteria["id"] = response[0];
+              criteria.new = false;
               self.saveAspect(criteria);
             });
         }   
@@ -455,7 +455,7 @@ export default {
             criteria.id,
             self.currentUserId
           ).then(function(response) {
-                aspect["id"] = response.data;
+                aspect["id"] = response[0];
                 aspect.new = false;
             });
         }
