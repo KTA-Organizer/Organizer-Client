@@ -453,13 +453,11 @@ export default {
           self.$http.createAspect(
             aspect.name,
             criteria.id,
-            self.currentUserId,
-            function(response) {
+            self.currentUserId
+          ).then(function(response) {
                 aspect["id"] = response.data;
                 aspect.new = false;
-            }
-          );
-
+            });
         }
       });
     }
