@@ -424,23 +424,21 @@ export default {
           self.$http.updateCriteria(
             criteria.id,
             criteria.name
-          );
+          ).then(function(response){
+            self.saveAspect(criteria);
+          });
         } else {
           self.$http.createCriteria(
             criteria.name,
             doelstelling.id,
             self.currentUserId,
-            1,
-            function(response) {
+            1
+          ).then(function(response) {
               doelstelling["id"] = response.data;
               doelstelling.new = false;
-            }
-          );
-        }
-        if(criteria.aspecten){
-          self.saveAspect(criteria);
-        }
-        
+              self.saveAspect(criteria);
+            });
+        }   
       });
     },
     saveAspect(criteria) {
