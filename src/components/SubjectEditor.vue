@@ -361,7 +361,7 @@ export default {
             module.name,
             self.givenmajor.id,
             13,
-            3,
+            this.$store.getters.currentUser,
             function(response) {
               module["id"] = response.data;
               module.new = false;
@@ -387,7 +387,7 @@ export default {
           self.$http.createDoelstellingscategorie(
             categorie.name,
             module.id,
-            3,
+            this.$store.getters.currentUser,
             function(response) {
               categorie["id"] = response.data;
               categorie.new = false;
@@ -411,7 +411,7 @@ export default {
           self.$http.createDoelstelling(
             doelstelling.name,
             doelstellingscategorie.id,
-            3,
+            this.$store.getters.currentUser,
             function(response) {
               doelstelling["id"] = response.data;
               doelstelling.new = false;
@@ -435,7 +435,7 @@ export default {
           self.$http.createCriteria(
             criteria.name,
             doelstelling.id,
-            3,
+            this.$store.getters.currentUser,
             1,
             function(response) {
               doelstelling["id"] = response.data;
@@ -461,7 +461,7 @@ export default {
           self.$http.createAspect(
             aspect.name,
             criteria.id,
-            3,
+            this.$store.getters.currentUser,
             function(response) {
                 aspect["id"] = response.data;
                 aspect.new = false;
