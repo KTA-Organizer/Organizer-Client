@@ -389,6 +389,7 @@ export default {
           ).then(function(response) {
               categorie["id"] = response[0];
               categorie.new = false;
+              self.saveDoelstellingen(categorie);
             });
         }
       });
@@ -400,20 +401,19 @@ export default {
           self.$http.updateDoelstelling(
             doelstelling.id,
             doelstelling.name
-          );
+          ).then(function(response){
+            self.saveCriteria(doelstelling);
+          });
         } else {
           self.$http.createDoelstelling(
             doelstelling.name,
             doelstellingscategorie.id,
-            self.currentUserId,
-            function(response) {
+            self.currentUserId
+          ).then(function(response) {
               doelstelling["id"] = response.data;
               doelstelling.new = false;
-            }
-          );
-        }
-        if(doelstelling.evaluatieCriteria){
-          self.saveCriteria(doelstelling);
+              self.saveCriteria(doelstelling);
+            });
         }
       });
     },
