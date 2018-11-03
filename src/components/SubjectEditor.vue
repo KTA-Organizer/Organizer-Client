@@ -233,7 +233,7 @@ export default {
     enterAddition(title, object, level, parentIndexes) {
       if (title !== "") {
         if (level === "module") {
-          object.push({ name: title, new: true, indexes: [], categorieen: [] });
+          object.push({ name: title, new: true, indexes: [], doelstellingCategories: [] });
           object[object.length - 1].indexes.push(object.length);
         } else if (level === "categorie") {
           var array = [];
@@ -252,7 +252,7 @@ export default {
           parentIndexes.forEach(function(item) {
             array.push(item);
           });
-          object.push({ name: title, new: true, indexes: array, criteria: [] });
+          object.push({ name: title, new: true, indexes: array, evaluatieCriteria: [] });
           object[object.length - 1].indexes.push(object.length);
         } else if (level === "criteria") {
           array = [];
@@ -325,7 +325,6 @@ export default {
           self.givenmajor.id = response.data;
           self.givenmajor.name = self.opleidingsnaam;
         }
-        console.log("opleiding gemaakt met id: " + response.data);
         self.saveModules();
       });
     },
@@ -354,37 +353,36 @@ export default {
           self.$http.updateModule(
             module.id,
             module.name
-            /*function(response) {
-            self.saveDoelstellingscategorieen(module);}*/
-            );
+            ).then(function(response){
+              self.saveDoelstellingscategorieen(module);
+            });
         } else {
           self.$http.createModule(
             module.name,
             self.givenmajor.id,
             13,
-            self.currentUserId,
-            function(response) {
-              module["id"] = response.data;
+            self.currentUserId
+          ).then(function(response) {
+              module["id"] = response[0];
               module.new = false;
-            }
-          );
-        }
-        if(module.doelstellingCategories){
-          self.saveDoelstellingscategorieen(module); 
+              self.saveDoelstellingscategorieen(module); 
+            });
         }
       });
       this.loading = null;
     },
     saveDoelstellingscategorieen(module) {
       var self = this;
-      console.log(module);
+      console.log(JSON.stringify(module) + " MODULE");
       module.doelstellingCategories.forEach(function(categorie) {
+        console.log(JSON.stringify(categorie) + " CATEGORIE");
         if (categorie.id && !categorie.new) {
           self.$http.updateDoelstellingscategorie(
             categorie.id,
             categorie.name
           );
         } else {
+          console.log("IDDDDDDDDDDDDDDDDDD ", module.id);
           self.$http.createDoelstellingscategorie(
             categorie.name,
             module.id,
