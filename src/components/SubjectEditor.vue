@@ -124,7 +124,7 @@
                   class="pb-2"
                   auto-focus
                   v-if="addCriteriaActive"
-                  @keyup.enter="enterAddition(CriteriaAddString, doelstelling.criteria, 'criteria', doelstelling.indexes)"
+                  @keyup.enter="enterAddition(CriteriaAddString, doelstelling.evaluatieCriteria, 'criteria', doelstelling.indexes)"
                   prepend-icon="add"
                   label="Nieuwe Criteria"
                   v-model="CriteriaAddString"
@@ -430,28 +430,23 @@ export default {
           self.$http.updateCriteria(
             criteria.id,
             criteria.name
-            /*function(response) {
-              console.log(response);
-              console.log(response.data);
-            }*/
           );
         } else {
           self.$http.createCriteria(
             criteria.name,
             doelstelling.id,
             3,
-            1
-            /*function(response) {
-              console.log(response);
-              console.log(response.data);
+            1,
+            function(response) {
               doelstelling["id"] = response.data;
               doelstelling.new = false;
-            }*/
+            }
           );
-          criteria["id"] = response.data;
-          criteria.new = false;
         }
-        self.saveAspect(criteria);
+        if(criteria.aspecten){
+          self.saveAspect(criteria);
+        }
+        
       });
     },
     saveAspect(criteria) {
