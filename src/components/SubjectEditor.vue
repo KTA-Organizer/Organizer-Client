@@ -320,9 +320,9 @@ export default {
     },
     createOpleiding() {
       var self = this;
-      this.$http.createOpleiding(this.currentUserId, this.opleidingsnaam, function(response) {
-        if (!isNaN(response.data)) {
-          self.givenmajor.id = response.data;
+      this.$http.createOpleiding(this.currentUserId, this.opleidingsnaam).then(function(response) {
+        if (!isNaN(response[0])) {
+          self.givenmajor.id = response[0];
           self.givenmajor.name = self.opleidingsnaam;
         }
         self.saveModules();
