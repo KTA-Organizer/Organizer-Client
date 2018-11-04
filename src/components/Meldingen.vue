@@ -32,7 +32,7 @@
                     <small>(geplaatst door {{melding.teacher.firstname}} {{melding.teacher.lastname}} op {{melding.datum}})</small>
                 </div>
                 <v-card>
-                    <v-card-text>{{melding.tekst}}</v-card-text>
+                    <v-card-text v-html="melding.tekst"></v-card-text>
                     <v-card-actions>
                         <v-btn class="red" dark v-on:click="deleteMelding(melding.id)"><i class="material-icons">delete</i></v-btn>
                     </v-card-actions>
