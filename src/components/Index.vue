@@ -18,7 +18,10 @@
     <v-toolbar-title>Rapportensysteem</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-menu :close-on-content-click="false" v-model="menu">
-      <v-btn color="white" flat slot="activator">Account</v-btn>
+      <v-btn color="white" flat slot="activator">
+        <v-icon>account_circle</v-icon>
+        mijn gebruiker
+      </v-btn>
       <v-card>
         <v-list>
           <v-list-tile avatar>
