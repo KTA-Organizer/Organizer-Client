@@ -274,10 +274,7 @@ export default {
         this.fieldDisabled.opleiding = true;
       }
       this.opleidingen = opleidingen;
-      this.opleidingnames = [];
-      for (const opleiding of opleidingen) {
-        this.opleidingnames.push(opleiding.name);
-      }
+      this.opleidingnames = this.opleidingen.map(opl => opl.name);
     }
   },
   computed: mapGetters(["constants"])
