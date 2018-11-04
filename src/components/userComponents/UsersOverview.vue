@@ -101,7 +101,6 @@
 </template>
 
 <script>
-
 function createStudentOpleidingMap(students, opleidingen) {
   return students.map(function(student) {
     const opleiding = opleidingen.find(x => x.id === student.opleidingId);
@@ -220,15 +219,19 @@ export default {
       const year = date[0];
       let hour = time[0];
       let minutes = time[1];
-      return `${day}/${month}/${year}, ${+hour+2}:${minutes}`;
+      return `${day}/${month}/${year}, ${+hour + 2}:${minutes}`;
     },
     getKeyByValue(object, value) {
       return Object.keys(object).find(key => object[key] === value);
     }
   },
   async created() {
-    const gebruikers = await this.$http.paginateUsers({ page: 1, perPage: 1000 });
-    this.gebruikers = gebruikers;
+    const gebruikers = await this.$http.paginateUsers({
+      page: 1,
+      perPage: 1000
+    });
+    // TODO check if the .items is all that's needed
+    this.gebruikers = gebruikers.items;
     for (const gebruiker of this.gebruikers) {
       gebruiker.naam = `${gebruiker.firstname} ${gebruiker.lastname}`;
     }
