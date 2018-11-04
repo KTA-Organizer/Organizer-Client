@@ -253,7 +253,16 @@ export default {
       this.activateDialog = false;
     },
     async updateOpleiding() {
-        //TODO
+      //TODO
+      console.log(this.opleiding);
+      console.log(this.user);
+      const selectedOpleiding = this.opleidingen.find(
+        x => x.name === this.opleiding
+      );
+      if (!selectedOpleiding) {
+        throw new Error("Deze opleiding bestaat niet.");
+      }
+      
     }
   },
   async created() {
