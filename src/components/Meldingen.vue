@@ -54,18 +54,12 @@ export default {
     };
   },
   async created() {
-    const meldingen = await this.$http.getMeldingen();
-    for (const melding of meldingen) {
-        melding.teacher = await this.$http.getUser(melding.teacherId);
-    }
-    this.meldingen = meldingen;
-    console.log(this.meldingen);
+    this.meldingen = await this.$http.getMeldingen();
   },
   methods: {
     async deleteMelding(id) {
       await this.$http.removeMelding(id);
-      const meldingen = await this.$http.getMeldingen();
-      this.meldingen = meldingen;
+      this.meldingen = this.meldingen.filter(m => m.id !== id);
     }
   }
 };
