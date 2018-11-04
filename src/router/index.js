@@ -22,6 +22,7 @@ import AddUser from "@/components/userComponents/AddUser";
 import UsersOverview from "@/components/userComponents/UsersOverview";
 import DetailUser from "@/components/userComponents/DetailUser";
 import ChoosePassword from "@/components/ChoosePassword";
+import NotFound from "@/components/NotFound";
 
 Vue.component("fileInput", fileInput);
 Vue.component("checkboxes", checkboxes);
@@ -150,6 +151,8 @@ export default new Router({
       name: "invitation",
       component: ChoosePassword,
       beforeEnter: requireUnauth
-    }
+    },
+    { path: '/404', component: NotFound },  
+    { path: '*', redirect: '/404' }, 
   ]
 });
