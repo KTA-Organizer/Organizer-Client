@@ -17,7 +17,7 @@
   <v-flex column xs12 md6>
     <v-card>
       <v-layout reverse row>
-        <v-btn to="AddMelding" dark hover color="primary">
+        <v-btn v-if="isAdmin || isTeacher" to="AddMelding" dark hover color="primary">
           <v-icon>add</v-icon>
           melding maken
         </v-btn>
@@ -56,7 +56,7 @@ export default {
       meldingen: []
     };
   },
-  computed: mapGetters(["currentUser"]),
+  computed: mapGetters(["currentUser", "isTeacher", "isAdmin"]),
   async created() {
     const meldingen = await this.$http.getMeldingen();
     this.meldingen = meldingen.map(m => Object.assign(m, {

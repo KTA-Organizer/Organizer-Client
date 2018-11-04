@@ -43,6 +43,15 @@ export default {
     isLoggedIn(state, getters) {
       return state.loginStatus === LoginStatus.loggedIn;
     },
+    isAdmin(state) {
+      return state.currentUser.roles.indexOf("ADMIN") > -1;
+    },
+    isTeacher(state) {
+      return state.currentUser.roles.indexOf("TEACHER") > -1;
+    },
+    isStudent(state) {
+      return state.currentUser.roles.indexOf("STUDENT") > -1;
+    },
     currentUser(state) {
       return state.currentUser;
     },
