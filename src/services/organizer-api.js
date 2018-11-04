@@ -6,16 +6,17 @@ export const login = (email, password) =>
 
 export const logout = () => processReq("/auth/logout", {}, "POST");
 
-export const requestPasswordReset = (email) => processReq("/auth/forgot", { email }, "post");
+export const requestPasswordReset = email =>
+  processReq("/auth/forgot", { email }, "post");
 
-export const putNewPassword = (token, password) => processReq(`/auth/token/${token}`, { password }, "put");
+export const putNewPassword = (token, password) =>
+  processReq(`/auth/token/${token}`, { password }, "put");
 
-export const getAccessToken = (token) => processReq(`/auth/token/${token}`);
+export const getAccessToken = token => processReq(`/auth/token/${token}`);
 
 export const getCurrentUser = () => processReq("/users/current");
 
-export const getStudentsWithEdu = () =>
-  processReq("/studentModules");
+export const getStudentsWithEdu = () => processReq("/studentModules");
 
 export const getStudentOpleiding = studId =>
   processReq(`/studentModules/${studId}`);
@@ -32,16 +33,25 @@ export const createUser = newUser => processReq("/users", newUser, "post");
 
 export const deleteUser = id => processReq(`/users/${id}`, {}, "delete");
 
-export const activateUser = id => processReq(`/users/${id}/activate`, {}, "put");
+export const activateUser = id =>
+  processReq(`/users/${id}/activate`, {}, "put");
 
-export const updateUser = (user) => processReq(`/users/${user.id}`, {
-  id: user.id,
-  firstname: user.firstname,
-  lastname: user.lastname,
-  email: user.email,
-  gender: user.gender,
-  roles: user.roles
-}, "put");
+export const updateUser = user =>
+  processReq(
+    `/users/${user.id}`,
+    {
+      id: user.id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      gender: user.gender,
+      roles: user.roles
+    },
+    "put"
+  );
+
+export const assignOpleidingToUser = (opleidingId, userId) =>
+  processReq(`/students/${userId}`, { opleidingId }, "put");
 
 export const getOpleidingen = () => processReq("/opleidingen", {}, "get");
 
@@ -54,8 +64,7 @@ export const saveReport = () => processReq("/saveReport", report, "post");
 
 export const updateReport = () => processReq("/updateReport", report, "patch");
 
-export const getFullOpleiding = id =>
-  processReq(`/opleidingen/${id}/full`);
+export const getFullOpleiding = id => processReq(`/opleidingen/${id}/full`);
 
 export const getEvalForStudent = id =>
   processReq("/evaluatieVoorStudent", { id }, "get");
@@ -131,11 +140,7 @@ export const updateOpleiding = (opleidingId, name) =>
   processReq("/opleidingen/" + opleidingId, { name }, "put");
 
 export const createModule = (name, opleidingId, teacherId, creatorId) =>
-  processReq(
-    "/modules",
-    { name, opleidingId, teacherId, creatorId },
-    "post"
-  );
+  processReq("/modules", { name, opleidingId, teacherId, creatorId }, "post");
 
 export const updateModule = (moduleId, name) =>
   processReq("/modules/" + moduleId, { name }, "put");
@@ -147,7 +152,7 @@ export const createDoelstellingscategorie = (name, moduleId, creatorId) =>
     "post"
   );
 
-  export const updateDoelstellingscategorie = (doelstellingscategorieId, name) =>
+export const updateDoelstellingscategorie = (doelstellingscategorieId, name) =>
   processReq(
     "/doelstellingsCategorie/" + doelstellingscategorieId,
     {
@@ -177,7 +182,7 @@ export const updateDoelstelling = (doelstellingId, name) =>
     "put"
   );
 
-  export const createCriteria = (name, doelstellingId, creatorId) =>
+export const createCriteria = (name, doelstellingId, creatorId) =>
   processReq(
     "/evaluatieCriteria",
     {
@@ -199,7 +204,7 @@ export const updateCriteria = (criteriaId, name) =>
     "put"
   );
 
-  export const createAspect = (name, criteriaId, creatorId) =>
+export const createAspect = (name, criteriaId, creatorId) =>
   processReq(
     "/aspecten",
     {
@@ -221,7 +226,6 @@ export const updateAspect = (aspectId, name) =>
     "put"
   );
 
-
 export const getMeldingen = () => processReq("/meldingen");
 
 export const createMelding = meldingObj =>
@@ -229,7 +233,7 @@ export const createMelding = meldingObj =>
 
 export const removeMelding = id => processReq(`/meldingen/${id}`, {}, "delete");
 
-async function processReq(url, dataObj={}, method="GET") {
+async function processReq(url, dataObj = {}, method = "GET") {
   const conf = {
     method: method,
     credentials: "include",

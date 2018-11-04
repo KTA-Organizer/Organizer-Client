@@ -86,7 +86,6 @@ export default {
         roles: [this.roleKeys[this.role]]
       };
       const userIdObj = await this.$http.createUser(newUser);
-      // const userId = 1;
       this.$router.push(`${userIdObj.id}`);
     }
   },
