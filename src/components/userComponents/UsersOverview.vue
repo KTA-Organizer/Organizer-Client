@@ -180,7 +180,7 @@ export default {
     applyFilters() {
       const naamFiltertje = this.nameFilter.toLowerCase();
       const rolFiltertje = this.roleKeys[this.roleFilter]
-        ? this.roleKeys[this.roleFilter].toLowerCase()
+        ? this.roleKeys[this.roleFilter].toUpperCase()
         : false;
       const genderFiltertje = this.genderKeys[this.genderFilter];
       const statusFiltertje = this.statusKeys[this.statusFilter];
@@ -192,10 +192,9 @@ export default {
       }
       if (rolFiltertje) {
         this.filteredGebruikers = this.filteredGebruikers
-          .filter(x => {
-            const roleToCheck = x.role ? x.role : "#";
-            return roleToCheck.toLowerCase() === rolFiltertje;
-          })
+          .filter(x => rolFiltertje === "#"
+            ? x.roles.length === 0
+            : x.roles.indexOf(rolFiltertje) > -1);
       }
       if (statusFiltertje) {
         this.filteredGebruikers = this.filteredGebruikers
