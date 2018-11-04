@@ -55,7 +55,7 @@ function requireUnauth(to, from, next) {
   } else {
     setTimeout(() => {
       if (store.getters.isLoggedIn) {
-        next("/");
+        next("/home");
       } else {
         next();
       }
