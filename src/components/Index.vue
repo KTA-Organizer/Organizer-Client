@@ -56,7 +56,7 @@ export default {
   name: "Index",
   data: () => ({
     drawer: false,
-    navigation: ["Rapporten", "Studenten", "Opleidingen", "Meldingen", "Afdrukken"],
+    navigation: ["Dashboard", "Rapporten", "Opleidingen", "Afdrukken"],
     fav: true,
     menu: false,
     message: false,

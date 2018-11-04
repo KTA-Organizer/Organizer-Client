@@ -73,7 +73,7 @@ export default {
       try {
         const user = await api.login(email, password);
         commit("USER_LOGGED_IN", user);
-        router.push("/home");
+        router.push("/dashboard");
       } catch (err) {
         console.log(err);
         commit("USER_LOGGED_OUT");

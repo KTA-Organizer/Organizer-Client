@@ -2,7 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import Index from "@/components/Index";
 import Reports from "@/components/Reports";
-import Home from "@/components/Home";
+import Dashboard from "@/components/Dashboard";
 import Students from "@/components/Students";
 import AddStudent from "@/components/AddStudent";
 import Print from "@/components/Print";
@@ -16,7 +16,6 @@ import SubjectEditor from "@/components/SubjectEditor";
 import DataTableSelects from "@/components/DataTableSelects";
 import Datepicker from "vuejs-datepicker";
 import Users from "@/components/userComponents/Users";
-import Meldingen from "@/components/Meldingen";
 import AddMelding from "@/components/AddMelding";
 import UserDetail from "@/components/userComponents/UserDataTable";
 import AddUser from "@/components/userComponents/AddUser";
@@ -55,7 +54,7 @@ function requireUnauth(to, from, next) {
   } else {
     setTimeout(() => {
       if (store.getters.isLoggedIn) {
-        next("/home");
+        next("/dashboard");
       } else {
         next();
       }
@@ -71,6 +70,11 @@ export default new Router({
       component: Index,
       beforeEnter: requireAuth,
       children: [
+        {
+          path: "/dashboard",
+          name: "dashboard",
+          component: Dashboard
+        },
         {
           path: "/rapporten",
           name: "rapporten",
@@ -102,11 +106,6 @@ export default new Router({
           component: Evaluate
         },
         {
-          path: "/home",
-          name: "home",
-          component: Home
-        },
-        {
           path: "/Gebruikers",
           component: Users,
           children: [
@@ -126,11 +125,6 @@ export default new Router({
               component: DetailUser
             }
           ]
-        },
-        {
-          path: "/meldingen",
-          name: "meldingen",
-          component: Meldingen
         },
         {
           path: "/addMelding",
