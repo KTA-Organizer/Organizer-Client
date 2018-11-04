@@ -64,7 +64,6 @@ export default {
       return Object.keys(object).find(key => object[key] === value);
     },
     redirectToDetails(id) {
-      console.log(id);
       this.$router.push(`Gebruikers/${id}`);
     }
   }

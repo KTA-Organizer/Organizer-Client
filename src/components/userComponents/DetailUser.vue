@@ -232,7 +232,6 @@ export default {
       // TODO do opleiding update
       this.user.gender = this.constants.genderKeys[this.user.gender];
       this.user.roles = [this.constants.roleKeys[this.user.role]];
-      console.log("before", this.user);
       await this.$http.updateUser(this.user);
       this.user.gender = this.getKeyByValue(
         this.constants.genderKeys,
@@ -242,7 +241,6 @@ export default {
         this.constants.roleKeys,
         this.user.roles[0]
       );
-      console.log("after", this.user);
     },
     async activateUser(id) {
       await this.$http.activateUser(id);
@@ -253,7 +251,13 @@ export default {
       this.activateDialog = false;
     },
     async updateOpleiding() {
-        //TODO
+      const selectedOpleiding = this.opleidingen.find(
+        x => x.name === this.opleiding
+      );
+      if (!selectedOpleiding) {
+        throw new Error("Deze opleiding bestaat niet.");
+      }
+      await this.$http.assignOpleidingToUser(selectedOpleiding.id, this.user.id);
     }
   },
   async created() {
