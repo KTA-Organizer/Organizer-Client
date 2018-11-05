@@ -44,6 +44,9 @@
                   <v-btn flat icon color="blue lighten-2" v-if="!editingModule" @click="editModule(moduleIndex)">
                     <v-icon>edit</v-icon>
                   </v-btn>
+                  <v-btn flat icon color="blue lighten-2 text-xs-right" @click="removeModule(opleiding, module)">
+                    <v-icon>delete</v-icon>
+                  </v-btn>
                   <v-text-field v-if="editingModule && payload === moduleIndex" @keyup.enter="editModule(null)" dark autofocus name="module" label="Module naam" v-model="module.name" single-line></v-text-field>
                 </v-list-tile>
                 <v-list-tile class="blue-grey darken-2" v-for="(categorie,categorieIndex) in module.doelstellingCategories" v-bind:key="categorieIndex" @click="payload=categorieIndex">
@@ -335,6 +338,13 @@ export default {
       const categorieId = categoriesObj.indexOf(categoriesObj.find(x => x.id == categorie.id));
       categories.splice(categorieId, 1);
     },
+    removeModule(modules, module){ 
+      var self = this;
+      self.removeList.push({"level": "module", "id": module.id});
+      const modulesObj = JSON.parse(JSON.stringify(modules)); // to avoid vue js observer object
+      const moduleId = modulesObj.indexOf(modulesObj.find(x => x.id == module.id));
+      modules.splice(moduleId, 1);
+    },
     createOpleiding() {
       var self = this;
       this.$http.createOpleiding(this.currentUserId, this.opleidingsnaam).then(function(response) {
@@ -485,6 +495,9 @@ export default {
         switch(item.level){
           case "categorie":
             self.$http.deleteCategorie(item.id);
+            break;
+          case "module":
+            self.$http.deleteModule(item.id);
             break;
         }
       })
