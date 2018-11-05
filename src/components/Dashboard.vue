@@ -28,11 +28,12 @@
             <div slot="header" :active="true">
               <!-- <i class="material-icons">sms_failed</i> -->
               <h2>{{melding.titel}}</h2>
-              <small>geplaatst door {{melding.teacher.firstname}} {{melding.teacher.lastname}} {{melding.datum}}</small>
+              <small>geplaatst door {{melding.creator.firstname}} {{melding.creator.lastname}} {{melding.datum}}</small>
+              <br><small>doelgroep: {{melding.opleidingen.map(opl => opl.name).join(", ")}}</small>
             </div>
             <v-card>
               <v-card-text v-html="melding.tekst"></v-card-text>
-              <v-card-actions v-if="melding.teacher.id === currentUser.id">
+              <v-card-actions v-if="melding.creator.id === currentUser.id">
                 <v-btn class="red" dark v-on:click="deleteMelding(melding.id)"><i class="material-icons">delete</i></v-btn>
               </v-card-actions>
             </v-card>
