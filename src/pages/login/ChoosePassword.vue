@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import * as constants from "../../constants/user";
 import * as rules from "../../constants/rules";
 
 export default {
