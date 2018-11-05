@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     readableDate(timeStamp) {
-      return moment(timeStamp).format('LLL');
+      return moment(timeStamp).format('L LT');
     },
     getKeyByValue(object, value) {
       return Object.keys(object).find(key => object[key] === value);
