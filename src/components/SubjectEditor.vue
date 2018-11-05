@@ -232,42 +232,48 @@ export default {
   methods: {
     enterAddition(title, object, level, parentIndexes) {
       if (title !== "") {
-        if (level === "module") {
-          object.push({ name: title, new: true, indexes: [], doelstellingCategories: [] });
-          object[object.length - 1].indexes.push(object.length);
-        } else if (level === "categorie") {
-          var array = [];
-          parentIndexes.forEach(function(item) {
+        switch(level){
+          case "module":
+            object.push({ name: title, new: true, indexes: [], doelstellingCategories: [] });
+            object[object.length - 1].indexes.push(object.length);
+            break;
+          case "categorie":
+            var array = [];
+            parentIndexes.forEach(function(item) {
             array.push(item);
-          });
-          object.push({
-            name: title,
-            new: true,
-            indexes: array,
-            doelstellingen: []
-          });
-          object[object.length - 1].indexes.push(object.length);
-        } else if (level === "doelstelling") {
-          array = [];
-          parentIndexes.forEach(function(item) {
-            array.push(item);
-          });
-          object.push({ name: title, new: true, indexes: array, evaluatieCriteria: [] });
-          object[object.length - 1].indexes.push(object.length);
-        } else if (level === "criteria") {
-          array = [];
-          parentIndexes.forEach(function(item) {
-            array.push(item);
-          });
-          object.push({ name: title, new: true, indexes: array, aspecten: [] });
-          object[object.length - 1].indexes.push(object.length);
-        } else if (level === "aspect") {
-          array = [];
-          parentIndexes.forEach(function(item) {
-            array.push(item);
-          });
-          object.push({ name: title, new: true, indexes: array });
-          object[object.length - 1].indexes.push(object.length);
+            });
+            object.push({
+              name: title,
+              new: true,
+              indexes: array,
+              doelstellingen: []
+            });
+            object[object.length - 1].indexes.push(object.length);
+            break;
+          case "doelstelling":
+            array = [];
+            parentIndexes.forEach(function(item) {
+              array.push(item);
+            });
+            object.push({ name: title, new: true, indexes: array, evaluatieCriteria: [] });
+            object[object.length - 1].indexes.push(object.length);
+            break;
+          case "criteria":
+            array = [];
+            parentIndexes.forEach(function(item) {
+              array.push(item);
+            });
+            object.push({ name: title, new: true, indexes: array, aspecten: [] });
+            object[object.length - 1].indexes.push(object.length);
+            break;
+          case "aspect":
+            array = [];
+            parentIndexes.forEach(function(item) {
+              array.push(item);
+            });
+            object.push({ name: title, new: true, indexes: array });
+            object[object.length - 1].indexes.push(object.length);
+            break;
         }
       }
       this.ModuleAddString = "";
@@ -353,7 +359,7 @@ export default {
           self.$http.updateModule(
             module.id,
             module.name
-            ).then(function(response){
+            ).then(function(){
               self.saveDoelstellingscategorieen(module);
             });
         } else {
@@ -378,7 +384,7 @@ export default {
           self.$http.updateDoelstellingscategorie(
             categorie.id,
             categorie.name
-          ).then(function(response){
+          ).then(function(){
               self.saveDoelstellingen(categorie);
           });
         } else {
@@ -401,7 +407,7 @@ export default {
           self.$http.updateDoelstelling(
             doelstelling.id,
             doelstelling.name
-          ).then(function(response){
+          ).then(function(){
             self.saveCriteria(doelstelling);
           });
         } else {
@@ -424,7 +430,7 @@ export default {
           self.$http.updateCriteria(
             criteria.id,
             criteria.name
-          ).then(function(response){
+          ).then(function(){
             self.saveAspect(criteria);
           });
         } else {
