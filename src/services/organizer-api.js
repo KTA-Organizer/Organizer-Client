@@ -254,6 +254,9 @@ export const deleteModule = id =>
 export const deleteDoelstelling = id =>
   processReq("/doelstellingen/" + id, {}, "delete");  
 
+export const deleteCriteria = id =>
+  processReq("/evaluatieCriteria/" + id, {}, "delete");  
+
 export const getMeldingen = () => processReq("/meldingen");
 
 export const createMelding = meldingObj =>
