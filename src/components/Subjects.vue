@@ -26,6 +26,7 @@
             <tr v-if="checkSelected(props.item.id)">
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-right">
+              <v-btn color="error" class="ma-1 right" dark @click="showDialog(props, props.item.name, props.item.id)"><v-icon dark>delete</v-icon>Deactiveer</v-btn>
               <v-btn color="primary" class="ma-1 right" @click.native="setGivenMajor(props.item)" dark><v-icon dark>edit</v-icon></v-btn>
             </td>
             </tr>
@@ -117,6 +118,11 @@ export default {
       console.log(this.selectedOpleidingen);
       console.log(this.selectedOpleidingName);
       console.log(this.selectedOpleidingId);
+      api.setOpleidingInactive(this.selectedOpleidingId);
+      this.deleteOpleiding = false;
+      this.selectedOpleidingen = null;
+      this.selectedOpleidingName = null;
+      this.selectedOpleidingId = null;
     }
     ,
     checkSelected(id) {

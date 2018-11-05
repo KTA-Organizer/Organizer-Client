@@ -248,6 +248,7 @@ export const updateAspect = (aspectId, name) =>
 
 export const setOpleidingInactive = (opleidingId) =>
     processReq(
+      "/opleidingen/" + opleidingId + "/status",
       {
         active: 0
       },
