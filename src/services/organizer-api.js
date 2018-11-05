@@ -245,6 +245,9 @@ export const updateAspect = (aspectId, name) =>
     "put"
   );
 
+export const deleteCategorie = id =>
+  processReq("/doelstellingsCategorie/" + id, {}, "delete");
+
 export const getMeldingen = () => processReq("/meldingen");
 
 export const createMelding = meldingObj =>

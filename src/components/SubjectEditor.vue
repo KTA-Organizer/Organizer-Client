@@ -53,6 +53,9 @@
                   <v-btn flat icon color="blue lighten-2 text-xs-right" v-if="!editingCategorie" @click="editCategorie(categorieIndex)">
                     <v-icon>edit</v-icon>
                   </v-btn>
+                  <v-btn flat icon color="blue lighten-2 text-xs-right" @click="removeCategorie(module.doelstellingCategories, categorie)">
+                    <v-icon>delete</v-icon>
+                  </v-btn>
                   <v-text-field v-if="editingCategorie && payload === categorieIndex" @keyup.enter="editCategorie(null)" dark autofocus name="module" label="Categorie naam" v-model="categorie.name" single-line></v-text-field>
                 </v-list-tile>
                 <v-list-tile class="blue-grey darken-2">
@@ -223,6 +226,7 @@ export default {
       DoelstellingAddString: "",
       CriteriaAddString: "",
       AspectenAddString: "",
+      removeList: [],
       opleiding: [],
       loader: null,
       loading: false,
@@ -324,6 +328,13 @@ export default {
       this.payload = payload;
       this.editingAspect = !this.editingAspect;
     },
+    removeCategorie(categories, categorie){ 
+      var self = this;
+      self.removeList.push({"level": "categorie", "id": categorie.id});
+      const categoriesObj = JSON.parse(JSON.stringify(categories)); // to avoid vue js observer object
+      const categorieId = categoriesObj.indexOf(categoriesObj.find(x => x.id == categorie.id));
+      categories.splice(categorieId, 1);
+    },
     createOpleiding() {
       var self = this;
       this.$http.createOpleiding(this.currentUserId, this.opleidingsnaam).then(function(response) {
@@ -348,6 +359,7 @@ export default {
             //self.saveModules();*/
           //}
         );
+        this.removeDeletedItems();
       }
       self.saveModules();
       this.loading = false;
@@ -466,6 +478,17 @@ export default {
             });
         }
       });
+    },
+    removeDeletedItems(){
+      var self = this;
+      self.removeList.forEach(function(item){
+        switch(item.level){
+          case "categorie":
+            self.$http.deleteCategorie(item.id);
+            break;
+        }
+      })
+      self.removeList = [];
     }
   },
   watch: {},
