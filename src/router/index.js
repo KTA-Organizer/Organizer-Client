@@ -12,6 +12,7 @@ import Print from "@/pages/utils/Print";
 import NotFound from "@/pages/utils/NotFound";
 import Notifications from "@/components/notifications/NotificationList";
 import LoginForm from "@/components/login/LoginForm";
+import ForgotPwForm from "@/components/login/ForgotPassword"
 
 import Reports from "@/components/Reports";
 import checkboxes from "@/components/CheckboxContainer";
@@ -32,6 +33,7 @@ Vue.component("datepicker", Datepicker);
 Vue.component("userdetail", UserDetail);
 Vue.component("notification", Notifications)
 Vue.component("loginform", LoginForm);
+Vue.component("forgotpassword", ForgotPwForm);
 Vue.use(Router);
 
 import store from "../store/index";

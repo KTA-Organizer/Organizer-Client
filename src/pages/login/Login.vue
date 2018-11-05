@@ -16,23 +16,7 @@
                         </v-card>
 
                         <v-card v-if="showPasswordReset" class="elevation-12">
-                            <v-toolbar dark color="primary">
-                                <v-toolbar-title>Wachtwoord vergeten</v-toolbar-title>
-                                <v-spacer></v-spacer>
-                            </v-toolbar>
-                            <v-card-text v-if="!passwordResetSuccess">
-                                <v-card-title>Stuur een email om je wachtwoord te herstellen.</v-card-title>
-                                <v-form>
-                                    <v-text-field name="email" label="Email" id="email" type="email" :rules="emailRules" v-model="email" autofocus="autofocus" required></v-text-field>
-                                    <v-flex class="text-xs-center" mt-3>
-                                        <v-btn color="primary" type="submit" v-on:click.prevent="onPasswordReset">Email versturen</v-btn>
-                                        <p v-if="passwordResetError" class="red--text">{{passwordResetError}}</p>
-                                    </v-flex>
-                                </v-form>
-                            </v-card-text>
-                            <v-card-text v-if="passwordResetSuccess">
-                                <v-card-title>Email verstuurt!</v-card-title>
-                            </v-card-text>
+                            <forgotpassword :email="email"></forgotpassword>
                             <p><a v-on:click="forgotPassword">Ooops... Ik weet het toch nog!</a></p>
                         </v-card>
 
@@ -58,8 +42,6 @@ export default {
             "E-mail moet geldig zijn"
         ],
         showPasswordReset: false,
-        passwordResetSuccess: false,
-        passwordResetError: null
     }),
     methods: {
         onLogin() {
@@ -71,14 +53,6 @@ export default {
         forgotPassword() {
             this.showPasswordReset = !this.showPasswordReset;
         },
-        async onPasswordReset() {
-            try {
-                await this.$http.requestPasswordReset(this.email);
-                this.passwordResetSuccess = true;
-            } catch (err) {
-                this.passwordResetError = "Password reset request failed";
-            }
-        }
     }
 };
 </script>

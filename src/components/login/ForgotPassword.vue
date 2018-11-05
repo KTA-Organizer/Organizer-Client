@@ -1,0 +1,52 @@
+<template>
+<v-flex>
+    <v-toolbar dark color="primary">
+        <v-toolbar-title>Wachtwoord vergeten</v-toolbar-title>
+        <v-spacer></v-spacer>
+    </v-toolbar>
+    <v-card-text v-if="!passwordResetSuccess">
+        <v-card-title>Stuur een email om je wachtwoord te herstellen.</v-card-title>
+        <v-form>
+            <v-text-field name="email" label="Email" id="email" type="email" :rules="emailRules" v-model="email" autofocus="autofocus" required></v-text-field>
+            <v-flex class="text-xs-center" mt-3>
+                <v-btn color="primary" type="submit" v-on:click.prevent="onPasswordReset">Email versturen</v-btn>
+                <p v-if="passwordResetError" class="red--text">{{passwordResetError}}</p>
+            </v-flex>
+        </v-form>
+    </v-card-text>
+    <v-card-text v-if="passwordResetSuccess">
+        <v-card-title>Email verstuurt!</v-card-title>
+    </v-card-text>
+</v-flex>
+</template>
+
+                            
+
+<script>
+export default {
+    name: "ForgotPassword",
+    props: ["email"],
+    data() {
+        return {
+            emailRules: [
+                v => !!v || "E-mail moet ingevuld worden",
+                v =>
+                /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+                "E-mail moet geldig zijn"
+            ],
+            passwordResetSuccess: false,
+            passwordResetError: null
+        };
+    },
+    methods: {
+        async onPasswordReset() {
+            try {
+                await this.$http.requestPasswordReset(this.email);
+                this.passwordResetSuccess = true;
+            } catch (err) {
+                this.passwordResetError = "Password reset request failed";
+            }
+        }
+    }
+};
+</script>
