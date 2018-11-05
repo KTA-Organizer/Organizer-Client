@@ -74,7 +74,8 @@
                     <v-btn v-if="fieldDisabled.opleiding" color="primary" class="ma-1 right" dark @click="fieldDisabled.opleiding = !fieldDisabled.opleiding"><v-icon dark>edit</v-icon></v-btn>
                     <v-btn v-else class="ma-1 right light-green accent-4" dark @click="fieldDisabled.opleiding = !fieldDisabled.opleiding"><v-icon dark>save</v-icon></v-btn>
                 </v-layout>
-                <v-btn @click="updateOpleiding" color="primary">Voeg opleiding toe</v-btn>
+                <v-btn v-if="opleiding" @click="updateOpleiding" color="primary">Wijzig opleiding</v-btn>
+                <v-btn v-else @click="updateOpleiding" color="primary">Voeg opleiding toe</v-btn>
             </div>
         </v-form>
             <router-link to="/Gebruikers"><v-btn color="primary">Terug naar overzicht</v-btn></router-link>
