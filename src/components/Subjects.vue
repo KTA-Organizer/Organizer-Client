@@ -149,13 +149,13 @@ export default {
     deactivateOpleiding(){
       api.setOpleidingInactive(this.selectedOpleiding.id);
       this.deactivateOpleidingStatus = false;
-      location.reload(); // voorlopig
+      this.getOpleidingen();
     }
     ,
     activateOpleiding(){
       api.setOpleidingActive(this.selectedOpleiding.id);
       this.activateOpleidingStatus = false;
-      location.reload(); //voorlopig
+      this.getOpleidingen();
     },
     checkSelected(id) {
       if (this.selectedid === null) {
@@ -165,6 +165,9 @@ export default {
       } else {
         return false;
       }
+    },
+    async getOpleidingen(){
+      this.items = await api.getOpleidingen();
     }
   },
   async created() {
