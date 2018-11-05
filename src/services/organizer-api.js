@@ -25,9 +25,26 @@ export const getStudent = id => processReq(`/students/${id}`);
 
 export const getUser = id => processReq(`/users/${id}`);
 
-export const paginateUsers = ({ page, perPage, role, gender, status, search }) => processReq("/users", {
-  page, perpage: perPage, role, gender, status, search
-}, "get");
+export const paginateUsers = ({
+  page,
+  perPage,
+  role,
+  gender,
+  status,
+  search
+}) =>
+  processReq(
+    "/users",
+    {
+      page,
+      perpage: perPage,
+      role,
+      gender,
+      status,
+      search
+    },
+    "get"
+  );
 
 export const createUser = newUser => processReq("/users", newUser, "post");
 
@@ -72,8 +89,7 @@ export const getEvalForStudent = id =>
 export const getModulesForStudent = studId =>
   processReq(`/modules/${studId}/student`);
 
-  export const getModule = moduleId =>
-  processReq(`/modules/${moduleId}`);
+export const getModule = moduleId => processReq(`/modules/${moduleId}`);
 
 export const createStudent = (
   firstname,
@@ -207,7 +223,7 @@ export const updateCriteria = (criteriaId, name) =>
     "put"
   );
 
-  export const createAspect = (name, evaluatiecriteriumId, creatorId) =>
+export const createAspect = (name, evaluatiecriteriumId, creatorId) =>
   processReq(
     "/aspecten",
     {
@@ -249,6 +265,12 @@ async function processReq(url, dataObj = {}, method = "GET") {
       Accept: "application/json",
       "Content-Type": "application/json"
     };
+  } else {
+    const queryString = Object.keys(dataObj)
+      .filter(key => !!dataObj[key])
+      .map(key => `${key}=${dataObj[key]}`)
+      .join("&");
+    url += `?${queryString}`;
   }
 
   const response = await fetch(`${API_URL}${url}`, conf);
