@@ -75,6 +75,8 @@
 </template>
 
 <script>
+import * as constants from "../../constants/user";
+
 function createStudentOpleidingMap(students, opleidingen) {
   return students.map(function(student) {
     const opleiding = opleidingen.find(x => x.id === student.opleidingId);
@@ -115,33 +117,12 @@ export default {
       roleFilter: "",
       genderFilter: "",
       statusFilter: "Actief",
-      roleKeys: {
-        "Geen filter": false,
-        Administrator: "ADMIN",
-        Student: "STUDENT",
-        Leerkracht: "TEACHER",
-        "Geen rol toegekent": "#"
-      },
-      roles: [
-        "Geen filter",
-        "Administrator",
-        "Student",
-        "Leerkracht",
-        "Geen rol toegekent"
-      ],
-      genders: ["Geen filter", "Man", "Vrouw"],
-      genderKeys: {
-        "Geen filter": false,
-        Man: "M",
-        Vrouw: "F"
-      },
-      statusses: ["Geen filter", "Actief", "Wacht op activatie", "Niet actief"],
-      statusKeys: {
-        "Geen filter": false,
-        Actief: "ACTIVE",
-        "Wacht op activatie": "WAIT_ACTIVATION",
-        "Niet actief": "DISABLED"
-      },
+      roleKeys: constants.roleKeys,
+      roles: constants.roles,
+      genders: constants.genders,
+      genderKeys: constants.genderKeys,
+      statusses: constants.statusses,
+      statusKeys: constants.statusKeys,
     };
   },
   methods: {

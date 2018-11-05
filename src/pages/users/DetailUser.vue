@@ -134,6 +134,7 @@ import store from "../../store/index";
 import { mapGetters } from "vuex";
 import * as rules from "../../constants/rules";
 import * as constants from "../../constants/user";
+
 export default {
   name: "DetailUser",
   data() {
@@ -153,7 +154,8 @@ export default {
       opleiding: undefined,
       deleteDialog: false,
       confirmDeleteDialog: false,
-      activateDialog: false
+      activateDialog: false,
+      constants: constants
     };
   },
   methods: {

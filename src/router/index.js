@@ -7,19 +7,20 @@ import UserDetail from "@/components/users/UserDataTable";
 import AddUser from "@/pages/users/AddUser";
 import UsersOverview from "@/pages/users/UsersOverview";
 import DetailUser from "@/pages/users/DetailUser";
-import ChoosePassword from "@/pages/login/ChoosePassword";
+import ChoosePassword from "@/pages/auth/ChoosePassword";
 import Print from "@/pages/utils/Print";
 import NotFound from "@/pages/utils/NotFound";
 import Notifications from "@/components/notifications/NotificationList";
-import LoginForm from "@/components/login/LoginForm";
-import ForgotPwForm from "@/components/login/ForgotPassword"
+import LoginForm from "@/components/auth/LoginForm";
+import ForgotPwForm from "@/components/auth/ForgotPassword"
+import SetPw from "@/components/auth/SetPassword";
 
 import Reports from "@/components/Reports";
 import checkboxes from "@/components/CheckboxContainer";
 import Subjects from "@/components/Subjects";
 import SearchBar from "@/components/SearchBar";
 import Evaluate from "@/components/Evaluate";
-import Login from "@/pages/login/Login";
+import Login from "@/pages/auth/Login";
 import SubjectEditor from "@/components/SubjectEditor";
 import DataTableSelects from "@/components/DataTableSelects";
 import Datepicker from "vuejs-datepicker";
@@ -34,6 +35,7 @@ Vue.component("userdetail", UserDetail);
 Vue.component("notification", Notifications)
 Vue.component("loginform", LoginForm);
 Vue.component("forgotpassword", ForgotPwForm);
+Vue.component("setpassword", SetPw);
 Vue.use(Router);
 
 import store from "../store/index";
@@ -146,7 +148,7 @@ export default new Router({
       component: ChoosePassword,
       beforeEnter: requireUnauth
     },
-    { path: '/404', component: NotFound },  
-    { path: '*', redirect: '/404' }, 
+    { path: '/404', component: NotFound },
+    { path: '*', redirect: '/404' },
   ]
 });
