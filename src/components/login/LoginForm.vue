@@ -17,6 +17,9 @@
 </template>
 
 <script>
+import * as constants from "../../constants/user";
+import * as rules from "../../constants/rules";
+
 export default {
     name: "LoginForm",
     data() {
@@ -24,20 +27,11 @@ export default {
             loginError: null,
             email: "kenny.depecker@student.howest.be",
             password: "test",
-            passwordRules: [v => !!v || "paswoord moet ingevuld worden"],
-            emailRules: [
-                v => !!v || "E-mail moet ingevuld worden",
-                v =>
-                /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-                "E-mail moet geldig zijn"
-            ]
+            passwordRules: rules.password,
+            emailRules: rules.email,
         };
     },
     methods: {
-        // forgotPassword() {
-        //   console.log(this.showPasswordReset);
-        //   this.showPasswordReset = true;
-        // },
         onLogin() {
             this.$store.dispatch("login", {
                 email: this.email,

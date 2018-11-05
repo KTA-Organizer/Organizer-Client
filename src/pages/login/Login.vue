@@ -41,7 +41,7 @@ export default {
             /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
             "E-mail moet geldig zijn"
         ],
-        showPasswordReset: false,
+        showPasswordReset: false
     }),
     methods: {
         onLogin() {
@@ -52,7 +52,7 @@ export default {
         },
         forgotPassword() {
             this.showPasswordReset = !this.showPasswordReset;
-        },
+        }
     }
 };
 </script>

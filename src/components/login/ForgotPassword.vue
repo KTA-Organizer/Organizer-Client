@@ -23,17 +23,15 @@
                             
 
 <script>
+import * as constants from "../../constants/user";
+import * as rules from "../../constants/rules";
+
 export default {
     name: "ForgotPassword",
     props: ["email"],
     data() {
         return {
-            emailRules: [
-                v => !!v || "E-mail moet ingevuld worden",
-                v =>
-                /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-                "E-mail moet geldig zijn"
-            ],
+            emailRules: rules.email,
             passwordResetSuccess: false,
             passwordResetError: null
         };

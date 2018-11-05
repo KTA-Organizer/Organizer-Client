@@ -12,3 +12,4 @@ export const role = [
     "Rol moet ingevuld worden en kan maximum 2 rollen bevatten"
 ];
 export const gender = [v => !!v || "Geslacht moet ingevuld worden"];
+export const password = [v => !!v || "paswoord moet ingevuld worden"];
