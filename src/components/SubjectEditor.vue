@@ -340,19 +340,19 @@ export default {
       this.payload = payload;
       this.editingAspect = !this.editingAspect;
     },
-    removeCategorie(categories, categorie){ 
-      var self = this;
-      self.removeList.push({"level": "categorie", "id": categorie.id});
-      const categoriesObj = JSON.parse(JSON.stringify(categories)); // to avoid vue js observer object
-      const categorieId = categoriesObj.indexOf(categoriesObj.find(x => x.id == categorie.id));
-      categories.splice(categorieId, 1);
-    },
     removeModule(modules, module){ 
       var self = this;
       self.removeList.push({"level": "module", "id": module.id});
       const modulesObj = JSON.parse(JSON.stringify(modules)); // to avoid vue js observer object
       const moduleId = modulesObj.indexOf(modulesObj.find(x => x.id == module.id));
       modules.splice(moduleId, 1);
+    },
+    removeCategorie(categories, categorie){ 
+      var self = this;
+      self.removeList.push({"level": "categorie", "id": categorie.id});
+      const categoriesObj = JSON.parse(JSON.stringify(categories)); // to avoid vue js observer object
+      const categorieId = categoriesObj.indexOf(categoriesObj.find(x => x.id == categorie.id));
+      categories.splice(categorieId, 1);
     },
     removeDoelstelling(doelstellingen, doelstelling){ 
       var self = this;
@@ -523,11 +523,11 @@ export default {
       var self = this;
       self.removeList.forEach(function(item){
         switch(item.level){
-          case "categorie":
-            self.$http.deleteCategorie(item.id);
-            break;
           case "module":
             self.$http.deleteModule(item.id);
+            break;
+          case "categorie":
+            self.$http.deleteCategorie(item.id);
             break;
           case "doelstelling":
             self.$http.deleteDoelstelling(item.id);
