@@ -1,31 +1,37 @@
 import Vue from "vue";
 import Router from "vue-router";
+
+/* import pages */
 import Index from "@/pages/Index";
 import Dashboard from "@/pages/Dashboard";
 import Users from "@/pages/users/Users";
-import UserDetail from "@/components/users/UserDataTable";
 import AddUser from "@/pages/users/AddUser";
 import UsersOverview from "@/pages/users/UsersOverview";
 import DetailUser from "@/pages/users/DetailUser";
 import ChoosePassword from "@/pages/auth/ChoosePassword";
 import Print from "@/pages/utils/Print";
 import NotFound from "@/pages/utils/NotFound";
+import AddMelding from "@/pages/notifications/AddMelding";
+import Login from "@/pages/auth/Login";
+/* import pages */
+
+/* import components */
+import UserDetail from "@/components/users/UserDataTable";
 import Notifications from "@/components/notifications/NotificationList";
 import LoginForm from "@/components/auth/LoginForm";
 import ForgotPwForm from "@/components/auth/ForgotPassword"
 import SetPw from "@/components/auth/SetPassword";
-import AddMelding from "@/pages/notifications/AddMelding";
 import SearchBar from "@/components/utils/SearchBar";
 import checkboxes from "@/components/utils/CheckboxContainer";
-
-import Reports from "@/components/Reports";
-import Subjects from "@/components/Subjects";
-import Evaluate from "@/components/Evaluate";
-import Login from "@/pages/auth/Login";
-import SubjectEditor from "@/components/SubjectEditor";
+import Reports from "@/components/grading/Reports";
+import Evaluate from "@/components/grading/Evaluate";
 import DataTableSelects from "@/components/utils/DataTableSelects";
+import Subjects from "@/components/disciplines/Subjects";
+import SubjectEditor from "@/components/disciplines/SubjectEditor";
 import Datepicker from "vuejs-datepicker";
+/* import components */
 
+/* set components */
 Vue.component("checkboxes", checkboxes);
 Vue.component("searchbar", SearchBar);
 Vue.component("subjecteditor", SubjectEditor);
@@ -36,6 +42,8 @@ Vue.component("notification", Notifications)
 Vue.component("loginform", LoginForm);
 Vue.component("forgotpassword", ForgotPwForm);
 Vue.component("setpassword", SetPw);
+/* set components */
+
 Vue.use(Router);
 
 import store from "../store/index";
