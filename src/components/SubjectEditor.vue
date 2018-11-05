@@ -184,6 +184,9 @@
                 <v-btn flat icon color="blue lighten-2" v-if="!editingAspect" @click="editAspect(aspectIndex)">
                   <v-icon>edit</v-icon>
                 </v-btn>
+                <v-btn flat icon color="blue lighten-2 text-xs-right" @click="removeAspect(selectedcriteria.aspecten, aspect)">
+                    <v-icon>delete</v-icon>
+                  </v-btn>
                 <v-text-field v-if="editingAspect && payload === aspectIndex" @keyup.enter="editAspect(null)" dark autofocus name="aspect" label="Aspect naam" v-model="aspect.name" single-line></v-text-field>
               </v-list-tile>
             </v-list-group>
@@ -365,6 +368,13 @@ export default {
       const criteriaId = evaluatieCriteriaObj.indexOf(evaluatieCriteriaObj.find(x => x.id == criteria.id));
       evaluatieCriteria.splice(criteriaId, 1);
     },
+    removeAspect(aspecten, aspect){ 
+      var self = this;
+      self.removeList.push({"level": "aspect", "id": aspect.id});
+      const aspectenObj = JSON.parse(JSON.stringify(aspecten)); // to avoid vue js observer object
+      const aspectId = aspectenObj.indexOf(aspecten.find(x => x.id == aspect.id));
+      aspecten.splice(aspectId, 1);
+    },
     createOpleiding() {
       var self = this;
       this.$http.createOpleiding(this.currentUserId, this.opleidingsnaam).then(function(response) {
@@ -524,6 +534,9 @@ export default {
             break;
           case "criteria":
             self.$http.deleteCriteria(item.id);
+            break;
+          case "aspect":
+            self.$http.deleteAspect(item.id);
             break;
         }
       })
