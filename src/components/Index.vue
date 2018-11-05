@@ -18,7 +18,10 @@
     <v-toolbar-title>Rapportensysteem</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-menu :close-on-content-click="false" v-model="menu">
-      <v-btn color="white" flat slot="activator">Account</v-btn>
+      <v-btn color="white" flat slot="activator">
+        <v-icon>account_circle</v-icon>
+        mijn gebruiker
+      </v-btn>
       <v-card>
         <v-list>
           <v-list-tile avatar>
@@ -56,7 +59,7 @@ export default {
   name: "Index",
   data: () => ({
     drawer: false,
-    navigation: ["Rapporten", "Studenten", "Opleidingen", "Meldingen", "Afdrukken"],
+    navigation: ["Dashboard", "Rapporten", "Opleidingen", "Afdrukken"],
     fav: true,
     menu: false,
     message: false,
@@ -72,11 +75,6 @@ export default {
       this.$store.dispatch("logout");
     }
   },
-  mounted() {
-    if (this.currentUser.role === "ADMIN") {
-      this.navigation.push("Gebruikers");
-    }
-  }
 };
 </script>
 

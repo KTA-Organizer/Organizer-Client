@@ -180,35 +180,32 @@ export default {
     applyFilters() {
       const naamFiltertje = this.nameFilter.toLowerCase();
       const rolFiltertje = this.roleKeys[this.roleFilter]
-        ? this.roleKeys[this.roleFilter].toLowerCase()
+        ? this.roleKeys[this.roleFilter].toUpperCase()
         : false;
       const genderFiltertje = this.genderKeys[this.genderFilter];
       const statusFiltertje = this.statusKeys[this.statusFilter];
       this.filteredGebruikers = this.gebruikers
-        .filter(x => {
-          if (!genderFiltertje) {
-            return true;
-          }
-          return x.gender === genderFiltertje;
-        })
-        .filter(x => {
-          if (!rolFiltertje) {
-            return true;
-          }
-          const roleToCheck = x.role ? x.role : "#";
-          return roleToCheck.toLowerCase() === rolFiltertje;
-        })
-        .filter(x => {
-          return `${x.firstname} ${x.lastname}`
-            .toLowerCase()
-            .includes(naamFiltertje);
-        })
-        .filter(x => {
-          if (!statusFiltertje) {
-            return true;
-          }
-          return x.status === statusFiltertje;
-        });
+
+      if (genderFiltertje) {
+        this.filteredGebruikers = this.filteredGebruikers
+          .filter(x => x.gender === genderFiltertje)
+      }
+      if (rolFiltertje) {
+        this.filteredGebruikers = this.filteredGebruikers
+          .filter(x => rolFiltertje === "#"
+            ? x.roles.length === 0
+            : x.roles.indexOf(rolFiltertje) > -1);
+      }
+      if (statusFiltertje) {
+        this.filteredGebruikers = this.filteredGebruikers
+          .filter(x => x.status === statusFiltertje)
+      }
+      if (naamFiltertje) {
+        this.filteredGebruikers = this.filteredGebruikers
+          .filter(x => `${x.firstname} ${x.lastname}`
+              .toLowerCase()
+              .includes(naamFiltertje))
+      }
     },
     readableDate(timeStamp) {
       const stamp = timeStamp.split("T");
