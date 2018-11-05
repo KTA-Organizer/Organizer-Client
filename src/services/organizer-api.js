@@ -251,6 +251,9 @@ export const deleteCategorie = id =>
 export const deleteModule = id =>
   processReq("/modules/" + id, {}, "delete");  
 
+export const deleteDoelstelling = id =>
+  processReq("/doelstellingen/" + id, {}, "delete");  
+
 export const getMeldingen = () => processReq("/meldingen");
 
 export const createMelding = meldingObj =>

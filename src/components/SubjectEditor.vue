@@ -114,6 +114,9 @@
                 <v-btn flat icon color="blue lighten-2" v-if="!editingDoelstelling" @click="editDoelstelling(doelstellingIndex)">
                   <v-icon>edit</v-icon>
                 </v-btn>
+                <v-btn flat icon color="blue lighten-2 text-xs-right" @click="removeDoelstelling(selectedcategorie.doelstellingen, doelstelling)">
+                    <v-icon>delete</v-icon>
+                  </v-btn>
                 <v-text-field v-if="editingDoelstelling && payload === doelstellingIndex" @keyup.enter="editDoelstelling(null)" dark autofocus name="doelstelling" label="Doelstelling naam" v-model="doelstelling.name" single-line></v-text-field>
               </v-list-tile>
               <v-list-tile class="blue-grey darken-2"  v-for="(criteria, criteriaIndex) in doelstelling.evaluatieCriteria" v-bind:key="criteriaIndex" @click="setCriteria(criteria)">
@@ -345,6 +348,13 @@ export default {
       const moduleId = modulesObj.indexOf(modulesObj.find(x => x.id == module.id));
       modules.splice(moduleId, 1);
     },
+    removeDoelstelling(doelstellingen, doelstelling){ 
+      var self = this;
+      self.removeList.push({"level": "doelstelling", "id": doelstelling.id});
+      const doelstellingenObj = JSON.parse(JSON.stringify(doelstellingen)); // to avoid vue js observer object
+      const doelstellingId = doelstellingenObj.indexOf(doelstellingenObj.find(x => x.id == doelstelling.id));
+      doelstellingen.splice(doelstellingId, 1);
+    },
     createOpleiding() {
       var self = this;
       this.$http.createOpleiding(this.currentUserId, this.opleidingsnaam).then(function(response) {
@@ -498,6 +508,9 @@ export default {
             break;
           case "module":
             self.$http.deleteModule(item.id);
+            break;
+          case "doelstelling":
+            self.$http.deleteDoelstelling(item.id);
             break;
         }
       })
