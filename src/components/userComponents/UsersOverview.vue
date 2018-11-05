@@ -184,27 +184,30 @@ export default {
         : false;
       const genderFiltertje = this.genderKeys[this.genderFilter];
       const statusFiltertje = this.statusKeys[this.statusFilter];
-      this.filteredGebruikers = this.gebruikers
+      this.filteredGebruikers = this.gebruikers;
 
+      if (statusFiltertje) {
+        this.filteredGebruikers = this.filteredGebruikers.filter(
+          x => x.status === statusFiltertje
+        );
+      }
       if (genderFiltertje) {
-        this.filteredGebruikers = this.filteredGebruikers
-          .filter(x => x.gender === genderFiltertje)
+        this.filteredGebruikers = this.filteredGebruikers.filter(
+          x => x.gender === genderFiltertje
+        );
       }
       if (rolFiltertje) {
-        this.filteredGebruikers = this.filteredGebruikers
-          .filter(x => rolFiltertje === "#"
-            ? x.roles.length === 0
-            : x.roles.indexOf(rolFiltertje) > -1);
-      }
-      if (statusFiltertje) {
-        this.filteredGebruikers = this.filteredGebruikers
-          .filter(x => x.status === statusFiltertje)
+        this.filteredGebruikers = this.filteredGebruikers.filter(
+          x =>
+            rolFiltertje === "#"
+              ? x.roles.length === 0
+              : x.roles.indexOf(rolFiltertje) > -1
+        );
       }
       if (naamFiltertje) {
-        this.filteredGebruikers = this.filteredGebruikers
-          .filter(x => `${x.firstname} ${x.lastname}`
-              .toLowerCase()
-              .includes(naamFiltertje))
+        this.filteredGebruikers = this.filteredGebruikers.filter(x =>
+          `${x.firstname} ${x.lastname}`.toLowerCase().includes(naamFiltertje)
+        );
       }
     },
     readableDate(timeStamp) {
@@ -225,9 +228,8 @@ export default {
   async created() {
     const gebruikers = await this.$http.paginateUsers({
       page: 1,
-      perPage: 1000
+      perPage: 10000
     });
-    // TODO check if the .items is all that's needed
     this.gebruikers = gebruikers.items;
     for (const gebruiker of this.gebruikers) {
       gebruiker.naam = `${gebruiker.firstname} ${gebruiker.lastname}`;

@@ -44,6 +44,9 @@
                   <v-btn flat icon color="blue lighten-2" v-if="!editingModule" @click="editModule(moduleIndex)">
                     <v-icon>edit</v-icon>
                   </v-btn>
+                  <v-btn flat icon color="blue lighten-2 text-xs-right" @click="removeModule(opleiding, module)">
+                    <v-icon>delete</v-icon>
+                  </v-btn>
                   <v-text-field v-if="editingModule && payload === moduleIndex" @keyup.enter="editModule(null)" dark autofocus name="module" label="Module naam" v-model="module.name" single-line></v-text-field>
                 </v-list-tile>
                 <v-list-tile class="blue-grey darken-2" v-for="(categorie,categorieIndex) in module.doelstellingCategories" v-bind:key="categorieIndex" @click="payload=categorieIndex">
@@ -52,6 +55,9 @@
                   </v-list-tile-content>
                   <v-btn flat icon color="blue lighten-2 text-xs-right" v-if="!editingCategorie" @click="editCategorie(categorieIndex)">
                     <v-icon>edit</v-icon>
+                  </v-btn>
+                  <v-btn flat icon color="blue lighten-2 text-xs-right" @click="removeCategorie(module.doelstellingCategories, categorie)">
+                    <v-icon>delete</v-icon>
                   </v-btn>
                   <v-text-field v-if="editingCategorie && payload === categorieIndex" @keyup.enter="editCategorie(null)" dark autofocus name="module" label="Categorie naam" v-model="categorie.name" single-line></v-text-field>
                 </v-list-tile>
@@ -108,6 +114,9 @@
                 <v-btn flat icon color="blue lighten-2" v-if="!editingDoelstelling" @click="editDoelstelling(doelstellingIndex)">
                   <v-icon>edit</v-icon>
                 </v-btn>
+                <v-btn flat icon color="blue lighten-2 text-xs-right" @click="removeDoelstelling(selectedcategorie.doelstellingen, doelstelling)">
+                    <v-icon>delete</v-icon>
+                  </v-btn>
                 <v-text-field v-if="editingDoelstelling && payload === doelstellingIndex" @keyup.enter="editDoelstelling(null)" dark autofocus name="doelstelling" label="Doelstelling naam" v-model="doelstelling.name" single-line></v-text-field>
               </v-list-tile>
               <v-list-tile class="blue-grey darken-2"  v-for="(criteria, criteriaIndex) in doelstelling.evaluatieCriteria" v-bind:key="criteriaIndex" @click="setCriteria(criteria)">
@@ -117,6 +126,9 @@
                 <v-btn flat icon color="blue lighten-2 text-xs-right" v-if="!editingCriteria" @click="editCriteria(criteriaIndex)">
                   <v-icon>edit</v-icon>
                 </v-btn>
+                <v-btn flat icon color="blue lighten-2 text-xs-right" @click="removeCriteria(doelstelling.evaluatieCriteria, criteria)">
+                    <v-icon>delete</v-icon>
+                  </v-btn>
                 <v-text-field v-if="editingCriteria && payload === criteriaIndex" @keyup.enter="editCriteria(null)" dark autofocus name="module" label="Criteria naam" v-model="criteria.name" single-line></v-text-field>
               </v-list-tile>
               <v-list-tile class="blue-grey darken-2">
@@ -172,6 +184,9 @@
                 <v-btn flat icon color="blue lighten-2" v-if="!editingAspect" @click="editAspect(aspectIndex)">
                   <v-icon>edit</v-icon>
                 </v-btn>
+                <v-btn flat icon color="blue lighten-2 text-xs-right" @click="removeAspect(selectedcriteria.aspecten, aspect)">
+                    <v-icon>delete</v-icon>
+                  </v-btn>
                 <v-text-field v-if="editingAspect && payload === aspectIndex" @keyup.enter="editAspect(null)" dark autofocus name="aspect" label="Aspect naam" v-model="aspect.name" single-line></v-text-field>
               </v-list-tile>
             </v-list-group>
@@ -223,6 +238,7 @@ export default {
       DoelstellingAddString: "",
       CriteriaAddString: "",
       AspectenAddString: "",
+      removeList: [],
       opleiding: [],
       loader: null,
       loading: false,
@@ -232,42 +248,48 @@ export default {
   methods: {
     enterAddition(title, object, level, parentIndexes) {
       if (title !== "") {
-        if (level === "module") {
-          object.push({ name: title, new: true, indexes: [], doelstellingCategories: [] });
-          object[object.length - 1].indexes.push(object.length);
-        } else if (level === "categorie") {
-          var array = [];
-          parentIndexes.forEach(function(item) {
+        switch(level){
+          case "module":
+            object.push({ name: title, new: true, indexes: [], doelstellingCategories: [] });
+            object[object.length - 1].indexes.push(object.length);
+            break;
+          case "categorie":
+            var array = [];
+            parentIndexes.forEach(function(item) {
             array.push(item);
-          });
-          object.push({
-            name: title,
-            new: true,
-            indexes: array,
-            doelstellingen: []
-          });
-          object[object.length - 1].indexes.push(object.length);
-        } else if (level === "doelstelling") {
-          array = [];
-          parentIndexes.forEach(function(item) {
-            array.push(item);
-          });
-          object.push({ name: title, new: true, indexes: array, evaluatieCriteria: [] });
-          object[object.length - 1].indexes.push(object.length);
-        } else if (level === "criteria") {
-          array = [];
-          parentIndexes.forEach(function(item) {
-            array.push(item);
-          });
-          object.push({ name: title, new: true, indexes: array, aspecten: [] });
-          object[object.length - 1].indexes.push(object.length);
-        } else if (level === "aspect") {
-          array = [];
-          parentIndexes.forEach(function(item) {
-            array.push(item);
-          });
-          object.push({ name: title, new: true, indexes: array });
-          object[object.length - 1].indexes.push(object.length);
+            });
+            object.push({
+              name: title,
+              new: true,
+              indexes: array,
+              doelstellingen: []
+            });
+            object[object.length - 1].indexes.push(object.length);
+            break;
+          case "doelstelling":
+            array = [];
+            parentIndexes.forEach(function(item) {
+              array.push(item);
+            });
+            object.push({ name: title, new: true, indexes: array, evaluatieCriteria: [] });
+            object[object.length - 1].indexes.push(object.length);
+            break;
+          case "criteria":
+            array = [];
+            parentIndexes.forEach(function(item) {
+              array.push(item);
+            });
+            object.push({ name: title, new: true, indexes: array, aspecten: [] });
+            object[object.length - 1].indexes.push(object.length);
+            break;
+          case "aspect":
+            array = [];
+            parentIndexes.forEach(function(item) {
+              array.push(item);
+            });
+            object.push({ name: title, new: true, indexes: array });
+            object[object.length - 1].indexes.push(object.length);
+            break;
         }
       }
       this.ModuleAddString = "";
@@ -318,6 +340,41 @@ export default {
       this.payload = payload;
       this.editingAspect = !this.editingAspect;
     },
+    removeCategorie(categories, categorie){ 
+      var self = this;
+      self.removeList.push({"level": "categorie", "id": categorie.id});
+      const categoriesObj = JSON.parse(JSON.stringify(categories)); // to avoid vue js observer object
+      const categorieId = categoriesObj.indexOf(categoriesObj.find(x => x.id == categorie.id));
+      categories.splice(categorieId, 1);
+    },
+    removeModule(modules, module){ 
+      var self = this;
+      self.removeList.push({"level": "module", "id": module.id});
+      const modulesObj = JSON.parse(JSON.stringify(modules)); // to avoid vue js observer object
+      const moduleId = modulesObj.indexOf(modulesObj.find(x => x.id == module.id));
+      modules.splice(moduleId, 1);
+    },
+    removeDoelstelling(doelstellingen, doelstelling){ 
+      var self = this;
+      self.removeList.push({"level": "doelstelling", "id": doelstelling.id});
+      const doelstellingenObj = JSON.parse(JSON.stringify(doelstellingen)); // to avoid vue js observer object
+      const doelstellingId = doelstellingenObj.indexOf(doelstellingenObj.find(x => x.id == doelstelling.id));
+      doelstellingen.splice(doelstellingId, 1);
+    },
+    removeCriteria(evaluatieCriteria, criteria){ 
+      var self = this;
+      self.removeList.push({"level": "criteria", "id": criteria.id});
+      const evaluatieCriteriaObj = JSON.parse(JSON.stringify(evaluatieCriteria)); // to avoid vue js observer object
+      const criteriaId = evaluatieCriteriaObj.indexOf(evaluatieCriteriaObj.find(x => x.id == criteria.id));
+      evaluatieCriteria.splice(criteriaId, 1);
+    },
+    removeAspect(aspecten, aspect){ 
+      var self = this;
+      self.removeList.push({"level": "aspect", "id": aspect.id});
+      const aspectenObj = JSON.parse(JSON.stringify(aspecten)); // to avoid vue js observer object
+      const aspectId = aspectenObj.indexOf(aspecten.find(x => x.id == aspect.id));
+      aspecten.splice(aspectId, 1);
+    },
     createOpleiding() {
       var self = this;
       this.$http.createOpleiding(this.currentUserId, this.opleidingsnaam).then(function(response) {
@@ -342,6 +399,7 @@ export default {
             //self.saveModules();*/
           //}
         );
+        this.removeDeletedItems();
       }
       self.saveModules();
       this.loading = false;
@@ -353,7 +411,7 @@ export default {
           self.$http.updateModule(
             module.id,
             module.name
-            ).then(function(response){
+            ).then(function(){
               self.saveDoelstellingscategorieen(module);
             });
         } else {
@@ -378,7 +436,7 @@ export default {
           self.$http.updateDoelstellingscategorie(
             categorie.id,
             categorie.name
-          ).then(function(response){
+          ).then(function(){
               self.saveDoelstellingen(categorie);
           });
         } else {
@@ -401,7 +459,7 @@ export default {
           self.$http.updateDoelstelling(
             doelstelling.id,
             doelstelling.name
-          ).then(function(response){
+          ).then(function(){
             self.saveCriteria(doelstelling);
           });
         } else {
@@ -424,7 +482,7 @@ export default {
           self.$http.updateCriteria(
             criteria.id,
             criteria.name
-          ).then(function(response){
+          ).then(function(){
             self.saveAspect(criteria);
           });
         } else {
@@ -460,6 +518,29 @@ export default {
             });
         }
       });
+    },
+    removeDeletedItems(){
+      var self = this;
+      self.removeList.forEach(function(item){
+        switch(item.level){
+          case "categorie":
+            self.$http.deleteCategorie(item.id);
+            break;
+          case "module":
+            self.$http.deleteModule(item.id);
+            break;
+          case "doelstelling":
+            self.$http.deleteDoelstelling(item.id);
+            break;
+          case "criteria":
+            self.$http.deleteCriteria(item.id);
+            break;
+          case "aspect":
+            self.$http.deleteAspect(item.id);
+            break;
+        }
+      })
+      self.removeList = [];
     }
   },
   watch: {},

@@ -30,15 +30,17 @@
             <v-select
               label="Geslacht"
               v-model="gender"
-              :rules="selectRules"
+              :rules="selectGenderRules"
               required
               :items="genders"
             ></v-select>
             <v-select
               label="Rol"
               v-model="role"
-              :rules="selectRules"
+              :rules="selectRoleRules"
               required
+              :multiple="true"
+              :counter="2"
               :items="roles"
             ></v-select>
             <router-link to="/Gebruikers"><v-btn color="secondary">Terug naar overzicht</v-btn></router-link>
@@ -55,7 +57,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      valid: true,
+      valid: false,
       firstname: "",
       name: "",
       email: "",
@@ -73,20 +75,28 @@ export default {
           /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
           "E-mail moet geldig zijn"
       ],
-      selectRules: [v => !!v || "Veld moet ingevuld worden"],
+      selectRoleRules: [
+        v =>
+          (v.length > 0 && v.length < 3) ||
+          "Rol moet ingevuld worden en kan maximum 2 rollen bevatten"
+      ],
+      selectGenderRules: [v => !!v || "Geslacht moet ingevuld worden"]
     };
   },
   methods: {
     async createUser() {
-      const newUser = {
-        firstname: this.firstname,
-        lastname: this.name,
-        email: this.email,
-        gender: this.genderKeys[this.gender],
-        roles: [this.roleKeys[this.role]]
-      };
-      const userIdObj = await this.$http.createUser(newUser);
-      this.$router.push(`${userIdObj.id}`);
+      if (this.$refs.form.validate()) {
+        const roles = this.role.map(x => this.roleKeys[x]);
+        const newUser = {
+          firstname: this.firstname,
+          lastname: this.name,
+          email: this.email,
+          gender: this.genderKeys[this.gender],
+          roles: roles
+        };
+        const userIdObj = await this.$http.createUser(newUser);
+        this.$router.push(`${userIdObj.id}`);
+      }
     }
   },
   created() {

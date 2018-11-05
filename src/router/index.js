@@ -70,6 +70,7 @@ export default new Router({
       name: "index",
       component: Index,
       beforeEnter: requireAuth,
+      redirect: "/dashboard",
       children: [
         {
           path: "/dashboard",
