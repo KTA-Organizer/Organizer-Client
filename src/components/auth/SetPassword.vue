@@ -20,17 +20,22 @@
 
 <script>
 import * as rules from "../../constants/rules";
-
+console.log(rules)
 export default {
     name: "SetPassword",
-    props: ["accesToken"],
+    props: ["accessToken"],
     data() {
         return {
             password: "",
             passwordRepeat: "",
             passwordRules: rules.password,
-            passwordRepeatRules: rules.passwordRepeat,
-            submitFailure: "Password reset failed."
+            passwordRepeatRules: [ // TODO this can't be abstracted because we need this.password
+                v => !!v || "Voer u wachtwoord hier nog een keer in",
+                v => v === this.password || "Uw wachtwoorden komen niet overeen"
+            ],
+            submitFailure: "Password reset failed.",
+            failure: false,
+            succes: false
         };
     },
     methods: {
