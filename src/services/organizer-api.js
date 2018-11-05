@@ -236,6 +236,7 @@ export const createAspect = (name, evaluatiecriteriumId, creatorId) =>
     "post"
   );
 
+
 export const updateAspect = (aspectId, name) =>
   processReq(
     "/aspecten/" + aspectId,
@@ -244,6 +245,14 @@ export const updateAspect = (aspectId, name) =>
     },
     "put"
   );
+
+export const setOpleidingInactive = (opleidingId) =>
+    processReq(
+      {
+        active: 0
+      },
+      "put"
+    )
 
 export const deleteCategorie = id =>
   processReq("/doelstellingsCategorie/" + id, {}, "delete");

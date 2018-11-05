@@ -26,7 +26,6 @@
             <tr v-if="checkSelected(props.item.id)">
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-right">
-              <v-btn color="error" class="ma-1 right" dark><v-icon dark>delete</v-icon></v-btn>
               <v-btn color="primary" class="ma-1 right" @click.native="setGivenMajor(props.item)" dark><v-icon dark>edit</v-icon></v-btn>
             </td>
             </tr>
@@ -34,6 +33,30 @@
         </v-data-table>
       </v-flex>
     </v-layout>
+    <v-dialog width="500" v-model="deleteOpleiding">
+                <v-card>
+                  <v-card-title class="headline grey lighten-2" primary-title>
+                    Opgelet!
+                  </v-card-title>
+
+                  <v-card-text>
+                    <p>U staat op het punt om <strong>{{ selectedOpleidingName }}</strong> te verwijderen.</p>
+                    <p>Bent u dit zeker?</p>
+                  </v-card-text>
+
+                  <v-divider></v-divider>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" flat v-on:click="deleteOpleiding = false">
+                      Annuleer
+                    </v-btn>
+                    <v-btn color="error" flat v-on:click="deactivateOpleiding()">
+                      Bevestig
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
   </template>
   <v-container>
     <subjecteditor v-if="editMode" :givenmajor="givenmajor" ></subjecteditor>
@@ -61,6 +84,10 @@ export default {
       ],
       items: [],
       filters: [],
+      deleteOpleiding: false,
+      selectedOpleidingName: null,
+      selectedOpleidingId: null,
+      selectedOpleidingen: null,
       selectedid: null,
       keys: ["name"],
       zoeklabel: "Opleiding",
@@ -76,10 +103,22 @@ export default {
       const form = this.formData;
       console.log(form);
     },
+    showDialog(opleidingen, opleidingName, opleidingId){
+      this.deleteOpleiding = true;
+      this.selectedOpleidingen = opleidingen;
+      this.selectedOpleidingName = opleidingName;
+      this.selectedOpleidingId = opleidingId;
+    },
     setGivenMajor(major) {
       this.givenmajor = major;
       this.editMode = true;
     },
+    deactivateOpleiding(){
+      console.log(this.selectedOpleidingen);
+      console.log(this.selectedOpleidingName);
+      console.log(this.selectedOpleidingId);
+    }
+    ,
     checkSelected(id) {
       if (this.selectedid === null) {
         return true;
