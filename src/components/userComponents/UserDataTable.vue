@@ -7,7 +7,7 @@
             class="elevation-1"
             >
               <template slot="items" slot-scope="gebruiker"><!-- .item must be here, don't ask questions -->
-                <tr @click="redirectToDetails(gebruiker.item.id)">
+                <tr>
                   <td class="text-xs-left">{{ gebruiker.item.naam }}</td>
                   <td class="text-xs-left">{{ getKeyByValue(roleKeys, gebruiker.item.role) }}</td>
                   <td class="text-xs-left">{{ gebruiker.item.email }}</td>
@@ -20,6 +20,7 @@
                       <router-link :to="{ path: 'Addstudent', query: { id: gebruiker.item.id }}"><v-btn color="primary" class="ma-1" dark><v-icon dark>edit</v-icon></v-btn></router-link>
                       <v-btn color="error" class="ma-1" dark @click="makeDialog(gebruiker.item)"><v-icon dark>delete</v-icon></v-btn>
                   </td> -->
+                  <td><router-link :to="`/Gebruikers/${gebruiker.item.id}`"><v-btn color="primary"><i class="material-icons">remove_red_eye</i></v-btn></router-link></td>
                 </tr>
               </template>
             </v-data-table>

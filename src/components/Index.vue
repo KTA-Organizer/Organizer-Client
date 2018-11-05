@@ -75,6 +75,11 @@ export default {
       this.$store.dispatch("logout");
     }
   },
+  mounted() {
+    if (this.currentUser.role === "ADMIN") {
+      this.navigation.push("Gebruikers");
+    }
+  }
 };
 </script>
 
