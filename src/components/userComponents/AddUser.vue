@@ -86,12 +86,13 @@ export default {
   methods: {
     async createUser() {
       if (this.$refs.form.validate()) {
+        const roles = this.role.map(x => this.roleKeys[x]);
         const newUser = {
           firstname: this.firstname,
           lastname: this.name,
           email: this.email,
           gender: this.genderKeys[this.gender],
-          roles: this.role
+          roles: roles
         };
         const userIdObj = await this.$http.createUser(newUser);
         this.$router.push(`${userIdObj.id}`);
