@@ -255,6 +255,15 @@ export const setOpleidingInactive = (opleidingId) =>
       "put"
     )
 
+export const setOpleidingActive = (opleidingId) =>
+    processReq(
+      "/opleidingen/" + opleidingId + "/status",
+      {
+        active: 1
+      },
+      "put"
+    )
+
 export const deleteCategorie = id =>
   processReq("/doelstellingsCategorie/" + id, {}, "delete");
 

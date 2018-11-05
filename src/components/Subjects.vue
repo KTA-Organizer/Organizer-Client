@@ -26,7 +26,8 @@
             <tr v-if="checkSelected(props.item.id)">
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-right">
-              <v-btn color="error" class="ma-1 right" dark @click="showDialog(props, props.item.name, props.item.id)"><v-icon dark>delete</v-icon>Deactiveer</v-btn>
+              <v-btn color="error" v-if="props.item.active" class="ma-1 right" dark @click="showDialogDeactivate(props, props.item)"><v-icon dark>delete</v-icon>Deactiveer</v-btn>
+              <v-btn color="error" v-if="!props.item.active" class="ma-1 right" dark @click="showDialogActivate(props, props.item)"><v-icon dark>build</v-icon>Activeer</v-btn>
               <v-btn color="primary" class="ma-1 right" @click.native="setGivenMajor(props.item)" dark><v-icon dark>edit</v-icon></v-btn>
             </td>
             </tr>
@@ -34,14 +35,14 @@
         </v-data-table>
       </v-flex>
     </v-layout>
-    <v-dialog width="500" v-model="deleteOpleiding">
+    <v-dialog width="500" v-model="deactivateOpleidingStatus">
                 <v-card>
                   <v-card-title class="headline grey lighten-2" primary-title>
                     Opgelet!
                   </v-card-title>
 
                   <v-card-text>
-                    <p>U staat op het punt om <strong>{{ selectedOpleidingName }}</strong> te verwijderen.</p>
+                    <p>U staat op het punt om <strong>{{ selectedOpleidingName }}</strong> te deactiveren.</p>
                     <p>Bent u dit zeker?</p>
                   </v-card-text>
 
@@ -49,10 +50,34 @@
 
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" flat v-on:click="deleteOpleiding = false">
+                    <v-btn color="primary" flat v-on:click="deactivateOpleidingStatus = false">
                       Annuleer
                     </v-btn>
                     <v-btn color="error" flat v-on:click="deactivateOpleiding()">
+                      Bevestig
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+      <v-dialog width="500" v-model="activateOpleidingStatus">
+                <v-card>
+                  <v-card-title class="headline grey lighten-2" primary-title>
+                    Opgelet!
+                  </v-card-title>
+
+                  <v-card-text>
+                    <p>U staat op het punt om <strong>{{ selectedOpleidingName }}</strong> te activeren.</p>
+                    <p>Bent u dit zeker?</p>
+                  </v-card-text>
+
+                  <v-divider></v-divider>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" flat v-on:click="activateOpleidingStatus = false">
+                      Annuleer
+                    </v-btn>
+                    <v-btn color="error" flat v-on:click="activateOpleiding()">
                       Bevestig
                     </v-btn>
                   </v-card-actions>
@@ -85,10 +110,11 @@ export default {
       ],
       items: [],
       filters: [],
-      deleteOpleiding: false,
-      selectedOpleidingName: null,
-      selectedOpleidingId: null,
+      deactivateOpleidingStatus: false,
+      activateOpleidingStatus: false,
+      selectedOpleiding: null,
       selectedOpleidingen: null,
+      selectedOpleidingName: null,
       selectedid: null,
       keys: ["name"],
       zoeklabel: "Opleiding",
@@ -104,27 +130,33 @@ export default {
       const form = this.formData;
       console.log(form);
     },
-    showDialog(opleidingen, opleidingName, opleidingId){
-      this.deleteOpleiding = true;
+    showDialogDeactivate(opleidingen, opleiding){
+      this.deactivateOpleidingStatus = true;
       this.selectedOpleidingen = opleidingen;
-      this.selectedOpleidingName = opleidingName;
-      this.selectedOpleidingId = opleidingId;
+      this.selectedOpleiding = opleiding;
+      this.selectedOpleidingName = opleiding.name;
+    },
+    showDialogActivate(opleidingen, opleiding){
+      this.activateOpleidingStatus = true;
+      this.selectedOpleidingen = opleidingen;
+      this.selectedOpleiding = opleiding;
+      this.selectedOpleidingName = opleiding.name;
     },
     setGivenMajor(major) {
       this.givenmajor = major;
       this.editMode = true;
     },
     deactivateOpleiding(){
-      console.log(this.selectedOpleidingen);
-      console.log(this.selectedOpleidingName);
-      console.log(this.selectedOpleidingId);
-      api.setOpleidingInactive(this.selectedOpleidingId);
-      this.deleteOpleiding = false;
-      this.selectedOpleidingen = null;
-      this.selectedOpleidingName = null;
-      this.selectedOpleidingId = null;
+      api.setOpleidingInactive(this.selectedOpleiding.id);
+      this.deactivateOpleidingStatus = false;
+      location.reload(); // voorlopig
     }
     ,
+    activateOpleiding(){
+      api.setOpleidingActive(this.selectedOpleiding.id);
+      this.activateOpleidingStatus = false;
+      location.reload(); //voorlopig
+    },
     checkSelected(id) {
       if (this.selectedid === null) {
         return true;
