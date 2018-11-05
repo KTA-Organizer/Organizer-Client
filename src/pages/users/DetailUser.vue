@@ -52,7 +52,7 @@
       </v-card-title>
       <v-card-text>
         <v-layout align-center justify-space-between row fill-height>
-          <v-select label="Opleiding" :disabled="!editOpleidingMode" v-model="opleiding" :rules="selectRules" :items="opleidingnames"></v-select>
+          <v-select label="Opleiding" :disabled="!editOpleidingMode" v-model="opleiding" :rules="selectOpleidingRules" :items="opleidingnames"></v-select>
         </v-layout>
         <v-btn @click="updateOpleiding" v-if="editOpleidingMode" color="primary">Opleiding aanpassen</v-btn>
       </v-card-text>
@@ -132,27 +132,20 @@
 <script>
 import store from "../../store/index";
 import { mapGetters } from "vuex";
+import * as rules from "../../constants/rules";
+import * as constants from "../../constants/user";
 export default {
   name: "DetailUser",
   data() {
     return {
       user: {},
       userFields: {},
-      firstnameRules: [v => !!v || "Voornaam moet ingevuld worden"],
-      nameRules: [v => !!v || "Naam moet ingevuld worden"],
-      emailRules: [
-        v => !!v || "E-mail moet ingevuld worden",
-        v =>
-          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-          "E-mail moet geldig zijn"
-      ],
-      selectRoleRules: [
-        v =>
-          (v.length > 0 && v.length < 3) ||
-          "Rol moet ingevuld worden en kan maximum 2 rollen bevatten"
-      ],
-      selectRules: [ v => !!v || "Veld moet ingevuld worden!"],
-      selectGenderRules: [v => !!v || "Geslacht moet ingevuld worden"],
+      firstnameRules: rules.firstname,
+      nameRules: rules.name,
+      emailRules: rules.email,
+      selectRoleRules: rules.role,
+      selectOpleidingRules: rules.opleiding,
+      selectGenderRules: rules.gender,
       editUserMode: false,
       editOpleidingMode: false,
       opleidingen: [],
@@ -174,8 +167,8 @@ export default {
       return Object.keys(object).find(key => object[key] === value);
     },
     async updateUser() {
-      const gender = this.constants.genderKeys[this.userFields.gender];
-      const roles = this.userFields.roles.map(r => this.constants.roleKeys[r]);
+      const gender = constants.genderKeys[this.userFields.gender];
+      const roles = this.userFields.roles.map(r => constants.roleKeys[r]);
       await this.$http.updateUser({ ...this.user, gender, roles });
       await this.fetchUser();
     },
@@ -185,11 +178,11 @@ export default {
 
       this.userFields = Object.assign({}, this.user);
       this.userFields.gender = this.getKeyByValue(
-        this.constants.genderKeys,
+        constants.genderKeys,
         this.user.gender
       );
       this.userFields.roles = this.user.roles.map(r =>
-        this.getKeyByValue(this.constants.roleKeys, r)
+        this.getKeyByValue(constants.roleKeys, r)
       );
 
       this.opleidingen = await this.$http.getOpleidingen();
@@ -222,6 +215,5 @@ export default {
   async created() {
     await this.fetchUser();
   },
-  computed: mapGetters(["constants"])
 };
 </script>

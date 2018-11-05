@@ -66,10 +66,10 @@ export default {
       email: "",
       gender: undefined,
       role: undefined,
-      genders: [],
-      genderKeys: {},
-      roles: [],
-      roleKeys: {},
+      genders: constants.genders,
+      genderKeys: constants.genderKeys,
+      roles: constants.roles,
+      roleKeys: constants.roleKeys,
       firstnameRules: rules.firstname,
       nameRules: rules.name,
       emailRules: rules.email,
@@ -92,13 +92,6 @@ export default {
         this.$router.push(`${userIdObj.id}`);
       }
     }
-  },
-  created() {
-    console.log(constants);
-    this.genders = constants.genders;
-    this.genderKeys = constants.genderKeys;
-    this.roles = constants.roles;
-    this.roleKeys = constants.roleKeys;
   }
 };
 </script>

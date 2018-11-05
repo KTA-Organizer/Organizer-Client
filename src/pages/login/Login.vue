@@ -29,31 +29,25 @@
 </template>
 
 <script>
+import * as rules from "../../constants/rules";
 export default {
-    name: "Login",
-    data: () => ({
-        email: "kenny.depecker@student.howest.be",
-        password: "test",
-        passwordRules: [v => !!v || "paswoord moet ingevuld worden"],
-        emailRules: [
-            v => !!v || "E-mail moet ingevuld worden",
-            v =>
-            /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-            "E-mail moet geldig zijn"
-        ],
-        showPasswordReset: false
-    }),
-    methods: {
-        onLogin() {
-            this.$store.dispatch("login", {
-                email: this.email,
-                password: this.password
-            });
-        },
-        forgotPassword() {
-            this.showPasswordReset = !this.showPasswordReset;
-        }
+  name: "Login",
+  data: () => ({
+    email: "kenny.depecker@student.howest.be",
+    password: "test",
+    showPasswordReset: false
+  }),
+  methods: {
+    onLogin() {
+      this.$store.dispatch("login", {
+        email: this.email,
+        password: this.password
+      });
+    },
+    forgotPassword() {
+      this.showPasswordReset = !this.showPasswordReset;
     }
+  }
 };
 </script>
 
