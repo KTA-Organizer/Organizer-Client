@@ -20,7 +20,7 @@
 
 <script>
 import * as rules from "../../constants/rules";
-console.log(rules)
+
 export default {
     name: "SetPassword",
     props: ["accessToken"],

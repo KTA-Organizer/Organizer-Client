@@ -14,17 +14,17 @@ import Notifications from "@/components/notifications/NotificationList";
 import LoginForm from "@/components/auth/LoginForm";
 import ForgotPwForm from "@/components/auth/ForgotPassword"
 import SetPw from "@/components/auth/SetPassword";
+import AddMelding from "@/pages/notifications/AddMelding";
+import SearchBar from "@/components/utils/SearchBar";
+import checkboxes from "@/components/utils/CheckboxContainer";
 
 import Reports from "@/components/Reports";
-import checkboxes from "@/components/CheckboxContainer";
 import Subjects from "@/components/Subjects";
-import SearchBar from "@/components/SearchBar";
 import Evaluate from "@/components/Evaluate";
 import Login from "@/pages/auth/Login";
 import SubjectEditor from "@/components/SubjectEditor";
-import DataTableSelects from "@/components/DataTableSelects";
+import DataTableSelects from "@/components/utils/DataTableSelects";
 import Datepicker from "vuejs-datepicker";
-import AddMelding from "@/components/AddMelding";
 
 Vue.component("checkboxes", checkboxes);
 Vue.component("searchbar", SearchBar);
