@@ -224,11 +224,6 @@ export default {
       CriteriaAddString: "",
       AspectenAddString: "",
       opleiding: [],
-      moduleEditHistory: [],
-      categorieEditHistory: [],
-      doelstellingEditHistory: [],
-      criteriaEditHistory: [],
-      aspectEditHistory: [],
       loader: null,
       loading: false,
       currentUserId: this.$store.getters.currentUser.id
@@ -309,29 +304,24 @@ export default {
     },
     editModule(payload) {
       this.payload = payload;
-      moduleEditHistory.push(payload);
       this.editingModule = !this.editingModule;
       this.hideCategorie();
     },
     editCategorie(payload) {
       this.payload = payload;
-      categorieEditHistory.push(payload);
       this.editingCategorie = !this.editingCategorie;
       this.hideCategorie();
     },
     editDoelstelling(payload) {
       this.payload = payload;
-      doelstellingEditHistory.push(payload);
       this.editingDoelstelling = !this.editingDoelstelling;
     },
     editCriteria(payload) {
       this.payload = payload;
-      criteria.push(payload);
       this.editingCriteria = !this.editingCriteria;
     },
     editAspect(payload) {
       this.payload = payload;
-      aspect.push(payload);
       this.editingAspect = !this.editingAspect;
     },
     createOpleiding() {
@@ -365,12 +355,11 @@ export default {
     saveModules() {
       var self = this;
       this.opleiding.forEach(function(module) {
-        if (module.id && !module.new && self.moduleEditHistory.indexOf(module.id) > 0) {
+        if (module.id && !module.new) {
           self.$http.updateModule(
             module.id,
             module.name
             ).then(function(){
-              moduleEditHistory.splice(module.id, 1);
               self.saveDoelstellingscategorieen(module);
             });
         } else {
@@ -391,12 +380,11 @@ export default {
     saveDoelstellingscategorieen(module) {
       var self = this;
       module.doelstellingCategories.forEach(function(categorie) {
-        if (categorie.id && !categorie.new && self.categorieEditHistory.indexOf(categorie.id) > 0) {
+        if (categorie.id && !categorie.new) {
           self.$http.updateDoelstellingscategorie(
             categorie.id,
             categorie.name
           ).then(function(){
-              categorieEditHistory.splice(categorie.id, 1);
               self.saveDoelstellingen(categorie);
           });
         } else {
@@ -415,12 +403,11 @@ export default {
     saveDoelstellingen(doelstellingscategorie) {
       var self = this;
       doelstellingscategorie.doelstellingen.forEach(function(doelstelling) {
-        if (doelstelling.id && !doelstelling.new && self.doelstellingEditHistory.indexOf(doelstelling.id) > 0) {
+        if (doelstelling.id && !doelstelling.new) {
           self.$http.updateDoelstelling(
             doelstelling.id,
             doelstelling.name
           ).then(function(){
-            doelstellingEditHistory.splice(doelstelling.id, 1);
             self.saveCriteria(doelstelling);
           });
         } else {
@@ -439,12 +426,11 @@ export default {
     saveCriteria(doelstelling) {
       var self = this;
       doelstelling.evaluatieCriteria.forEach(function(criteria) {
-        if (criteria.id && !criteria.new && self.criteriaEditHistory.indexOf(criteria.id) > 0) {
+        if (criteria.id && !criteria.new) {
           self.$http.updateCriteria(
             criteria.id,
             criteria.name
           ).then(function(){
-            criteriaEditHistory.splice(criteria.id, 1);
             self.saveAspect(criteria);
           });
         } else {
@@ -464,13 +450,11 @@ export default {
     saveAspect(criteria) {
       var self = this;
       criteria.aspecten.forEach(function(aspect) {
-        if (aspect.id && !aspect.new && self.aspectEditHistory.indexOf(aspect.id) > 0) {
+        if (aspect.id && !aspect.new) {
           self.$http.updateAspect(
             aspect.id,
             aspect.name
-          ).then(function(){
-            aspectEditHistory.splice(aspect.id, 1);
-          });
+          );
         } else {
           self.$http.createAspect(
             aspect.name,
