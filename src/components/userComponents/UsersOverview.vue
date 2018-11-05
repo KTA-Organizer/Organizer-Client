@@ -169,7 +169,7 @@ export default {
         Actief: "ACTIVE",
         "Wacht op activatie": "WAIT_ACTIVATION",
         "Niet actief": "DISABLED"
-      }
+      },
     };
   },
   methods: {
