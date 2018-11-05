@@ -28,8 +28,8 @@
             <v-text-field label="E-mail" v-model="userFields.email" :rules="emailRules" required :disabled="!editUserMode"></v-text-field>
           </v-layout>
           <v-layout align-center justify-space-between row fill-height>
-            <v-select label="Geslacht" v-model="userFields.gender" :rules="selectRules" required :disabled="!editUserMode" :items="constants.genders"></v-select>
-            <v-select label="Rollen" v-model="userFields.roles" :rules="selectRules" :multiple="true" required :disabled="!editUserMode" :items="constants.roles"></v-select>
+            <v-select label="Geslacht" v-model="userFields.gender" :rules="selectGenderRules" required :disabled="!editUserMode" :items="constants.genders"></v-select>
+            <v-select label="Rollen" v-model="userFields.roles" counter="2" :rules="selectRoleRules" :multiple="true" required :disabled="!editUserMode" :items="constants.roles"></v-select>
           </v-layout>
           <v-btn @click="updateUser" color="primary" v-if="editUserMode">
             <v-icon>save</v-icon>
@@ -39,7 +39,7 @@
       </v-card-text>
     </v-card>
   </v-flex>
-  <v-flex xs12 md6 v-if="user.roles.indexOf('STUDENT') > -1">
+  <v-flex xs12 md6 v-if="user && user.roles.indexOf('STUDENT') > -1">
     <v-card>
       <v-card-title>
         <v-layout align-center justify-space-between row>
@@ -131,9 +131,7 @@
 
 <script>
 import store from "../../store/index";
-import {
-  mapGetters
-} from "vuex";
+import { mapGetters } from "vuex";
 export default {
   name: "DetailUser",
   data() {
@@ -145,10 +143,16 @@ export default {
       emailRules: [
         v => !!v || "E-mail moet ingevuld worden",
         v =>
-        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-        "E-mail moet geldig zijn"
+          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+          "E-mail moet geldig zijn"
       ],
-      selectRules: [v => !!v || "Veld moet ingevuld worden"],
+      selectRoleRules: [
+        v =>
+          (v.length > 0 && v.length < 3) ||
+          "Rol moet ingevuld worden en kan maximum 2 rollen bevatten"
+      ],
+      selectRules: [ v => !!v || "Veld moet ingevuld worden!"],
+      selectGenderRules: [v => !!v || "Geslacht moet ingevuld worden"],
       editUserMode: false,
       editOpleidingMode: false,
       opleidingen: [],
@@ -180,13 +184,21 @@ export default {
       this.user = await this.$http.getUser(userId);
 
       this.userFields = Object.assign({}, this.user);
-      this.userFields.gender = this.getKeyByValue(this.constants.genderKeys, this.user.gender);
-      this.userFields.roles = this.user.roles.map(r => this.getKeyByValue(this.constants.roleKeys, r));
+      this.userFields.gender = this.getKeyByValue(
+        this.constants.genderKeys,
+        this.user.gender
+      );
+      this.userFields.roles = this.user.roles.map(r =>
+        this.getKeyByValue(this.constants.roleKeys, r)
+      );
 
       this.opleidingen = await this.$http.getOpleidingen();
       const userOpleiding = await this.$http.getOpleidingForStudent(userId);
-      this.opleiding = userOpleiding.name;
+      if (userOpleiding) {
+        this.opleiding = userOpleiding.name;
+      }
       this.opleidingnames = this.opleidingen.map(opl => opl.name);
+      console.log(this.user)
     },
     async activateUser(id) {
       await this.$http.activateUser(id);
@@ -200,7 +212,10 @@ export default {
       if (!selectedOpleiding) {
         throw new Error("Deze opleiding bestaat niet.");
       }
-      await this.$http.assignOpleidingToUser(selectedOpleiding.id, this.user.id);
+      await this.$http.assignOpleidingToUser(
+        selectedOpleiding.id,
+        this.user.id
+      );
       await this.fetchUser();
     }
   },
