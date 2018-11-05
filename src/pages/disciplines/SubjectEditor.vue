@@ -212,7 +212,6 @@
 </template>
 
 <script>
-import * as api from "../services/organizer-api";
 export default {
   name: "SubjectEditor",
   props: ["givenmajor"],
@@ -555,7 +554,7 @@ export default {
     var self = this;
     if (this.givenmajor != null) {
       this.opleidingsnaam = self.givenmajor.name;
-      const fullOpleiding = await api.getFullOpleiding(this.givenmajor.id);
+      const fullOpleiding = await this.$http.getFullOpleiding(this.givenmajor.id);
       console.log("FullOpleiding", fullOpleiding);
       fullOpleiding.modules.forEach(function(module, moduleindex) {
         module["indexes"] = [moduleindex + 1];

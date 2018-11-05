@@ -13,6 +13,10 @@ import Print from "@/pages/utils/Print";
 import NotFound from "@/pages/utils/NotFound";
 import AddMelding from "@/pages/notifications/AddMelding";
 import Login from "@/pages/auth/Login";
+import Subjects from "@/pages/disciplines/Subjects";
+import SubjectEditor from "@/pages/disciplines/SubjectEditor";
+import Reports from "@/pages/grading/Reports";
+import Evaluate from "@/pages/grading/Evaluate";
 /* import pages */
 
 /* import components */
@@ -23,11 +27,7 @@ import ForgotPwForm from "@/components/auth/ForgotPassword"
 import SetPw from "@/components/auth/SetPassword";
 import SearchBar from "@/components/utils/SearchBar";
 import checkboxes from "@/components/utils/CheckboxContainer";
-import Reports from "@/components/grading/Reports";
-import Evaluate from "@/components/grading/Evaluate";
 import DataTableSelects from "@/components/utils/DataTableSelects";
-import Subjects from "@/components/disciplines/Subjects";
-import SubjectEditor from "@/components/disciplines/SubjectEditor";
 import Datepicker from "vuejs-datepicker";
 /* import components */
 

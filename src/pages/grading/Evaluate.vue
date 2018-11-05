@@ -207,7 +207,6 @@
 </template>
 
 <script>
-import * as api from "../services/organizer-api";
 export default {
   name: "Evaluatie",
   data() {
@@ -407,14 +406,14 @@ export default {
   async created() {
     var self = this;
     const studentId = this.$route.query.id;
-    const student = await api.getUser(studentId);
+    const student = await this.$http.getUser(studentId);
     this.student = student;
     console.log("studentje", this.student);
-    const opleidingObj = await api.getStudentOpleiding(this.student.id);
+    const opleidingObj = await this.$http.getStudentOpleiding(this.student.id);
     this.breadcrumbs[0].text = opleidingObj.opleiding.name;
     console.log(this.student.id);
-    const evaluations = await api.getEvalsByStudent(this.student.id);
-    this.modules = await api.getModulesForStudent(this.student.id);
+    const evaluations = await this.$http.getEvalsByStudent(this.student.id);
+    this.modules = await this.$http.getModulesForStudent(this.student.id);
     this.modules.forEach(x => this.modulesDropdown.push(x.name));
   }
 };

@@ -91,7 +91,6 @@
 </template>
 
 <script>
-import * as api from "../services/organizer-api";
 export default {
   name: "Subjects",
   data() {
@@ -146,14 +145,14 @@ export default {
       this.givenmajor = major;
       this.editMode = true;
     },
-    deactivateOpleiding(){
-      api.setOpleidingInactive(this.selectedOpleiding.id);
+    async deactivateOpleiding(){
+      await this.$http.setOpleidingInactive(this.selectedOpleiding.id);
       this.deactivateOpleidingStatus = false;
       this.getOpleidingen();
     }
     ,
-    activateOpleiding(){
-      api.setOpleidingActive(this.selectedOpleiding.id);
+    async activateOpleiding(){
+      await this.$http.setOpleidingActive(this.selectedOpleiding.id);
       this.activateOpleidingStatus = false;
       this.getOpleidingen();
     },
@@ -167,12 +166,12 @@ export default {
       }
     },
     async getOpleidingen(){
-      this.items = await api.getOpleidingen();
+      this.items = await this.$http.getOpleidingen();
     }
   },
   async created() {
     var self = this;
-    const opleidingen = await api.getOpleidingen();
+    const opleidingen = await this.$http.getOpleidingen();
     this.items = opleidingen;
   },
   mounted() {
