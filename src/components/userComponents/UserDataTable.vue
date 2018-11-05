@@ -29,6 +29,7 @@
 
 <script>
 import * as router from "../../router/index";
+import moment from "moment";
 export default {
   name: "UserDetail",
   props: ["users", "headers"],
@@ -51,15 +52,7 @@ export default {
   },
   methods: {
     readableDate(timeStamp) {
-      const stamp = timeStamp.split("T");
-      const date = stamp[0].split("-");
-      const time = stamp[1].split(":");
-      let day = date[2];
-      let month = date[1];
-      const year = date[0];
-      let hour = time[0];
-      let minutes = time[1];
-      return `${day}/${month}/${year}, ${+hour + 2}u${minutes}`;
+      return moment(timeStamp).format('LLL');
     },
     getKeyByValue(object, value) {
       return Object.keys(object).find(key => object[key] === value);
