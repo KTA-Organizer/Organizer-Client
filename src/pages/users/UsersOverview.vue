@@ -19,15 +19,6 @@
             >
               <v-icon>add</v-icon>
             </v-btn>
-            <v-btn
-              fab
-              dark
-              small
-              color="yellow"
-              @click.stop="addStudentsFile = true"
-            >
-              <v-icon>file_upload</v-icon>
-            </v-btn>
             <router-link to="Gebruikers/Toevoegen" style="text-decoration: none">
               <v-btn
                 fab
@@ -79,23 +70,6 @@
         
           <userdetail :headers="headers" :users="filteredGebruikers"></userdetail>
 
-          <v-dialog v-model="addStudentsFile">
-            <v-card>
-              <v-card-title><span class="headline">Studenten toevoegen</span></v-card-title>
-              <v-card-text>
-                <v-container grid-list-md>
-                  <v-layout wrap>
-                    <v-flex xs12>
-                      <fileInput v-model="filename" @formData="formData"></fileInput>
-                    </v-flex>
-                  </v-layout>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                  <v-btn color="primary" flat @click.stop="addStudentsFile=false">Close</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
       </v-layout>
   </div>
 </template>
@@ -119,12 +93,10 @@ export default {
   name: "Gebruikers",
   data() {
     return {
-      filename: "",
       receivedData: false,
       formData: [],
       gebruikers: [],
       filteredGebruikers: [],
-      addStudentsFile: false,
       search: "",
       keys: ["firstname", "lastname"],
       zoeklabel: "gebruiker",
@@ -173,10 +145,6 @@ export default {
     };
   },
   methods: {
-    uploadFiles() {
-      const form = this.formData;
-      console.log(form);
-    },
     applyFilters() {
       const naamFiltertje = this.nameFilter.toLowerCase();
       const rolFiltertje = this.roleKeys[this.roleFilter]

@@ -1,4 +1,4 @@
-import { API_URL } from "../constants";
+import { API_URL } from "../constants/config";
 import { ResponseError } from "../utils/ResponseError";
 
 export const login = (email, password) =>

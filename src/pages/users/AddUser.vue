@@ -54,6 +54,9 @@
 <script>
 import store from "../../store/index";
 import { mapGetters } from "vuex";
+import * as constants from "../../constants/user";
+import * as rules from "../../constants/rules";
+
 export default {
   data() {
     return {
@@ -67,20 +70,11 @@ export default {
       genderKeys: {},
       roles: [],
       roleKeys: {},
-      firstnameRules: [v => !!v || "Voornaam moet ingevuld worden"],
-      nameRules: [v => !!v || "Naam moet ingevuld worden"],
-      emailRules: [
-        v => !!v || "E-mail moet ingevuld worden",
-        v =>
-          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-          "E-mail moet geldig zijn"
-      ],
-      selectRoleRules: [
-        v =>
-          (v.length > 0 && v.length < 3) ||
-          "Rol moet ingevuld worden en kan maximum 2 rollen bevatten"
-      ],
-      selectGenderRules: [v => !!v || "Geslacht moet ingevuld worden"]
+      firstnameRules: rules.firstname,
+      nameRules: rules.name,
+      emailRules: rules.email,
+      selectRoleRules: rules.role,
+      selectGenderRules: rules.gender
     };
   },
   methods: {
@@ -100,11 +94,11 @@ export default {
     }
   },
   created() {
-    this.genders = this.constants.genders;
-    this.genderKeys = this.constants.genderKeys;
-    this.roles = this.constants.roles;
-    this.roleKeys = this.constants.roleKeys;
-  },
-  computed: mapGetters(["constants"])
+    console.log(constants);
+    this.genders = constants.genders;
+    this.genderKeys = constants.genderKeys;
+    this.roles = constants.roles;
+    this.roleKeys = constants.roleKeys;
+  }
 };
 </script>

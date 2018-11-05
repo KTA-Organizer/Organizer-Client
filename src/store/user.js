@@ -7,30 +7,6 @@ export const LoginStatus = {
   loggedOut: 2
 };
 
-export const USER_CONSTANTS = {
-  roles: [
-    "Administrator",
-    "Student",
-    "Leerkracht"
-  ],
-  roleKeys: {
-    Administrator: "ADMIN",
-    Student: "STUDENT",
-    Leerkracht: "TEACHER"
-  },
-  genders: ["Man", "Vrouw"],
-  genderKeys: {
-    Man: "M",
-    Vrouw: "F"
-  },
-  statusses: ["Actief", "Wacht op activatie", "Niet actief"],
-  statusKeys: {
-    Actief: "ACTIVE",
-    "Wacht op activatie": "WAIT_ACTIVATION",
-    "Niet actief": "DISABLED"
-  }
-};
-
 export default {
   state: {
     currentUser: {},
