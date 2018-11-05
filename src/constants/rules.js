@@ -13,3 +13,7 @@ export const role = [
 ];
 export const gender = [v => !!v || "Geslacht moet ingevuld worden"];
 export const password = [v => !!v || "paswoord moet ingevuld worden"];
+export const passwordRepeat = [
+  v => !!v || "Voer u wachtwoord hier nog een keer in",
+  v => v === this.password || "Uw wachtwoorden komen niet overeen"
+];

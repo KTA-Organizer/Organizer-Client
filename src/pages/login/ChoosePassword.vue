@@ -35,6 +35,9 @@
 </template>
 
 <script>
+import * as constants from "../../constants/user";
+import * as rules from "../../constants/rules";
+
 export default {
   name: "ChoosePassword",
   data: function () {
@@ -42,14 +45,8 @@ export default {
       accessToken: undefined,
       password: "",
       passwordRepeat: "",
-      passwordRules: [
-        v => !!v || "Paswoord moet ingevuld worden",
-        v => v.length >= 6 || "Paswoord moet minstens 6 karakters bevatten"
-      ],
-      passwordRepeatRules: [
-        v => !!v || "Voer u wachtwoord hier nog een keer in",
-        v => v === this.password || "Uw wachtwoorden komen niet overeen"
-      ],
+      passwordRules: rules.password,
+      passwordRepeatRules: rules.passwordRepeat,
       submitFailure: "Password reset failed.",
       succes: false,
       failure: false,
