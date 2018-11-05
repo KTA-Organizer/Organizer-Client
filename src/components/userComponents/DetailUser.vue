@@ -39,7 +39,7 @@
       </v-card-text>
     </v-card>
   </v-flex>
-  <v-flex xs12 md6 v-if="user && user.roles.indexOf('STUDENT') > -1">
+  <v-flex xs12 md6 v-if="user.roles && user.roles.indexOf('STUDENT') > -1">
     <v-card>
       <v-card-title>
         <v-layout align-center justify-space-between row>
