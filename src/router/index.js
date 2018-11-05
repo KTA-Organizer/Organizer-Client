@@ -1,36 +1,37 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Index from "@/components/Index";
+import Index from "@/pages/Index";
+import Dashboard from "@/pages/Dashboard";
+import Users from "@/pages/users/Users";
+import UserDetail from "@/components/users/UserDataTable";
+import AddUser from "@/pages/users/AddUser";
+import UsersOverview from "@/pages/users/UsersOverview";
+import DetailUser from "@/pages/users/DetailUser";
+import ChoosePassword from "@/pages/login/ChoosePassword";
+import Print from "@/pages/utils/Print";
+import NotFound from "@/pages/utils/NotFound";
+import Notifications from "@/components/notifications/NotificationList";
+import LoginForm from "@/components/login/LoginForm";
+
 import Reports from "@/components/Reports";
-import Dashboard from "@/components/Dashboard";
-import Students from "@/components/Students";
-import AddStudent from "@/components/AddStudent";
-import Print from "@/components/Print";
 import checkboxes from "@/components/CheckboxContainer";
 import Subjects from "@/components/Subjects";
-import fileInput from "@/components/file-input";
 import SearchBar from "@/components/SearchBar";
 import Evaluate from "@/components/Evaluate";
-import Login from "@/components/Login";
+import Login from "@/pages/login/Login";
 import SubjectEditor from "@/components/SubjectEditor";
 import DataTableSelects from "@/components/DataTableSelects";
 import Datepicker from "vuejs-datepicker";
-import Users from "@/components/userComponents/Users";
 import AddMelding from "@/components/AddMelding";
-import UserDetail from "@/components/userComponents/UserDataTable";
-import AddUser from "@/components/userComponents/AddUser";
-import UsersOverview from "@/components/userComponents/UsersOverview";
-import DetailUser from "@/components/userComponents/DetailUser";
-import ChoosePassword from "@/components/ChoosePassword";
-import NotFound from "@/components/NotFound";
 
-Vue.component("fileInput", fileInput);
 Vue.component("checkboxes", checkboxes);
 Vue.component("searchbar", SearchBar);
 Vue.component("subjecteditor", SubjectEditor);
 Vue.component("datatableselects", DataTableSelects);
 Vue.component("datepicker", Datepicker);
 Vue.component("userdetail", UserDetail);
+Vue.component("notification", Notifications)
+Vue.component("loginform", LoginForm);
 Vue.use(Router);
 
 import store from "../store/index";
@@ -83,11 +84,6 @@ export default new Router({
           component: Reports
         },
         {
-          path: "/studenten",
-          name: "studenten",
-          component: Students
-        },
-        {
           path: "/afdrukken",
           name: "afdrukken",
           component: Print
@@ -96,11 +92,6 @@ export default new Router({
           path: "/opleidingen",
           name: "opleidingen",
           component: Subjects
-        },
-        {
-          path: "/addstudent",
-          name: "addstudent",
-          component: AddStudent
         },
         {
           path: "/evaluate",

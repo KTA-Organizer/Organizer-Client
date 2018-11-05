@@ -7,12 +7,6 @@
         <p>Cras condimentum aliquam nibh, quis tincidunt felis feugiat at. Cras eget luctus est. Praesent bibendum enim ipsum, ac laoreet justo fringilla vitae. Mauris dignissim nulla turpis, a cursus metus rhoncus finibus. Donec eleifend feugiat ante, id pellentesque odio maximus ac. Donec sodales vulputate sapien, non tristique ligula mattis nec. Maecenas rutrum, felis ac venenatis efficitur, nulla ante hendrerit felis, ut ultrices lectus ipsum in eros. Curabitur eleifend tincidunt arcu quis congue. Etiam nisl mi, interdum a luctus nec, ornare non massa.</p>
       </v-card-text>
     </v-card>
-    <!-- <v-card>
-      <v-card-text>
-        <h1>Welkom {{currentUser.firstname}}</h1>
-        <p>Cras condimentum aliquam nibh, quis tincidunt felis feugiat at. Cras eget luctus est. Praesent bibendum enim ipsum, ac laoreet justo fringilla vitae. Mauris dignissim nulla turpis, a cursus metus rhoncus finibus. Donec eleifend feugiat ante, id pellentesque odio maximus ac. Donec sodales vulputate sapien, non tristique ligula mattis nec. Maecenas rutrum, felis ac venenatis efficitur, nulla ante hendrerit felis, ut ultrices lectus ipsum in eros. Curabitur eleifend tincidunt arcu quis congue. Etiam nisl mi, interdum a luctus nec, ornare non massa.</p>
-      </v-card-text>
-    </v-card> -->
   </v-flex>
   <v-flex column xs12 md6>
     <v-card>
@@ -23,22 +17,7 @@
         </v-btn>
       </v-layout>
       <v-flex>
-        <v-expansion-panel popout>
-          <v-expansion-panel-content v-for="melding in meldingen" :key="melding.id">
-            <div slot="header" :active="true">
-              <!-- <i class="material-icons">sms_failed</i> -->
-              <h2>{{melding.titel}}</h2>
-              <small>geplaatst door {{melding.creator.firstname}} {{melding.creator.lastname}} {{melding.datum}}</small>
-              <br><small>doelgroep: {{melding.opleidingen.map(opl => opl.name).join(", ")}}</small>
-            </div>
-            <v-card>
-              <v-card-text v-html="melding.tekst"></v-card-text>
-              <v-card-actions v-if="melding.creator.id === currentUser.id">
-                <v-btn class="red" dark v-on:click="deleteMelding(melding.id)"><i class="material-icons">delete</i></v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
+        <notification :meldingen="meldingen" :currentUserId="currentUser.id"></notification>
       </v-flex>
     </v-card>
   </v-flex>

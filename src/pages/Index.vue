@@ -2,7 +2,7 @@
 <v-app>
   <v-navigation-drawer persistent v-model="drawer" app v-if="isLoggedIn">
     <v-toolbar flat center height="150vh">
-      <img class="" src="../assets/CLW_Logo.png" height="100%">
+      <img class="" src="../assets/CLW_Logo.png" height="100%" >
     </v-toolbar>
       <v-divider></v-divider>
       <v-list dense>
