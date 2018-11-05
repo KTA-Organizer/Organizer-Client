@@ -16,61 +16,61 @@
         </v-layout>
         <v-layout row-wrap>
             <v-flex class="mt-5" offset-xs1 xs10>
-                <disciplineOverview :headers="headers" :items="items"></disciplineOverview>
+                <disciplineDataTable :headers="headers" :items="items"></disciplineDataTable>
             </v-flex>
         </v-layout>
-        <v-dialog width="500" v-model="deactivateOpleidingStatus">
-            <v-card>
-                <v-card-title class="headline grey lighten-2" primary-title>
-                    Opgelet!
-                </v-card-title>
-
-                <v-card-text>
-                    <p>U staat op het punt om <strong>{{ selectedOpleidingName }}</strong> te deactiveren.</p>
-                    <p>Bent u dit zeker?</p>
-                </v-card-text>
-
-                <v-divider></v-divider>
-
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" flat v-on:click="deactivateOpleidingStatus = false">
-                        Annuleer
-                    </v-btn>
-                    <v-btn color="error" flat v-on:click="deactivateOpleiding()">
-                        Bevestig
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-        <v-dialog width="500" v-model="activateOpleidingStatus">
-            <v-card>
-                <v-card-title class="headline grey lighten-2" primary-title>
-                    Opgelet!
-                </v-card-title>
-
-                <v-card-text>
-                    <p>U staat op het punt om <strong>{{ selectedOpleidingName }}</strong> te activeren.</p>
-                    <p>Bent u dit zeker?</p>
-                </v-card-text>
-
-                <v-divider></v-divider>
-
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" flat v-on:click="activateOpleidingStatus = false">
-                        Annuleer
-                    </v-btn>
-                    <v-btn color="error" flat v-on:click="activateOpleiding()">
-                        Bevestig
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
     </template>
     <v-container>
         <subjecteditor v-if="editMode" :givenmajor="givenmajor"></subjecteditor>
     </v-container>
+    <v-dialog width="500" v-model="deactivateOpleidingStatus">
+        <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title>
+                Opgelet!
+            </v-card-title>
+
+            <v-card-text>
+                <p>U staat op het punt om <strong>{{ selectedOpleidingName }}</strong> te deactiveren.</p>
+                <p>Bent u dit zeker?</p>
+            </v-card-text>
+
+            <v-divider></v-divider>
+
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" flat v-on:click="deactivateOpleidingStatus = false">
+                    Annuleer
+                </v-btn>
+                <v-btn color="error" flat v-on:click="deactivateOpleiding()">
+                    Bevestig
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+    <v-dialog width="500" v-model="activateOpleidingStatus">
+        <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title>
+                Opgelet!
+            </v-card-title>
+
+            <v-card-text>
+                <p>U staat op het punt om <strong>{{ selectedOpleidingName }}</strong> te activeren.</p>
+                <p>Bent u dit zeker?</p>
+            </v-card-text>
+
+            <v-divider></v-divider>
+
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" flat v-on:click="activateOpleidingStatus = false">
+                    Annuleer
+                </v-btn>
+                <v-btn color="error" flat v-on:click="activateOpleiding()">
+                    Bevestig
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </main>
 </template>
 
@@ -115,26 +115,6 @@ export default {
         applySelection(payload) {
             this.selectedid = payload;
         },
-        uploadFiles() {
-            const form = this.formData;
-            console.log(form);
-        },
-        // showDialogDeactivate(opleidingen, opleiding) {
-        //     this.deactivateOpleidingStatus = true;
-        //     this.selectedOpleidingen = opleidingen;
-        //     this.selectedOpleiding = opleiding;
-        //     this.selectedOpleidingName = opleiding.name;
-        // },
-        // showDialogActivate(opleidingen, opleiding) {
-        //     this.activateOpleidingStatus = true;
-        //     this.selectedOpleidingen = opleidingen;
-        //     this.selectedOpleiding = opleiding;
-        //     this.selectedOpleidingName = opleiding.name;
-        // },
-        // setGivenMajor(major) {
-        //     this.givenmajor = major;
-        //     this.editMode = true;
-        // },
         async deactivateOpleiding() {
             await this.$http.setOpleidingInactive(this.selectedOpleiding.id);
             this.deactivateOpleidingStatus = false;

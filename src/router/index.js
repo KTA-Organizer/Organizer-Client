@@ -28,7 +28,7 @@ import SetPw from "@/components/auth/SetPassword";
 import SearchBar from "@/components/utils/SearchBar";
 import checkboxes from "@/components/utils/CheckboxContainer";
 import DataTableSelects from "@/components/utils/DataTableSelects";
-import DisciplineOverview from "@/components/disciplines/DisciplineOverview";
+import DisciplineDataTable from "@/components/disciplines/DisciplineDataTable";
 import Datepicker from "vuejs-datepicker";
 /* import components */
 
@@ -43,7 +43,7 @@ Vue.component("notification", Notifications)
 Vue.component("loginform", LoginForm);
 Vue.component("forgotpassword", ForgotPwForm);
 Vue.component("setpassword", SetPw);
-Vue.component("disciplineOverview", DisciplineOverview);
+Vue.component("disciplineDataTable", DisciplineDataTable);
 /* set components */
 
 Vue.use(Router);

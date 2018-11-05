@@ -23,7 +23,7 @@
 
 <script>
 export default {
-    name: "DisciplineOverview",
+    name: "DisciplineDataTable",
     props: ["items", "headers", "value"],
     data() {
         return {
