@@ -109,11 +109,17 @@ export default {
             await this.$http.setOpleidingInactive(this.selectedOpleiding.id);
             this.deactivateOpleidingStatus = false;
             this.getOpleidingen();
+            this.selectedOpleidingen = null;
+            this.selectedOpleidingName = null;
+            this.selectedOpleiding = null;
         },
         async activateOpleiding() {
             await this.$http.setOpleidingActive(this.selectedOpleiding.id);
             this.activateOpleidingStatus = false;
             this.getOpleidingen();
+            this.selectedOpleidingen = null;
+            this.selectedOpleidingName = null;
+            this.selectedOpleiding = null;
         },
         checkSelected(id) {
             if (this.selectedid === null) {
