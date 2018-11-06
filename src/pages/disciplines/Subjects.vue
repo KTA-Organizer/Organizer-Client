@@ -16,7 +16,7 @@
         </v-layout>
         <v-layout row-wrap>
             <v-flex class="mt-5" offset-xs1 xs10>
-                <disciplineDataTable :headers="headers" :items="items"></disciplineDataTable>
+                <disciplineDataTable v-on:setMajor="setGivenMajor" v-on:dialogActivate="showDialogActivate" v-on:dialogDeactivate="showDialogDeactivate" :items="items"></disciplineDataTable>
             </v-flex>
         </v-layout>
     </template>
@@ -98,7 +98,7 @@ export default {
             keys: ["name"],
             zoeklabel: "Opleiding",
             item_name: "name",
-            item_value: "id",
+            item_value: "id"
         };
     },
     methods: {
@@ -126,7 +126,24 @@ export default {
         },
         async getOpleidingen() {
             this.items = await this.$http.getOpleidingen();
-        }
+        },
+        showDialogActivate(opleidingen, opleiding) {
+            this.activateOpleidingStatus = true;
+            this.setSelectedOpleiding(opleidingen, opleiding);
+        },
+        showDialogDeactivate(opleidingen, opleiding) {
+            this.deactivateOpleidingStatus = true;
+            this.setSelectedOpleiding(opleidingen, opleiding);
+        },
+        setSelectedOpleiding(opleidingen, opleiding) {
+            this.selectedOpleidingen = opleidingen;
+            this.selectedOpleiding = opleiding;
+            this.selectedOpleidingName = opleiding.name;
+        },
+        setGivenMajor(major) {
+            this.givenmajor = major;
+            this.editMode = true;
+        },
     },
     async created() {
         var self = this;
