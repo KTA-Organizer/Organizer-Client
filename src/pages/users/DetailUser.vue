@@ -58,30 +58,7 @@
       </v-card-text>
     </v-card>
   </v-flex>
-  <v-dialog width="500" v-model="deleteDialog">
-    <v-card>
-      <v-card-title class="headline grey lighten-2" primary-title>
-        Opgelet!
-      </v-card-title>
-
-      <v-card-text>
-        <p>U staat op het punt om <strong>{{ user.firstname + ' ' + user.lastname  }}</strong> te verwijderen.</p>
-        <p>Bent u dit zeker?</p>
-      </v-card-text>
-
-      <v-divider></v-divider>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" flat v-on:click="deleteDialog = false">
-          Annuleer
-        </v-btn>
-        <v-btn color="error" flat v-on:click="deleteUser(user.id)">
-          Bevestig
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <confirmdialog v-bind:model.sync="deleteDialog" :name="user.firstname + ' ' + user.lastname" :action="'verwijderen'" v-on:confirm="deleteUser(user.id)"></confirmdialog>
   <v-dialog width="500" v-model="confirmDeleteDialog">
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title>
