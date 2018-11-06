@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 
 /* import pages */
+import Modules from "@/pages/modules/Modules";
 import Index from "@/pages/Index";
 import Dashboard from "@/pages/Dashboard";
 import Users from "@/pages/users/Users";
@@ -106,6 +107,11 @@ export default new Router({
           path: "/opleidingen",
           name: "opleidingen",
           component: Subjects
+        },
+        {
+          path: "/modules",
+          name: "modules",
+          component: Modules
         },
         {
           path: "/evaluate",

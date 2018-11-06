@@ -1,6 +1,6 @@
 <template>
 <main>
-    <v-layout row class="ml-5">
+    <v-layout row class="ml-5" v-if="!editingModule">
         <v-flex xs4>
             <v-text-field name="opleidingsnaam" label="Naam van de opleiding" v-model="opleidingsnaam" single-line></v-text-field>
         </v-flex>
@@ -13,7 +13,7 @@
             </v-btn>
         </v-flex>
     </v-layout>
-    <v-data-table v-bind:headers="headers" :items="opleiding" hide-actions class="elevation-1">
+    <v-data-table v-bind:headers="headers" :items="opleiding" v-if="!editingModule" hide-actions class="elevation-1">
     <template slot="items" slot-scope="props">
         <tr>
             <td class="text-xs-left">{{ props.item.name }}</td>
@@ -21,13 +21,28 @@
                 <v-btn color="error" class="ma-1 right" v-if="!editingModule" dark @click="removeModule(opleiding, props.item)">
                     <v-icon dark>delete</v-icon>
                 </v-btn>
-                <v-btn color="primary" class="ma-1 right" v-if="!editingModule" dark @click="editModule(moduleIndex)">
-                    <v-icon dark>edit</v-icon>
-                </v-btn>
+                <router-link to="{ path: 'modules', params: { id: {props.item.id} }}" style="text-decoration: none">
+                    <v-btn color="primary" class="ma-1 right" v-if="!editingModule" dark @click="editModule(props.index)">
+                        <v-icon dark>edit</v-icon>
+                    </v-btn>
+                </router-link>
             </td>
         </tr>
     </template>
-</v-data-table>
+    </v-data-table>
+    <v-layout row class="ml-5" v-if="editingModule">
+        <v-flex xs4>
+            <v-text-field name="modulenaam" label="Naam van de module" single-line></v-text-field>
+        </v-flex>
+        <v-flex xs5>
+            <v-btn color="success" :loading="loading" @click.native="saveOpleiding" :disabled="loading">
+                Opslaan
+                <span slot="loader" class="custom-loader">
+                  <v-icon light>cached</v-icon>
+                </span>
+            </v-btn>
+        </v-flex>
+    </v-layout>
 </main>
 </template>
 
@@ -49,6 +64,7 @@ export default {
             ],
             snackbar: false,
             opleidingsnaam: "",
+            modulenaam: "",
             editingModule: false,
             editingCategorie: false,
             editingDoelstelling: false,
@@ -168,6 +184,7 @@ export default {
         },
         editModule(payload) {
             this.payload = payload;
+            this.modulenaam = this.opleiding[payload].name;
             this.editingModule = !this.editingModule;
             this.hideCategorie();
         },
