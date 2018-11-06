@@ -59,50 +59,8 @@
     </v-card>
   </v-flex>
   <confirmdialog v-bind:model.sync="deleteDialog" :name="user.firstname + ' ' + user.lastname" :action="'verwijderen'" v-on:confirm="deleteUser(user.id)"></confirmdialog>
-  <v-dialog width="500" v-model="confirmDeleteDialog">
-    <v-card>
-      <v-card-title class="headline grey lighten-2" primary-title>
-        Verwijderd!
-      </v-card-title>
-
-      <v-card-text>
-        <p><strong>{{ user.firstname + ' ' + user.lastname  }}</strong> is verwijderd.</p>
-      </v-card-text>
-
-      <v-divider></v-divider>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" flat v-on:click="$router.push('/Gebruikers')">
-          Terug naar overzicht
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-  <v-dialog width="500" v-model="activateDialog">
-    <v-card>
-      <v-card-title class="headline grey lighten-2" primary-title>
-        Opgelet!
-      </v-card-title>
-
-      <v-card-text>
-        <p>U staat op het punt om <strong>{{ user.firstname + ' ' + user.lastname  }}</strong> te activeren.</p>
-        <p>Bent u dit zeker?</p>
-      </v-card-text>
-
-      <v-divider></v-divider>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" flat v-on:click="activateDialog = false">
-          Annuleer
-        </v-btn>
-        <v-btn color="error" flat v-on:click="activateUser(user.id)">
-          Bevestig
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <succesdialog v-bind:model="confirmDeleteDialog" :name="user.firstname + ' ' + user.lastname" :action="'verwijderd'" :link="'/Gebruikers'"></succesdialog>
+  <confirmdialog v-bind:model.sync="activateDialog" :name="user.firstname + ' ' + user.lastname" :action="'activeren'" v-on:confirm="activateUser(user.id)"></confirmdialog>
 </v-layout>
 </template>
 
@@ -131,6 +89,7 @@ export default {
       opleiding: undefined,
       deleteDialog: false,
       confirmDeleteDialog: false,
+      confirmActivateDialog: false,
       activateDialog: false,
       constants: constants
     };
