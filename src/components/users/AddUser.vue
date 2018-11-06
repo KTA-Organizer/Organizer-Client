@@ -11,6 +11,7 @@
                 <v-text-field label="Voornaam" v-model="firstname" :rules="firstnameRules" required :autofocus="true"></v-text-field>
                 <v-text-field label="Naam" v-model="name" :rules="nameRules" required></v-text-field>
                 <v-text-field label="E-mail" v-model="email" :rules="emailRules" required></v-text-field>
+                <rgn v-bind:model.sync="rgn"></rgn>
                 <v-select label="Geslacht" v-model="gender" :rules="selectGenderRules" required :items="genders"></v-select>
                 <v-select label="Rol" v-model="role" :rules="selectRoleRules" required :multiple="true" :items="roles"></v-select>
                 <router-link to="/Gebruikers">
@@ -39,6 +40,7 @@ export default {
             firstname: "",
             name: "",
             email: "",
+            rgn: "",
             gender: undefined,
             role: undefined,
             genders: constants.genders,
@@ -49,7 +51,8 @@ export default {
             nameRules: rules.name,
             emailRules: rules.email,
             selectRoleRules: rules.role,
-            selectGenderRules: rules.gender
+            selectGenderRules: rules.gender,
+            rgnRules: rules.name
         };
     },
     methods: {
@@ -61,10 +64,12 @@ export default {
                     lastname: this.name,
                     email: this.email,
                     gender: this.genderKeys[this.gender],
-                    roles: roles
+                    roles: roles,
+                    nationalRegisterNumber: this.rgn
                 };
-                const userIdObj = await this.$http.createUser(newUser);
-                this.$router.push(`${userIdObj.id}`);
+                console.log(newUser);
+                // const userIdObj = await this.$http.createUser(newUser);
+                // this.$router.push(`${userIdObj.id}`);
             }
         }
     }
