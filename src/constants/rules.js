@@ -18,3 +18,7 @@ export const passwordRepeat = [
   v => !!v || "Voer u wachtwoord hier nog een keer in",
   v => v === this.password || "Uw wachtwoorden komen niet overeen"
 ];
+export const rgn = [
+  v => !!v || "Vul het rijksregisternummer in",
+  v => v.length === 11 || "Het formaat van het rijksregisternummer is niet correct"
+]
