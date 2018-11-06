@@ -87,16 +87,6 @@ export default {
                 name: null
             },
             addSubjectFile: false,
-            headers: [{
-                    text: "Opleiding",
-                    align: "left",
-                    value: "opleiding"
-                },
-                {
-                    text: "",
-                    value: "actionbtns"
-                }
-            ],
             items: [],
             filters: [],
             deactivateOpleidingStatus: false,

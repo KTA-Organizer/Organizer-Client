@@ -19,16 +19,23 @@
 </v-data-table>
 </template>
 
-          
-
 <script>
 export default {
     name: "DisciplineDataTable",
-    props: ["items", "headers", "value"],
+    props: ["items", "value"],
     data() {
         return {
             selectedid: null,
-            x: this.value
+            headers: [{
+                    text: "Opleiding",
+                    align: "left",
+                    value: "opleiding"
+                },
+                {
+                    text: "",
+                    value: "actionbtns"
+                }
+            ],
         };
     },
     methods: {
