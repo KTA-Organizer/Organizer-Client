@@ -5,7 +5,6 @@ import Router from "vue-router";
 import Index from "@/pages/Index";
 import Dashboard from "@/pages/Dashboard";
 import Users from "@/pages/users/Users";
-import AddUser from "@/pages/users/AddUser";
 import UsersOverview from "@/pages/users/UsersOverview";
 import DetailUser from "@/pages/users/DetailUser";
 import ChoosePassword from "@/pages/auth/ChoosePassword";
@@ -32,7 +31,9 @@ import DisciplineDataTable from "@/components/disciplines/DisciplineDataTable";
 import Datepicker from "vuejs-datepicker";
 import ConfirmDialog from "@/components/dialogs/confirmDialog";
 import SuccesDialog from "@/components/dialogs/succesDialog";
+import AddUser from "@/components/users/AddUser";
 import ChooseDiscipline from "@/components/disciplines/ChooseDiscipline";
+import UserDetailCard from "@/components/users/UserDetailCard";
 /* import components */
 
 /* set components */
@@ -50,6 +51,7 @@ Vue.component("disciplineDataTable", DisciplineDataTable);
 Vue.component("confirmdialog", ConfirmDialog);
 Vue.component("succesdialog", SuccesDialog);
 Vue.component("choosediscipline", ChooseDiscipline);
+Vue.component("userdetailcard", UserDetailCard);
 /* set components */
 
 Vue.use(Router);

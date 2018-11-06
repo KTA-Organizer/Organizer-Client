@@ -1,0 +1,60 @@
+<template>
+<v-card>
+    <v-card-title>
+        <v-layout align-center justify-space-between row>
+            <h1>{{user.firstname}} {{user.lastname}}</h1>
+            <div>
+                <v-btn v-if="user.status === 'ACTIVE'" color="error" class="ma-1" dark @click="$emit('update:delete', true)">
+                    <v-icon dark>delete</v-icon>
+                    Deactiveer
+                </v-btn>
+                <v-btn v-else class="ma-1 light-green accent-4" dark @click="$emit('update:activate', true)">Activeer</v-btn>
+                <v-btn color="primary" class="ma-1" dark @click="$emit('update:edit', !edit)">
+                    <v-icon dark>edit</v-icon>
+                    {{!edit ? "Aanpassen" : "stop aanpassen"}}
+                </v-btn>
+            </div>
+        </v-layout>
+    </v-card-title>
+    <v-card-text>
+        <v-form ref="form" lazy-validation>
+            <v-layout align-center justify-space-between row fill-height>
+                <v-text-field label="Voornaam" v-model="userFields.firstname" :rules="firstnameRules" required :disabled="!edit"></v-text-field>
+                <v-text-field label="Naam" v-model="userFields.lastname" :rules="nameRules" required :disabled="!edit"></v-text-field>
+            </v-layout>
+            <v-layout align-center justify-space-between row fill-height>
+                <v-text-field label="E-mail" v-model="userFields.email" :rules="emailRules" required :disabled="!edit"></v-text-field>
+            </v-layout>
+            <v-layout align-center justify-space-between row fill-height>
+                <v-select label="Geslacht" v-model="userFields.gender" :rules="selectGenderRules" required :disabled="!edit" :items="constants.genders"></v-select>
+                <v-select label="Rollen" v-model="userFields.roles" :rules="selectRoleRules" :multiple="true" required :disabled="!edit" :items="constants.roles"></v-select>
+            </v-layout>
+            <v-btn @click="$emit('update')" color="primary" v-if="edit">
+                <v-icon>save</v-icon>
+                Opslaan
+            </v-btn>
+        </v-form>
+    </v-card-text>
+</v-card>
+</template>
+
+<script>
+import * as constants from "../../constants/user";
+import * as rules from "../../constants/rules";
+
+export default {
+    name: "UserDetailCard",
+    props: ["user", "delete", "edit", "activate", "userFields"],
+    data() {
+        return {
+            firstnameRules: rules.firstname,
+            nameRules: rules.name,
+            emailRules: rules.email,
+            selectRoleRules: rules.role,
+            selectOpleidingRules: rules.opleiding,
+            selectGenderRules: rules.gender,
+            constants: constants
+        };
+    }
+};
+</script>
