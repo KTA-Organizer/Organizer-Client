@@ -32,6 +32,7 @@ import DisciplineDataTable from "@/components/disciplines/DisciplineDataTable";
 import Datepicker from "vuejs-datepicker";
 import ConfirmDialog from "@/components/dialogs/confirmDialog";
 import SuccesDialog from "@/components/dialogs/succesDialog";
+import ChooseDiscipline from "@/components/disciplines/ChooseDiscipline";
 /* import components */
 
 /* set components */
@@ -48,6 +49,7 @@ Vue.component("setpassword", SetPw);
 Vue.component("disciplineDataTable", DisciplineDataTable);
 Vue.component("confirmdialog", ConfirmDialog);
 Vue.component("succesdialog", SuccesDialog);
+Vue.component("choosediscipline", ChooseDiscipline);
 /* set components */
 
 Vue.use(Router);

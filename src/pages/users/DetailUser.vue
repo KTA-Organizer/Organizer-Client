@@ -29,7 +29,7 @@
           </v-layout>
           <v-layout align-center justify-space-between row fill-height>
             <v-select label="Geslacht" v-model="userFields.gender" :rules="selectGenderRules" required :disabled="!editUserMode" :items="constants.genders"></v-select>
-            <v-select label="Rollen" v-model="userFields.roles" counter="2" :rules="selectRoleRules" :multiple="true" required :disabled="!editUserMode" :items="constants.roles"></v-select>
+            <v-select label="Rollen" v-model="userFields.roles" :rules="selectRoleRules" :multiple="true" required :disabled="!editUserMode" :items="constants.roles"></v-select>
           </v-layout>
           <v-btn @click="updateUser" color="primary" v-if="editUserMode">
             <v-icon>save</v-icon>
@@ -40,23 +40,7 @@
     </v-card>
   </v-flex>
   <v-flex xs12 md6 v-if="user.roles && user.roles.indexOf('STUDENT') > -1">
-    <v-card>
-      <v-card-title>
-        <v-layout align-center justify-space-between row>
-          <h2>Opleiding</h2>
-            <v-btn color="primary" class="ma-1" dark @click="editOpleidingMode = !editOpleidingMode">
-              <v-icon dark>edit</v-icon>
-              {{!editOpleidingMode ? "Aanpassen" : "stop aanpassen"}}
-            </v-btn>
-        </v-layout>
-      </v-card-title>
-      <v-card-text>
-        <v-layout align-center justify-space-between row fill-height>
-          <v-select label="Opleiding" :disabled="!editOpleidingMode" v-model="opleiding" :rules="selectOpleidingRules" :items="opleidingnames"></v-select>
-        </v-layout>
-        <v-btn @click="updateOpleiding" v-if="editOpleidingMode" color="primary">Opleiding aanpassen</v-btn>
-      </v-card-text>
-    </v-card>
+    <choosediscipline v-on:confirm="updateOpleiding" v-bind:model.sync="editOpleidingMode" v-bind:discipline.sync="opleiding" :items="opleidingnames" ></choosediscipline>
   </v-flex>
   <confirmdialog v-bind:model.sync="deleteDialog" :name="user.firstname + ' ' + user.lastname" :action="'verwijderen'" v-on:confirm="deleteUser(user.id)"></confirmdialog>
   <succesdialog v-bind:model="confirmDeleteDialog" :name="user.firstname + ' ' + user.lastname" :action="'verwijderd'" :link="'/Gebruikers'"></succesdialog>
@@ -137,6 +121,7 @@ export default {
       this.activateDialog = false;
     },
     async updateOpleiding() {
+      console.log("updating")
       const selectedOpleiding = this.opleidingen.find(
         x => x.name === this.opleiding
       );

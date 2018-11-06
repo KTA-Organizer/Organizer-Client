@@ -40,7 +40,6 @@
               :rules="selectRoleRules"
               required
               :multiple="true"
-              :counter="2"
               :items="roles"
             ></v-select>
             <router-link to="/Gebruikers"><v-btn color="secondary">Terug naar overzicht</v-btn></router-link>
