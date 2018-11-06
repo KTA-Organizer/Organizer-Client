@@ -30,6 +30,7 @@ import checkboxes from "@/components/utils/CheckboxContainer";
 import DataTableSelects from "@/components/utils/DataTableSelects";
 import DisciplineDataTable from "@/components/disciplines/DisciplineDataTable";
 import Datepicker from "vuejs-datepicker";
+import ConfirmDialog from "@/components/dialogs/confirmDialog";
 /* import components */
 
 /* set components */
@@ -44,6 +45,7 @@ Vue.component("loginform", LoginForm);
 Vue.component("forgotpassword", ForgotPwForm);
 Vue.component("setpassword", SetPw);
 Vue.component("disciplineDataTable", DisciplineDataTable);
+Vue.component("confirmdialog", ConfirmDialog);
 /* set components */
 
 Vue.use(Router);
@@ -51,114 +53,114 @@ Vue.use(Router);
 import store from "../store/index";
 
 function requireAuth(to, from, next) {
-  if (store.getters.isLoggedIn) {
-    next();
-  } else {
-    setTimeout(() => {
-      if (store.getters.isLoggedIn) {
+    if (store.getters.isLoggedIn) {
         next();
-      } else {
-        next("/login");
-      }
-    }, 200);
-  }
+    } else {
+        setTimeout(() => {
+            if (store.getters.isLoggedIn) {
+                next();
+            } else {
+                next("/login");
+            }
+        }, 200);
+    }
 }
 
 function requireUnauth(to, from, next) {
-  if (store.getters.isLoggedIn) {
-    next("/");
-  } else {
-    setTimeout(() => {
-      if (store.getters.isLoggedIn) {
-        next("/dashboard");
-      } else {
-        next();
-      }
-    }, 200);
-  }
+    if (store.getters.isLoggedIn) {
+        next("/");
+    } else {
+        setTimeout(() => {
+            if (store.getters.isLoggedIn) {
+                next("/dashboard");
+            } else {
+                next();
+            }
+        }, 200);
+    }
 }
 
 export default new Router({
-  routes: [
-    {
-      path: "/",
-      name: "index",
-      component: Index,
-      beforeEnter: requireAuth,
-      redirect: "/dashboard",
-      children: [
+    routes: [
         {
-          path: "/dashboard",
-          name: "dashboard",
-          component: Dashboard
+            path: "/",
+            name: "index",
+            component: Index,
+            beforeEnter: requireAuth,
+            redirect: "/dashboard",
+            children: [
+                {
+                    path: "/dashboard",
+                    name: "dashboard",
+                    component: Dashboard
+                },
+                {
+                    path: "/rapporten",
+                    name: "rapporten",
+                    component: Reports
+                },
+                {
+                    path: "/afdrukken",
+                    name: "afdrukken",
+                    component: Print
+                },
+                {
+                    path: "/opleidingen",
+                    name: "opleidingen",
+                    component: Subjects
+                },
+                {
+                    path: "/evaluate",
+                    name: "evaluate",
+                    component: Evaluate
+                },
+                {
+                    path: "/Gebruikers",
+                    component: Users,
+                    children: [
+                        {
+                            path: "",
+                            name: "Gebruikers",
+                            component: UsersOverview
+                        },
+                        {
+                            path: "Toevoegen",
+                            name: "addUser",
+                            component: AddUser
+                        },
+                        {
+                            path: ":id",
+                            name: "detailUser",
+                            component: DetailUser
+                        }
+                    ]
+                },
+                {
+                    path: "/addMelding",
+                    name: "addMelding",
+                    component: AddMelding
+                }
+            ]
         },
         {
-          path: "/rapporten",
-          name: "rapporten",
-          component: Reports
+            path: "/login",
+            name: "login",
+            component: Login,
+            beforeEnter: requireUnauth
         },
         {
-          path: "/afdrukken",
-          name: "afdrukken",
-          component: Print
+            path: "/reset",
+            name: "reset",
+            component: ChoosePassword,
+            beforeEnter: requireUnauth
         },
         {
-          path: "/opleidingen",
-          name: "opleidingen",
-          component: Subjects
+            path: "/invitation",
+            name: "invitation",
+            component: ChoosePassword,
+            beforeEnter: requireUnauth
         },
-        {
-          path: "/evaluate",
-          name: "evaluate",
-          component: Evaluate
-        },
-        {
-          path: "/Gebruikers",
-          component: Users,
-          children: [
-            {
-              path: "",
-              name: "Gebruikers",
-              component: UsersOverview
-            },
-            {
-              path: "Toevoegen",
-              name: "addUser",
-              component: AddUser
-            },
-            {
-              path: ":id",
-              name: "detailUser",
-              component: DetailUser
-            }
-          ]
-        },
-        {
-          path: "/addMelding",
-          name: "addMelding",
-          component: AddMelding
-        }
-      ]
-    },
-    {
-      path: "/login",
-      name: "login",
-      component: Login,
-      beforeEnter: requireUnauth
-    },
-    {
-      path: "/reset",
-      name: "reset",
-      component: ChoosePassword,
-      beforeEnter: requireUnauth
-    },
-    {
-      path: "/invitation",
-      name: "invitation",
-      component: ChoosePassword,
-      beforeEnter: requireUnauth
-    },
-    { path: '/404', component: NotFound },
-    { path: '*', redirect: '/404' },
-  ]
+        { path: '/404', component: NotFound },
+        { path: '*', redirect: '/404' },
+    ]
 });

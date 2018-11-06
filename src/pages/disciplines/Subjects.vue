@@ -23,54 +23,10 @@
     <v-container>
         <subjecteditor v-if="editMode" :givenmajor="givenmajor"></subjecteditor>
     </v-container>
-    <v-dialog width="500" v-model="deactivateOpleidingStatus">
-        <v-card>
-            <v-card-title class="headline grey lighten-2" primary-title>
-                Opgelet!
-            </v-card-title>
-
-            <v-card-text>
-                <p>U staat op het punt om <strong>{{ selectedOpleidingName }}</strong> te deactiveren.</p>
-                <p>Bent u dit zeker?</p>
-            </v-card-text>
-
-            <v-divider></v-divider>
-
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" flat v-on:click="deactivateOpleidingStatus = false">
-                    Annuleer
-                </v-btn>
-                <v-btn color="error" flat v-on:click="deactivateOpleiding()">
-                    Bevestig
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
-    <v-dialog width="500" v-model="activateOpleidingStatus">
-        <v-card>
-            <v-card-title class="headline grey lighten-2" primary-title>
-                Opgelet!
-            </v-card-title>
-
-            <v-card-text>
-                <p>U staat op het punt om <strong>{{ selectedOpleidingName }}</strong> te activeren.</p>
-                <p>Bent u dit zeker?</p>
-            </v-card-text>
-
-            <v-divider></v-divider>
-
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" flat v-on:click="activateOpleidingStatus = false">
-                    Annuleer
-                </v-btn>
-                <v-btn color="error" flat v-on:click="activateOpleiding()">
-                    Bevestig
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+    <confirmdialog v-bind:model.sync="deactivateOpleidingStatus" v-on:confirm="deactivateOpleiding" :name="selectedOpleidingName" :action="'deactiveren'">
+    </confirmdialog>
+    <confirmdialog v-bind:model.sync="activateOpleidingStatus" v-on:confirm="activateOpleiding" :name="selectedOpleidingName" :action="'activeren'">
+    </confirmdialog>
 </main>
 </template>
 
