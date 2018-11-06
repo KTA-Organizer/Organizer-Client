@@ -20,5 +20,5 @@ export const passwordRepeat = [
 ];
 export const rgn = [
   v => !!v || "Vul het rijksregisternummer in",
-  v => v.length === 11 || "Het formaat van het rijksregisternummer is niet correct"
+  v => !!v && v.length === 11 || "Het formaat van het rijksregisternummer is niet correct"
 ]

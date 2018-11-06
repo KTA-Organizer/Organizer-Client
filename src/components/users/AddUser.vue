@@ -11,7 +11,8 @@
                 <v-text-field label="Voornaam" v-model="firstname" :rules="firstnameRules" required :autofocus="true"></v-text-field>
                 <v-text-field label="Naam" v-model="name" :rules="nameRules" required></v-text-field>
                 <v-text-field label="E-mail" v-model="email" :rules="emailRules" required></v-text-field>
-                <rgn v-bind:model.sync="rgn"></rgn>
+                <v-text-field label="Rijksregisternummer" v-model="rgn" :rules='rgnRules' required mask="##.##.##-###.##">
+                </v-text-field>
                 <v-select label="Geslacht" v-model="gender" :rules="selectGenderRules" required :items="genders"></v-select>
                 <v-select label="Rol" v-model="role" :rules="selectRoleRules" required :multiple="true" :items="roles"></v-select>
                 <router-link to="/Gebruikers">
@@ -68,8 +69,8 @@ export default {
                     nationalRegisterNumber: this.rgn
                 };
                 console.log(newUser);
-                // const userIdObj = await this.$http.createUser(newUser);
-                // this.$router.push(`${userIdObj.id}`);
+                const userIdObj = await this.$http.createUser(newUser);
+                this.$router.push(`${userIdObj.id}`);
             }
         }
     }

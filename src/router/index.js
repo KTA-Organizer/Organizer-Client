@@ -34,7 +34,6 @@ import SuccesDialog from "@/components/dialogs/succesDialog";
 import AddUser from "@/components/users/AddUser";
 import ChooseDiscipline from "@/components/disciplines/ChooseDiscipline";
 import UserDetailCard from "@/components/users/UserDetailCard";
-import NationalRegisterNumber from "@/components/utils/NationalRegisterNumber";
 /* import components */
 
 /* set components */
@@ -53,7 +52,6 @@ Vue.component("confirmdialog", ConfirmDialog);
 Vue.component("succesdialog", SuccesDialog);
 Vue.component("choosediscipline", ChooseDiscipline);
 Vue.component("userdetailcard", UserDetailCard);
-Vue.component("rgn", NationalRegisterNumber);
 /* set components */
 
 Vue.use(Router);

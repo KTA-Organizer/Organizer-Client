@@ -26,7 +26,8 @@
                 <v-text-field label="E-mail" v-model="userFields.email" :rules="emailRules" required :disabled="!edit"></v-text-field>
             </v-layout>
             <v-layout align-center justify-space-between row fill-height>
-                <rgn v-bind:model.sync="userFields.nationalRegisterNumber" :disabled="!edit"></rgn>
+                <v-text-field label="Rijksregisternummer" v-model="userFields.nationalRegisterNumber" :rules='rgnRules' required mask="##.##.##-###.##" :disabled="!edit">
+                </v-text-field>
             </v-layout>
             <v-layout align-center justify-space-between row fill-height>
                 <v-select label="Geslacht" v-model="userFields.gender" :rules="selectGenderRules" required :disabled="!edit" :items="constants.genders"></v-select>
@@ -56,8 +57,12 @@ export default {
             selectRoleRules: rules.role,
             selectOpleidingRules: rules.opleiding,
             selectGenderRules: rules.gender,
+            rgnRules: rules.rgn,
             constants: constants
         };
+    },
+    beforeMount() {
+        console.log("before mount", this.userFields);
     }
 };
 </script>
