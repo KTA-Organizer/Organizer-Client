@@ -21,7 +21,7 @@
                 <v-btn color="error" class="ma-1 right" v-if="!editingModule" dark @click="removeModule(opleiding, props.item)">
                     <v-icon dark>delete</v-icon>
                 </v-btn>
-                <router-link to="{ path: 'modules', params: { id: {props.item.id} }}" style="text-decoration: none">
+                <router-link :to="{ name: 'modules', query: { id: props.item.id }}" style="text-decoration: none">
                     <v-btn color="primary" class="ma-1 right" v-if="!editingModule" dark @click="editModule(props.index)">
                         <v-icon dark>edit</v-icon>
                     </v-btn>
@@ -30,19 +30,6 @@
         </tr>
     </template>
     </v-data-table>
-    <v-layout row class="ml-5" v-if="editingModule">
-        <v-flex xs4>
-            <v-text-field name="modulenaam" label="Naam van de module" single-line></v-text-field>
-        </v-flex>
-        <v-flex xs5>
-            <v-btn color="success" :loading="loading" @click.native="saveOpleiding" :disabled="loading">
-                Opslaan
-                <span slot="loader" class="custom-loader">
-                  <v-icon light>cached</v-icon>
-                </span>
-            </v-btn>
-        </v-flex>
-    </v-layout>
 </main>
 </template>
 

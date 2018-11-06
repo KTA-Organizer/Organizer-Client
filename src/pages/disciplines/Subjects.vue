@@ -138,15 +138,11 @@ export default {
         var self = this;
         const opleidingen = await this.$http.getOpleidingen();
         this.items = opleidingen;
-    },
-    mounted() {
-        var sheet = document.createElement("style");
-        sheet.innerHTML = "div.menu__content--autocomplete {top:165px !important;}";
-        document.body.appendChild(sheet);
     }
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
+div.menu__content--autocomplete {top:165px !important;}
 </style>
