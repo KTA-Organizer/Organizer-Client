@@ -148,7 +148,12 @@ export default new Router({
                     path: "/addMelding",
                     name: "addMelding",
                     component: AddMelding
-                }
+                },
+                {
+                    path: "/modules",
+                    name: "modules",
+                    component: Modules
+                },
             ]
         },
         {
@@ -168,11 +173,6 @@ export default new Router({
             name: "invitation",
             component: ChoosePassword,
             beforeEnter: requireUnauth,
-        },
-        {
-            path: "/modules",
-            name: "modules",
-            component: Modules
         },
         { path: '/404', component: NotFound },
         { path: '*', redirect: '/404' },
