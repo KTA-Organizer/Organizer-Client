@@ -38,6 +38,8 @@ import UserDetailCard from "@/components/users/UserDetailCard";
 import EditableModule from "@/components/modules/EditableModule";
 import NewModuleDialog from "@/components/dialogs/NewModuleDialog";
 import ModuleList from "@/components/modules/ModuleList";
+import CreateEvaluationForm from "@/components/evaluation/CreateEvaluationForm";
+import StudentEvaluation from "@/components/evaluation/StudentEvaluation";
 /* import components */
 
 /* set components */
@@ -123,9 +125,20 @@ export default new Router({
                     component: Subjects
                 },
                 {
-                    path: "/evaluate",
-                    name: "evaluate",
-                    component: Evaluate
+                    path: "/evaluatie",
+                    component: Evaluate,
+                    children: [
+                        {
+                            path: "/",
+                            name: "Evaluatie",
+                            component: CreateEvaluationForm
+                        },
+                        {
+                            path: ":studentId/:moduleId",
+                            name: "EvaluatieStudent",
+                            component: StudentEvaluation
+                        }
+                    ]
                 },
                 {
                     path: "/Gebruikers",

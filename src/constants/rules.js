@@ -22,3 +22,6 @@ export const rgn = [
   v => !!v || "Vul het rijksregisternummer in",
   v => !!v && v.length === 11 || "Het formaat van het rijksregisternummer is niet correct"
 ]
+export const defaultRule = [
+  v => !!v || "Vul dit veld in"
+]

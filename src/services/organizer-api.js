@@ -74,7 +74,7 @@ export const assignOpleidingToUser = (disciplineid, userId) =>
 
 export const getOpleidingen = () => processReq("/disciplines", {}, "get"); // OK
 
-export const getOpleiding = id => processReq(`/disciplines/${id}`); // OK
+export const getOpleiding = id => processReq(`/disciplines/${id}`); // BROKEN
 
 export const getOpleidingForStudent = id =>
     processReq(`/disciplines/student/${id}`, {}, "get"); // OK
