@@ -15,7 +15,7 @@
     </v-layout>
     <v-data-table v-bind:headers="headers" :items="opleiding" v-if="!editingModule" hide-actions class="elevation-1">
     <template slot="items" slot-scope="props">
-        <tr>
+        <tr v-if="props.item.active">
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-right">
                 <v-btn color="error" class="ma-1 right" v-if="!editingModule" dark @click="removeModule(opleiding, props.item)">
@@ -261,14 +261,10 @@ export default {
                 this.$http.updateOpleiding(
                     this.givenmajor.id,
                     this.opleidingsnaam
-                    /*function(response) {
-                      console.log(response);
-                      //self.saveModules();*/
-                    //}
                 );
                 this.removeDeletedItems();
             }
-            self.saveModules();
+            // self.saveModules();
             this.loading = false;
         },
         saveModules() {
