@@ -6,13 +6,9 @@
 
     <h1>Evaluatie maken</h1>
     <v-form ref="form" lazy-validation>
-        <v-select label="Opleiding" v-model="discipline" :items="disciplineNames" v-on:input="filterStudents">
-
-        </v-select>
+        <v-select label="Opleiding" v-model="discipline" :items="disciplineNames" v-on:input="filterStudents"></v-select>
         <v-select label="Module" v-model="module" :items="moduleNames"></v-select>
-        <v-select label="Student" v-model="student" :items="filteredStudentNames">
-
-        </v-select>
+        <v-select label="Student" v-model="student" :items="filteredStudentNames"></v-select>
     </v-form>
 
 </v-container>
@@ -37,7 +33,7 @@ export default {
         };
     },
     methods: {
-        filterStudents() {
+        async filterStudents() {
             const selectedDiscipline = this.disciplines.find(
                 x => x.name === this.discipline
             );
@@ -49,6 +45,9 @@ export default {
                     return x.discipline.id === selectedDiscipline.id;
                 })
                 .map(x => `${x.firstname} ${x.lastname}`);
+            const modules = await this.$http.getFullOpleiding(selectedDiscipline.id);
+            this.modules = modules;
+            this.moduleNames = this.modules.map(x => x.name);
         }
     },
     async created() {
@@ -63,8 +62,6 @@ export default {
         const disciplines = await this.$http.getOpleidingen();
         this.disciplines = disciplines;
         this.disciplineNames = this.disciplines.map(x => x.name);
-
-        const modules = await this.$http.get
     }
 };
 </script>
