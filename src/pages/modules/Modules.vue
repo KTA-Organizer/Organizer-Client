@@ -6,7 +6,7 @@
         </v-flex>
     </v-layout>
     <v-container>
-        <v-layout row class="ml-5">
+        <v-layout row class="ml-5 mb-4">
             <v-flex xs4>
                 <v-text-field name="modulenaam" label="Naam van de module" v-model="module.name" single-line></v-text-field>
             </v-flex>
@@ -19,9 +19,9 @@
                 </v-btn>
             </v-flex>
         </v-layout>
-        <v-layout row class="ml-5" dark v-for="(categorie) in module.domains" :value="categorie.active" v-bind:key="categorie.name">
-            <v-text class="categorietitle">{{ categorie.name }}</v-text>
-            <v-data-table v-bind:headers="headers" :items="categorie.goals"  hide-actions class="elevation-1">
+        <v-layout wrap class="ml-5" dark v-for="(categorie) in module.domains" :value="categorie.active" v-bind:key="categorie.name">
+            <h2 class="categorieTitle">{{ categorie.name }}</h2>
+            <v-data-table hide-headers :items="categorie.goals" hide-actions class="elevation-1 criteriaTable">
                 <template slot="items" slot-scope="props">
                     <tr>
                         <th>{{ props.item.name }}</th>
@@ -41,17 +41,7 @@ export default {
     data() {
         return {
             module: null,
-            currentUserId: this.$store.getters.currentUser.id,
-            headers: [{
-                    text: "Doelstelling",
-                    align: "left",
-                    value: "doelstelling"
-                },
-                {
-                    text: "",
-                    value: "actionbtns"
-                }
-            ]
+            currentUserId: this.$store.getters.currentUser.id
         };
     },
     methods: {
@@ -76,9 +66,11 @@ export default {
 <style scoped>
 div.menu__content--autocomplete {top:165px !important;}
 
-.categorietitle{
-    margin-bottom: 5%;
-    display:block;
+.criteriaTable{
+    margin-bottom: 4%;
+}
+.categorieTitle{
+    margin-bottom: 2%;
 }
 </style>
 
