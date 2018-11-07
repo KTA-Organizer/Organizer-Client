@@ -31,6 +31,7 @@ import checkboxes from "@/components/utils/CheckboxContainer";
 import DataTableSelects from "@/components/utils/DataTableSelects";
 import DisciplineDataTable from "@/components/disciplines/DisciplineDataTable";
 import Datepicker from "vuejs-datepicker";
+import EditableModule from "@/components/modules/EditableModule";
 /* import components */
 
 /* set components */
@@ -45,6 +46,7 @@ Vue.component("loginform", LoginForm);
 Vue.component("forgotpassword", ForgotPwForm);
 Vue.component("setpassword", SetPw);
 Vue.component("disciplineDataTable", DisciplineDataTable);
+Vue.component("editablemodule", EditableModule);
 /* set components */
 
 Vue.use(Router);

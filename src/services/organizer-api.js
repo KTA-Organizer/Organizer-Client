@@ -70,7 +70,7 @@ export const updateUser = user =>
 export const assignOpleidingToUser = (opleidingId, userId) =>
   processReq(`/students/${userId}`, { opleidingId }, "put");
 
-export const getOpleidingen = () => processReq("/opleidingen", {}, "get");
+export const getOpleidingen = () => processReq("/disciplines", {}, "get");
 
 export const getOpleiding = id => processReq(`/opleidingen/${id}`);
 
@@ -81,7 +81,7 @@ export const saveReport = () => processReq("/saveReport", report, "post");
 
 export const updateReport = () => processReq("/updateReport", report, "patch");
 
-export const getFullOpleiding = id => processReq(`/opleidingen/${id}/full`);
+export const getFullOpleiding = id => processReq(`/disciplines/${id}/full`);
 
 export const getEvalForStudent = id =>
   processReq("/evaluatieVoorStudent", { id }, "get");

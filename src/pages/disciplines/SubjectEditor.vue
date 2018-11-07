@@ -460,6 +460,7 @@ export default {
                     });
                 });
             });
+            console.log(fullOpleiding);
             self.opleiding = fullOpleiding.modules;
         }
     }
