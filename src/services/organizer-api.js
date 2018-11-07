@@ -23,6 +23,8 @@ export const getStudentOpleiding = studId =>
 
 export const getStudent = id => processReq(`/students/${id}`); // BROKEN
 
+export const getStudents = () => processReq('/users/', {/*role: "STUDENT"*/}, "get"); // BROKEN fix filter
+
 export const getUser = id => processReq(`/users/${id}`); // OK
 
 export const paginateUsers = ({
