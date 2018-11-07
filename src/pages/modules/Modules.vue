@@ -4,11 +4,12 @@
         <v-flex xs12 offset-xs1 class="text-xs-left">
             <h1 class="display-3">{{ 'Modules' }}</h1>
         </v-flex>
-        <v-btn @click="editMode = !editMode">edit</v-btn>
     </v-layout>
-    <v-container v-if="!editMode">
+    <v-container v-if="editMode">
         <editablemodule v-bind:module="module"> </editablemodule>
-        <!-- <v-layout row class="ml-5 mb-4">
+    </v-container>
+    <v-container v-if="!editMode">
+        <v-layout row class="ml-5 mb-4">
             <v-flex xs4>
                 <v-text-field name="modulenaam" label="Naam van de module" v-model="module.name" single-line></v-text-field>
             </v-flex>
@@ -19,6 +20,7 @@
                     <v-icon light>cached</v-icon>
                     </span>
                 </v-btn>
+                <v-btn color="primary" @click="editMode = !editMode"><v-icon dark>edit</v-icon>Edit</v-btn>
             </v-flex>
             
         </v-layout>
@@ -43,8 +45,7 @@
                     </tr>
                 </template>
             </v-data-table>
-        </v-layout> -->
-
+        </v-layout>
     </v-container>
 </main>
 </template>
