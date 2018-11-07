@@ -60,9 +60,6 @@ export default {
             rgnRules: rules.rgn,
             constants: constants
         };
-    },
-    beforeMount() {
-        console.log("before mount", this.userFields);
     }
 };
 </script>

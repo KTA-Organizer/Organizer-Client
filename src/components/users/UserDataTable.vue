@@ -6,20 +6,14 @@
             hide-actions
             class="elevation-1"
             >
-              <template slot="items" slot-scope="gebruiker"><!-- .item must be here, don't ask questions -->
+              <template slot="items" slot-scope="gebruiker">
                 <tr>
                   <td class="text-xs-left">{{ gebruiker.item.naam }}</td>
-                  <td class="text-xs-left">{{ getKeyByValue(roleKeys, gebruiker.item.role) }}</td>
+                  <td class="text-xs-left">{{ getKeyByValue(constants.roleKeys, gebruiker.item.role) }}</td>
                   <td class="text-xs-left">{{ gebruiker.item.email }}</td>
                   <td class="text-xs-left">{{ gebruiker.item.gender }}</td>
-                  <td class="text-xs-left">{{ getKeyByValue(statusKeys, gebruiker.item.status) }}</td>
+                  <td class="text-xs-left">{{ getKeyByValue(constants.statusKeys, gebruiker.item.status) }}</td>
                   <td class="text-xs-left">{{ readableDate(gebruiker.item.accountCreatedTimestamp) }}</td>
-                  <!-- <td>
-                      <a :href="'#/Evaluate?id=' + gebruiker.item.id" target="_blank"><v-btn color="primary" class="ma-1" dark>Evaluatie<v-icon dark right>assignment</v-icon></v-btn></a>
-                      <router-link :to="{ path: 'Rapporten', query: { id: gebruiker.item.id, name: gebruiker.item.naam}}"><v-btn color="primary" class="ma-1" dark>rapport<v-icon dark right>import_contacts</v-icon></v-btn></router-link>
-                      <router-link :to="{ path: 'Addstudent', query: { id: gebruiker.item.id }}"><v-btn color="primary" class="ma-1" dark><v-icon dark>edit</v-icon></v-btn></router-link>
-                      <v-btn color="error" class="ma-1" dark @click="makeDialog(gebruiker.item)"><v-icon dark>delete</v-icon></v-btn>
-                  </td> -->
                   <td><router-link :to="`/Gebruikers/${gebruiker.item.id}`"><v-btn color="primary"><i class="material-icons">remove_red_eye</i></v-btn></router-link></td>
                 </tr>
               </template>
@@ -30,24 +24,13 @@
 <script>
 import * as router from "../../router/index";
 import moment from "moment";
+import * as constants from "../../constants/user"
 export default {
   name: "UserDetail",
   props: ["users", "headers"],
   data() {
     return {
-      roleKeys: {
-        "Geen filter": false,
-        Administrator: "ADMIN",
-        Student: "STUDENT",
-        Leerkracht: "TEACHER",
-        "Geen rol toegekent": "#"
-      },
-      statusKeys: {
-        "Geen filter": false,
-        Actief: "ACTIVE",
-        "Wacht op activatie": "WAIT_ACTIVATION",
-        "Niet actief": "DISABLED"
-      }
+      constants: constants,
     };
   },
   methods: {
@@ -60,6 +43,6 @@ export default {
     redirectToDetails(id) {
       this.$router.push(`Gebruikers/${id}`);
     }
-  }
+  },
 };
 </script>

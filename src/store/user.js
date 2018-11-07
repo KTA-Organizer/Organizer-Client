@@ -30,9 +30,6 @@ export default {
     },
     currentUser(state) {
       return state.currentUser;
-    },
-    constants() {
-      return USER_CONSTANTS;
     }
   },
   mutations: {
