@@ -21,16 +21,28 @@
         </v-layout>
         <v-layout wrap class="ml-5" dark v-for="(categorie) in module.domains" :value="categorie.active" v-bind:key="categorie.name">
             <h2 class="categorieTitle">{{ categorie.name }}</h2>
-            <v-data-table hide-headers :items="categorie.goals" hide-actions class="elevation-1 criteriaTable">
+            <v-data-table xs12 sm6 md3 hide-headers :items="categorie.goals" hide-actions class="elevation-1 criteriaTable">
                 <template slot="items" slot-scope="props">
                     <tr>
                         <th>{{ props.item.name }}</th>
-                        <td class="text-xs-left" v-for="(criteria) in props.item.criteria" v-bind:key="criteria.name">{{ criteria.name }}</td>
+
+                        <v-flex d-flex xs12 sm6 md3>
+                            <v-layout row wrap>
+                                <v-flex d-flex>
+                                    <v-layout row wrap>
+                                        <v-flex  v-for="(criteria) in props.item.criteria" v-bind:key="criteria.name" d-flex xs12>
+                                            <div><td class="text-xs-left">{{ criteria.name }}</td></div>
+                                            <v-divider></v-divider>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-flex>
+                            </v-layout>
+                        </v-flex>
                     </tr>
                 </template>
             </v-data-table>
         </v-layout>
-        
+
     </v-container>
 </main>
 </template>
@@ -45,18 +57,18 @@ export default {
         };
     },
     methods: {
-        saveModule(){
+        saveModule() {
             var self = this;
             self.$http.updateModule(
-                        this.module.id,
-                        this.module.name
-                    );
+                this.module.id,
+                this.module.name
+            );
         }
     },
     async created() {
         var self = this;
         const moduleFetched = await this.$http.getModule(parseInt(this.$route.query.id));
-        this.module = moduleFetched; 
+        this.module = moduleFetched;
         console.log(moduleFetched);
     }
 };
@@ -64,13 +76,15 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
-div.menu__content--autocomplete {top:165px !important;}
+div.menu__content--autocomplete {
+    top: 165px !important;
+}
 
-.criteriaTable{
+.criteriaTable {
     margin-bottom: 4%;
 }
-.categorieTitle{
+
+.categorieTitle {
     margin-bottom: 2%;
 }
 </style>
-
