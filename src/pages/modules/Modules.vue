@@ -47,6 +47,7 @@
             </v-data-table>
         </v-layout>
     </v-container>
+    <newmoduledialog v-if="newmoduledialog"></newmoduledialog>
 </main>
 </template>
 

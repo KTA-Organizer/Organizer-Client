@@ -36,6 +36,7 @@ import AddUser from "@/components/users/AddUser";
 import ChooseDiscipline from "@/components/disciplines/ChooseDiscipline";
 import UserDetailCard from "@/components/users/UserDetailCard";
 import EditableModule from "@/components/modules/EditableModule";
+import NewModuleDialog from "@/components/dialogs/NewModuleDialog";
 /* import components */
 
 /* set components */
@@ -55,6 +56,7 @@ Vue.component("succesdialog", SuccesDialog);
 Vue.component("choosediscipline", ChooseDiscipline);
 Vue.component("userdetailcard", UserDetailCard);
 Vue.component("editablemodule", EditableModule);
+Vue.component("newmoduledialog", NewModuleDialog);
 /* set components */
 
 Vue.use(Router);
