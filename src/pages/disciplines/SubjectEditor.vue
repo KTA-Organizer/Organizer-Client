@@ -424,44 +424,10 @@ export default {
             this.opleidingsnaam = self.givenmajor.name;
             const fullOpleiding = await this.$http.getFullOpleiding(this.givenmajor.id);
             console.log("FullOpleiding", fullOpleiding);
-            fullOpleiding.modules.forEach(function (module, moduleindex) {
+            fullOpleiding.forEach(function (module, moduleindex) {
                 module["indexes"] = [moduleindex + 1];
-                module.doelstellingCategories.forEach(function (
-                    categorie,
-                    categorieIndex
-                ) {
-                    categorie["indexes"] = [moduleindex + 1, categorieIndex + 1];
-                    categorie.doelstellingen.forEach(function (
-                        doelstelling,
-                        doelstellingIndex
-                    ) {
-                        doelstelling["indexes"] = [
-                            moduleindex + 1,
-                            categorieIndex + 1,
-                            doelstellingIndex + 1
-                        ];
-                        doelstelling.evaluatieCriteria.forEach(function (criterium, criteriumIndex) {
-                            criterium["indexes"] = [
-                                moduleindex + 1,
-                                categorieIndex + 1,
-                                doelstellingIndex + 1,
-                                criteriumIndex + 1
-                            ];
-                            criterium.aspecten.forEach(function (aspect, aspectIndex) {
-                                aspect["indexes"] = [
-                                    moduleindex + 1,
-                                    categorieIndex + 1,
-                                    doelstellingIndex + 1,
-                                    criteriumIndex + 1,
-                                    aspectIndex + 1
-                                ];
-                            });
-                        });
-                    });
-                });
             });
-            console.log(fullOpleiding);
-            self.opleiding = fullOpleiding.modules;
+            self.opleiding = fullOpleiding;
         }
     }
 };

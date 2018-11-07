@@ -81,7 +81,7 @@ export const saveReport = () => processReq("/saveReport", report, "post");
 
 export const updateReport = () => processReq("/updateReport", report, "patch");
 
-export const getFullOpleiding = id => processReq(`/disciplines/${id}/full`);
+export const getFullOpleiding = id => processReq(`/modules`, {disciplineid: id});
 
 export const getEvalForStudent = id =>
   processReq("/evaluatieVoorStudent", { id }, "get");
