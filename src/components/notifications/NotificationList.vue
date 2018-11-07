@@ -5,7 +5,6 @@
                 <div slot="header" :active="true">
                     <h2>{{melding.titel}}</h2>
                     <small>geplaatst door {{melding.creator.firstname}} {{melding.creator.lastname}} {{melding.datum}}</small>
-                    <br><small>doelgroep: {{melding.opleidingen.map(opl => opl.name).join(", ")}}</small>
                 </div>
                 <v-card>
                     <v-card-text v-html="melding.tekst"></v-card-text>
@@ -21,11 +20,6 @@
 <script>
 export default {
     name: "Notification",
-    props: ["meldingen", "currentUserId"],
-    data() {
-        return {
-
-        }
-    }
+    props: ["meldingen", "currentUserId"]
 }
 </script>
