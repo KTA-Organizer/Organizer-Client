@@ -24,7 +24,7 @@ export default {
     data() {
         return {
             loginError: null,
-            email: "kenny.depecker@student.howest.be",
+            email: "admin@test.test",
             password: "test",
             passwordRules: rules.password,
             emailRules: rules.email,
