@@ -9,7 +9,7 @@
                 <v-card>
                     <v-card-text v-html="melding.tekst"></v-card-text>
                     <v-card-actions v-if="melding.creator.id === currentUserId">
-                        <v-btn class="red" dark v-on:click="deleteMelding(melding.id)"><i class="material-icons">delete</i></v-btn>
+                        <v-btn class="red" dark v-on:click="$emit('delete', melding.id)"><i class="material-icons">delete</i></v-btn>
                     </v-card-actions>
                 </v-card>
             </v-expansion-panel-content>

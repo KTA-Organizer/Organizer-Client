@@ -17,7 +17,7 @@
         </v-btn>
       </v-layout>
       <v-flex>
-        <notification :meldingen="meldingen" :currentUserId="currentUser.id"></notification>
+        <notification v-on:delete="deleteMelding" :meldingen="meldingen" :currentUserId="currentUser.id"></notification>
       </v-flex>
     </v-card>
   </v-flex>
