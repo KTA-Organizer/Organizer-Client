@@ -68,13 +68,15 @@ export default {
             this.userFields.roles = this.user.roles.map(r =>
                 this.getKeyByValue(constants.roleKeys, r)
             );
-
-            this.opleidingen = await this.$http.getOpleidingen();
-            const userOpleiding = await this.$http.getOpleidingForStudent(userId);
-            if (userOpleiding) {
-                this.opleiding = userOpleiding.name;
+            if (this.user.roles.indexOf('STUDENT') > -1) {
+                this.opleidingen = await this.$http.getOpleidingen();
+                console.log(this.opleidingen)
+                const userOpleiding = await this.$http.getOpleidingForStudent(userId);
+                if (userOpleiding) {
+                    this.opleiding = userOpleiding.name;
+                }
+                this.opleidingnames = this.opleidingen.map(opl => opl.name);
             }
-            this.opleidingnames = this.opleidingen.map(opl => opl.name);
             console.log(this.user)
         },
         async activateUser(id) {

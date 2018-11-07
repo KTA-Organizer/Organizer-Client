@@ -67,21 +67,21 @@ export const updateUser = user =>
     "put"
   );
 
-export const assignOpleidingToUser = (opleidingId, userId) =>
-  processReq(`/students/${userId}`, { opleidingId }, "put");
+export const assignOpleidingToUser = (disciplineid, userId) =>
+  processReq(`/disciplines/student/${userId}`, { disciplineid }, "put");
 
-export const getOpleidingen = () => processReq("/opleidingen", {}, "get");
+export const getOpleidingen = () => processReq("/disciplines", {}, "get");
 
-export const getOpleiding = id => processReq(`/opleidingen/${id}`);
+export const getOpleiding = id => processReq(`/disciplines/${id}`);
 
 export const getOpleidingForStudent = id =>
-  processReq(`/opleidingen/${id}/student`, {}, "get");
+  processReq(`/disciplines/student/${id}`, {}, "get");
 
 export const saveReport = () => processReq("/saveReport", report, "post");
 
 export const updateReport = () => processReq("/updateReport", report, "patch");
 
-export const getFullOpleiding = id => processReq(`/opleidingen/${id}/full`);
+export const getFullOpleiding = id => processReq(`/disciplines/${id}/full`);
 
 export const getEvalForStudent = id =>
   processReq("/evaluatieVoorStudent", { id }, "get");
@@ -153,10 +153,10 @@ export const deleteEval = id =>
   processReq("/deleteEvaluatie", { id }, "delete");
 
 export const createOpleiding = (creatorId, name) =>
-  processReq("/opleidingen", { creatorId, active: 1, name }, "post");
+  processReq("/disciplines", { creatorId, active: 1, name }, "post");
 
 export const updateOpleiding = (opleidingId, name) =>
-  processReq("/opleidingen/" + opleidingId, { name }, "put");
+  processReq("/disciplines/" + opleidingId, { name }, "put");
 
 export const createModule = (name, opleidingId, teacherId, creatorId) =>
   processReq("/modules", { name, opleidingId, teacherId, creatorId }, "post");
@@ -248,7 +248,7 @@ export const updateAspect = (aspectId, name) =>
 
 export const setOpleidingInactive = (opleidingId) =>
     processReq(
-      "/opleidingen/" + opleidingId + "/status",
+      "/disciplines/" + opleidingId + "/status",
       {
         active: 0
       },
@@ -257,7 +257,7 @@ export const setOpleidingInactive = (opleidingId) =>
 
 export const setOpleidingActive = (opleidingId) =>
     processReq(
-      "/opleidingen/" + opleidingId + "/status",
+      "/disciplines/" + opleidingId + "/status",
       {
         active: 1
       },
