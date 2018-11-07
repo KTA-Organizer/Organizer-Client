@@ -159,8 +159,8 @@ export const createOpleiding = (creatorId, name) =>
 export const updateOpleiding = (opleidingId, name) =>
   processReq("/disciplines/" + opleidingId, { name }, "put");
 
-export const createModule = (name, opleidingId, teacherId, creatorId) =>
-  processReq("/modules", { name, opleidingId, teacherId, creatorId }, "post");
+export const createModule = (name, disciplineid) =>
+  processReq("/modules", { name, disciplineid }, "post");
 
 export const updateModule = (moduleId, name) =>
   processReq("/modules/" + moduleId, { name }, "put");
