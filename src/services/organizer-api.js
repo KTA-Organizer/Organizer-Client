@@ -62,7 +62,8 @@ export const updateUser = user =>
       lastname: user.lastname,
       email: user.email,
       gender: user.gender,
-      roles: user.roles
+      roles: user.roles,
+      nationalRegisterNumber: user.nationalRegisterNumber
     },
     "put"
   );
