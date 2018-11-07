@@ -5,16 +5,11 @@
             <h1 class="display-3">Overzicht van gebruikers</h1>
         </v-flex>
         <v-flex :align-end="true">
-            <v-speed-dial hover direction="left">
-                <v-btn slot="activator" color="blue darken-2" dark fab hover class="left">
-                    <v-icon>add</v-icon>
+            <router-link to="Gebruikers/Toevoegen" style="text-decoration: none">
+                <v-btn fab dark color="red">
+                    <v-icon>person_add</v-icon>
                 </v-btn>
-                <router-link to="Gebruikers/Toevoegen" style="text-decoration: none">
-                    <v-btn fab dark small color="red">
-                        <v-icon>person_add</v-icon>
-                    </v-btn>
-                </router-link>
-            </v-speed-dial>
+            </router-link>
         </v-flex>
     </v-layout>
     <v-layout row wrap>

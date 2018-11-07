@@ -33,7 +33,7 @@ import * as rules from "../../constants/rules";
 export default {
   name: "Login",
   data: () => ({
-    email: "kenny.depecker@student.howest.be",
+    email: "admin@test.test",
     password: "test",
     showPasswordReset: false
   }),
