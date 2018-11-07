@@ -1,23 +1,25 @@
 <template>
 <v-container>
     <v-layout wrap class="" dark v-for="(categorie) in module.domains" :value="categorie.active" v-bind:key="categorie.name">
-        <h2 class="categorieTitle text-xs-left">{{ categorie.name }}</h2>
+        <h2 class="categorieTitle mb-4 text-xs-left">{{ categorie.name }}</h2>
         <v-layout row class="">
-            <v-data-table hide-headers :items="categorie.goals" hide-actions class="elevation-1 criteriaTable">
+            <v-data-table hide-headers :items="categorie.goals" hide-actions class="elevation-1 criteriaTable mb-5">
                 <template slot="items" slot-scope="props">
                     <tr>
                         <th>{{ props.item.name }}</th>
-                        <v-layout v-for="(criteria) in props.item.criteria" v-bind:key="criteria.name" row>
+                        <v-layout class="py-2 mt-2" v-for="(criteria) in props.item.criteria" v-bind:key="criteria.name" row>
                             <v-layout class="criteriaText">
                                 <v-flex>
                                     <div>
-                                        <td class="text-xs-left pl-0 pt-2 pb-1 xs-5">{{ criteria.name }}</td>
+                                        <td class="text-xs-left pl-0 xs-5">{{ criteria.name }}</td>
                                     </div>
                                     <v-divider></v-divider>
                                 </v-flex>
                             </v-layout>
                             <v-spacer></v-spacer>
-                            <td class="gradeBox"><gradeboxes :criteriaid="criteria.id"></gradeboxes></td>
+                            <td v-if="evaluating" class="gradeBox">
+                                <gradeboxes :criteriaid="criteria.id"></gradeboxes>
+                            </td>
                         </v-layout>
                     </tr>
                 </template>
@@ -30,7 +32,10 @@
 <script>
 export default {
     name: "moduleList",
-    props: ["module"]
+    props: ["module", "evaluating"],
+    data() {
+        return {}
+    }
 }
 </script>
 
@@ -45,7 +50,6 @@ div.menu__content--autocomplete {
 }
 
 .categorieTitle {
-    margin-bottom: 2%;
     width: 100%;
 }
 

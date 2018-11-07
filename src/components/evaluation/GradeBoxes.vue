@@ -1,5 +1,5 @@
 <template>
-    <v-select class="grade" :id="criteriaid" label="Punt" :items="grades.grades" xs1></v-select>
+    <v-select class="grade" :id="`${criteriaid}`" label="Punt" :items="grades.grades" xs1></v-select>
 </template>
 
 <script>
