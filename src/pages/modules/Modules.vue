@@ -19,6 +19,18 @@
                 </v-btn>
             </v-flex>
         </v-layout>
+        <v-layout row class="ml-5" dark v-for="(categorie) in module.domains" :value="categorie.active" v-bind:key="categorie.name">
+            <v-text class="categorietitle">{{ categorie.name }}</v-text>
+            <v-data-table v-bind:headers="headers" :items="categorie.goals"  hide-actions class="elevation-1">
+                <template slot="items" slot-scope="props">
+                    <tr>
+                        <th>{{ props.item.name }}</th>
+                        <td class="text-xs-left" v-for="(criteria) in props.item.criteria" v-bind:key="criteria.name">{{ criteria.name }}</td>
+                    </tr>
+                </template>
+            </v-data-table>
+        </v-layout>
+        
     </v-container>
 </main>
 </template>
@@ -29,7 +41,17 @@ export default {
     data() {
         return {
             module: null,
-            currentUserId: this.$store.getters.currentUser.id
+            currentUserId: this.$store.getters.currentUser.id,
+            headers: [{
+                    text: "Doelstelling",
+                    align: "left",
+                    value: "doelstelling"
+                },
+                {
+                    text: "",
+                    value: "actionbtns"
+                }
+            ]
         };
     },
     methods: {
@@ -43,8 +65,9 @@ export default {
     },
     async created() {
         var self = this;
-        this.module = await this.$http.getModule(parseInt(this.$route.query.id));
-        console.log(module);
+        const moduleFetched = await this.$http.getModule(parseInt(this.$route.query.id));
+        this.module = moduleFetched; 
+        console.log(moduleFetched);
     }
 };
 </script>
@@ -52,5 +75,10 @@ export default {
 
 <style scoped>
 div.menu__content--autocomplete {top:165px !important;}
+
+.categorietitle{
+    margin-bottom: 5%;
+    display:block;
+}
 </style>
 
