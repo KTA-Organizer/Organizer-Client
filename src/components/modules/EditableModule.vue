@@ -11,6 +11,7 @@
                     <v-icon light>cached</v-icon>
                     </span>
                 </v-btn>
+                <v-btn color="primary" @click="$emit('update:edit', !edit)">Return</v-btn>
             </v-flex>
             
         </v-layout>
@@ -42,6 +43,6 @@
 <script>
 export default {
     name: "editableModule",
-    props: ["module"]
+    props: ["module", "edit"]
 }
 </script>

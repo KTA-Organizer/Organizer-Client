@@ -5,10 +5,10 @@
             <h1 class="display-3">{{ 'Modules' }}</h1>
         </v-flex>
     </v-layout>
-    <v-container v-if="editMode">
-        <editablemodule v-bind:module="module"> </editablemodule>
+    <v-container v-if="editMode" >
+        <editablemodule v-bind:module="module" v-bind:edit.sync="editMode"> </editablemodule>
     </v-container>
-    <v-container v-if="!editMode">
+    <v-container v-else>
         <v-layout row class="ml-5 mb-4">
             <v-flex xs4>
                 <v-text-field name="modulenaam" label="Naam van de module" v-model="module.name" single-line></v-text-field>
