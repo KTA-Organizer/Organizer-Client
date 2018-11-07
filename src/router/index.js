@@ -174,11 +174,6 @@ export default new Router({
             name: "modules",
             component: Modules
         },
-        {
-            path: "/evaluate",
-            name: "evaluate",
-            component: Evaluate
-        },
         { path: '/404', component: NotFound },
         { path: '*', redirect: '/404' },
     ]
