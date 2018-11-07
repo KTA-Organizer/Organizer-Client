@@ -16,7 +16,7 @@
                         </v-card>
 
                         <v-card v-if="showPasswordReset" class="elevation-12">
-                            <forgotpassword :email="email"></forgotpassword>
+                            <forgotpassword v-bind:email.sync="email"></forgotpassword>
                             <p><a v-on:click="forgotPassword">Ooops... Ik weet het toch nog!</a></p>
                         </v-card>
 

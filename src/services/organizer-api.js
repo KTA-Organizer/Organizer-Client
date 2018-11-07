@@ -62,21 +62,20 @@ export const updateUser = user =>
       lastname: user.lastname,
       email: user.email,
       gender: user.gender,
-      roles: user.roles,
-      nationalRegisterNumber: user.nationalRegisterNumber
+      roles: user.roles
     },
     "put"
   );
 
-export const assignOpleidingToUser = (disciplineid, userId) =>
-  processReq(`/disciplines/student/${userId}`, { disciplineid }, "put");
+export const assignOpleidingToUser = (opleidingId, userId) =>
+  processReq(`/students/${userId}`, { opleidingId }, "put");
 
 export const getOpleidingen = () => processReq("/disciplines", {}, "get");
 
-export const getOpleiding = id => processReq(`/disciplines/${id}`);
+export const getOpleiding = id => processReq(`/opleidingen/${id}`);
 
 export const getOpleidingForStudent = id =>
-  processReq(`/disciplines/student/${id}`, {}, "get");
+  processReq(`/opleidingen/${id}/student`, {}, "get");
 
 export const saveReport = () => processReq("/saveReport", report, "post");
 
@@ -154,7 +153,7 @@ export const deleteEval = id =>
   processReq("/deleteEvaluatie", { id }, "delete");
 
 export const createOpleiding = (creatorId, name) =>
-  processReq("/disciplines", { creatorId, active: 1, name }, "post");
+  processReq("/opleidingen", { creatorId, active: 1, name }, "post");
 
 export const updateOpleiding = (opleidingId, name) =>
   processReq("/disciplines/" + opleidingId, { name }, "put");
@@ -249,7 +248,7 @@ export const updateAspect = (aspectId, name) =>
 
 export const setOpleidingInactive = (opleidingId) =>
     processReq(
-      "/disciplines/" + opleidingId + "/status",
+      "/opleidingen/" + opleidingId + "/status",
       {
         active: 0
       },
@@ -258,7 +257,7 @@ export const setOpleidingInactive = (opleidingId) =>
 
 export const setOpleidingActive = (opleidingId) =>
     processReq(
-      "/disciplines/" + opleidingId + "/status",
+      "/opleidingen/" + opleidingId + "/status",
       {
         active: 1
       },
@@ -305,7 +304,10 @@ async function processReq(url, dataObj = {}, method = "GET") {
       .filter(key => !!dataObj[key])
       .map(key => `${key}=${dataObj[key]}`)
       .join("&");
-    url += `?${queryString}`;
+      console.log(queryString);
+      if (queryString.length > 1) {
+        url += `?${queryString}`;
+      }
   }
 
   const response = await fetch(`${API_URL}${url}`, conf);

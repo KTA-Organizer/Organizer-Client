@@ -7,7 +7,7 @@
     <v-card-text v-if="!passwordResetSuccess">
         <v-card-title>Stuur een email om je wachtwoord te herstellen.</v-card-title>
         <v-form>
-            <v-text-field name="email" label="Email" id="email" type="email" :rules="emailRules" v-model="email" autofocus="autofocus" required></v-text-field>
+            <v-text-field name="email" label="Email" id="email" type="email" :rules="emailRules" v-on:input="$emit('update:email', userMail)" v-model="userMail" autofocus="autofocus" required></v-text-field>
             <v-flex class="text-xs-center" mt-3>
                 <v-btn color="primary" type="submit" v-on:click.prevent="onPasswordReset">Email versturen</v-btn>
                 <p v-if="passwordResetError" class="red--text">{{passwordResetError}}</p>
@@ -32,7 +32,8 @@ export default {
         return {
             emailRules: rules.email,
             passwordResetSuccess: false,
-            passwordResetError: null
+            passwordResetError: null,
+            userMail: ""
         };
     },
     methods: {
@@ -44,6 +45,9 @@ export default {
                 this.passwordResetError = "Password reset request failed";
             }
         }
+    },
+    beforeUpdate() {
+        this.userMail = this.email;
     }
 };
 </script>
