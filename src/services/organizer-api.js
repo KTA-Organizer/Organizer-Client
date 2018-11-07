@@ -82,7 +82,7 @@ export const saveReport = () => processReq("/saveReport", report, "post");
 
 export const updateReport = () => processReq("/updateReport", report, "patch");
 
-export const getFullOpleiding = id => processReq(`/disciplines/${id}/full`);
+export const getFullOpleiding = id => processReq(`/modules`, {disciplineid: id});
 
 export const getEvalForStudent = id =>
   processReq("/evaluatieVoorStudent", { id }, "get");
@@ -269,7 +269,7 @@ export const deleteCategorie = id =>
   processReq("/doelstellingsCategorie/" + id, {}, "delete");
 
 export const deleteModule = id =>
-  processReq("/modules/" + id, {}, "delete");  
+  processReq("/modules/" + id + "/status", {active: 0}, "put");  
 
 export const deleteDoelstelling = id =>
   processReq("/doelstellingen/" + id, {}, "delete");  

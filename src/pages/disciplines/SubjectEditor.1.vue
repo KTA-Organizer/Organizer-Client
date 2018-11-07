@@ -1,6 +1,6 @@
 <template>
 <main>
-    <v-layout row class="ml-5" v-if="!editingModule">
+    <v-layout row class="ml-5">
         <v-flex xs4>
             <v-text-field name="opleidingsnaam" label="Naam van de opleiding" v-model="opleidingsnaam" single-line></v-text-field>
         </v-flex>
@@ -13,23 +13,111 @@
             </v-btn>
         </v-flex>
     </v-layout>
-    <v-data-table v-bind:headers="headers" :items="opleiding" v-if="!editingModule" hide-actions class="elevation-1">
-    <template slot="items" slot-scope="props">
-        <tr v-if="props.item.active">
-            <td class="text-xs-left">{{ props.item.name }}</td>
-            <td class="text-xs-right">
-                <v-btn color="error" class="ma-1 right" v-if="!editingModule" dark @click="removeModule(opleiding, props.item)">
-                    <v-icon dark>delete</v-icon>
-                </v-btn>
-                <router-link :to="{ name: 'modules', query: { id: props.item.id }}" style="text-decoration: none">
-                    <v-btn color="primary" class="ma-1 right" v-if="!editingModule" dark @click="editModule(props.index)">
-                        <v-icon dark>edit</v-icon>
-                    </v-btn>
-                </router-link>
-            </td>
-        </tr>
-    </template>
-    </v-data-table>
+    <v-layout row-wrap class="ml-5">
+        <!-- MODULES & CATEGORIEEN DISPLAY-->
+        <v-flex xs3 class="mr-0 pa-0">
+            <v-list dark class="blue darken-3 pa-0">
+                <v-list-group uid="0" class="blue darken-3" dark v-for="(module, moduleIndex) in opleiding" :value="module.active" v-bind:key="module.name">
+                    <v-list-tile slot="activator">
+                        <v-list-tile-content v-if="!editingModule || moduleIndex != payload">
+                            <v-list-tile-title>{{module.name}}</v-list-tile-title>
+                        </v-list-tile-content>
+                        <v-btn flat icon color="blue lighten-2" v-if="!editingModule" @click="editModule(moduleIndex)">
+                            <v-icon>edit</v-icon>
+                        </v-btn>
+                        <v-btn flat icon color="blue lighten-2 text-xs-right" @click="removeModule(opleiding, module)">
+                            <v-icon>delete</v-icon>
+                        </v-btn>
+                        <v-text-field v-if="editingModule && payload === moduleIndex" @keyup.enter="editModule(null)" dark autofocus name="module" label="Module naam" v-model="module.name" single-line></v-text-field>
+                    </v-list-tile>
+                    <v-list-tile class="blue-grey darken-2" v-for="(categorie,categorieIndex) in module.doelstellingCategories" v-bind:key="categorieIndex" @click="payload=categorieIndex">
+                        <v-list-tile-content @click="setCategorie(categorie)" v-if="!editingCategorie || categorieIndex != payload">
+                            <v-list-tile-title>{{ categorie.name }}</v-list-tile-title>
+                        </v-list-tile-content>
+                        <v-btn flat icon color="blue lighten-2 text-xs-right" v-if="!editingCategorie" @click="editCategorie(categorieIndex)">
+                            <v-icon>edit</v-icon>
+                        </v-btn>
+                        <v-btn flat icon color="blue lighten-2 text-xs-right" @click="removeCategorie(module.doelstellingCategories, categorie)">
+                            <v-icon>delete</v-icon>
+                        </v-btn>
+                        <v-text-field v-if="editingCategorie && payload === categorieIndex" @keyup.enter="editCategorie(null)" dark autofocus name="module" label="Categorie naam" v-model="categorie.name" single-line></v-text-field>
+                    </v-list-tile>
+                    <v-list-tile class="blue-grey darken-2">
+                        <v-text-field class="pb-2" auto-focus v-if="addCategorieActive" @keyup.enter="enterAddition(CategorieAddString, module.doelstellingCategories, 'categorie', module.indexes)" prepend-icon="add" label="Nieuwe Categorie" v-model="CategorieAddString" single-line hide-details dark></v-text-field>
+                        <v-btn flat color="white darken-1" v-if="!addCategorieActive" @click="addCategorieActive = true">+ Nieuwe Categorie</v-btn>
+                    </v-list-tile>
+                </v-list-group>
+
+                <v-list-tile class="white--text">
+                    <v-text-field class="pb-2" auto-focus v-if="addModuleActive" @keyup.enter="enterAddition(ModuleAddString, opleiding, 'module')" prepend-icon="add" label="Nieuwe Module" v-model="ModuleAddString" single-line hide-details dark></v-text-field>
+                    <v-btn flat color="white darken-1" v-if="!addModuleActive" @click="addModuleActive = true" full-width>+ Nieuwe Module</v-btn>
+                </v-list-tile>
+            </v-list>
+        </v-flex>
+        <!-- DOELSTELLINGEN & EVALUATIECRITERIA DISPLAY-->
+        <v-flex xs4 class="mr-0 pa-0" v-if="selectedcategorie != null">
+            <v-list dark class="blue darken-3 pa-0">
+                <v-list-group class="blue darken-3" dark v-for="(doelstelling, doelstellingIndex) in selectedcategorie.doelstellingen" :value="doelstelling.active" v-bind:key="doelstelling.name">
+                    <v-list-tile slot="activator" @click="hideAspects">
+                        <v-list-tile-content v-if="!editingDoelstelling || doelstellingIndex != payload">
+                            <v-list-tile-title>{{ doelstelling.name }}</v-list-tile-title>
+                        </v-list-tile-content>
+                        <v-btn flat icon color="blue lighten-2" v-if="!editingDoelstelling" @click="editDoelstelling(doelstellingIndex)">
+                            <v-icon>edit</v-icon>
+                        </v-btn>
+                        <v-btn flat icon color="blue lighten-2 text-xs-right" @click="removeDoelstelling(selectedcategorie.doelstellingen, doelstelling)">
+                            <v-icon>delete</v-icon>
+                        </v-btn>
+                        <v-text-field v-if="editingDoelstelling && payload === doelstellingIndex" @keyup.enter="editDoelstelling(null)" dark autofocus name="doelstelling" label="Doelstelling naam" v-model="doelstelling.name" single-line></v-text-field>
+                    </v-list-tile>
+                    <v-list-tile class="blue-grey darken-2" v-for="(criteria, criteriaIndex) in doelstelling.evaluatieCriteria" v-bind:key="criteriaIndex" @click="setCriteria(criteria)">
+                        <v-list-tile-content @click="setCriteria(criteriaIndex)" v-if="!editingCriteria || criteriaIndex != payload">
+                            <v-list-tile-title>{{ criteria.name}}</v-list-tile-title>
+                        </v-list-tile-content>
+                        <v-btn flat icon color="blue lighten-2 text-xs-right" v-if="!editingCriteria" @click="editCriteria(criteriaIndex)">
+                            <v-icon>edit</v-icon>
+                        </v-btn>
+                        <v-btn flat icon color="blue lighten-2 text-xs-right" @click="removeCriteria(doelstelling.evaluatieCriteria, criteria)">
+                            <v-icon>delete</v-icon>
+                        </v-btn>
+                        <v-text-field v-if="editingCriteria && payload === criteriaIndex" @keyup.enter="editCriteria(null)" dark autofocus name="module" label="Criteria naam" v-model="criteria.name" single-line></v-text-field>
+                    </v-list-tile>
+                    <v-list-tile class="blue-grey darken-2">
+                        <v-text-field class="pb-2" auto-focus v-if="addCriteriaActive" @keyup.enter="enterAddition(CriteriaAddString, doelstelling.evaluatieCriteria, 'criteria', doelstelling.indexes)" prepend-icon="add" label="Nieuwe Criteria" v-model="CriteriaAddString" single-line hide-details dark></v-text-field>
+                        <v-btn flat color="white darken-1" v-if="!addCriteriaActive" @click="addCriteriaActive = true">+ Nieuwe Criteria</v-btn>
+                    </v-list-tile>
+                </v-list-group>
+
+                <v-list-tile class="white--text">
+                    <v-text-field class="pb-2" auto-focus v-if="addDoelstellingActive" @keyup.enter="enterAddition(DoelstellingAddString, selectedcategorie.doelstellingen, 'doelstelling', selectedcategorie.indexes )" prepend-icon="add" label="Nieuwe Doelstelling" v-model="DoelstellingAddString" single-line hide-details dark></v-text-field>
+                    <v-btn flat color="white darken-1" v-if="!addDoelstellingActive" @click="addDoelstellingActive = true" full-width>+ Nieuwe Doelstelling</v-btn>
+                </v-list-tile>
+            </v-list>
+        </v-flex>
+        <!-- DOELSTELLINGEN & EVALUATIECRITERIA DISPLAY-->
+        <v-flex xs4 class="mr-0 pa-0" v-if="selectedcriteria != null">
+            <v-list dark class="blue darken-3 pa-0">
+                <v-list-group class="blue darken-3" dark v-for="(aspect, aspectIndex) in selectedcriteria.aspecten" :value="aspect.active" v-bind:key="aspect.name">
+                    <v-list-tile slot="activator" @click="enterAddition('', opleiding)">
+                        <v-list-tile-content v-if="!editingAspect || aspectIndex != payload">
+                            <v-list-tile-title>{{ aspect.name }}</v-list-tile-title>
+                        </v-list-tile-content>
+                        <v-btn flat icon color="blue lighten-2" v-if="!editingAspect" @click="editAspect(aspectIndex)">
+                            <v-icon>edit</v-icon>
+                        </v-btn>
+                        <v-btn flat icon color="blue lighten-2 text-xs-right" @click="removeAspect(selectedcriteria.aspecten, aspect)">
+                            <v-icon>delete</v-icon>
+                        </v-btn>
+                        <v-text-field v-if="editingAspect && payload === aspectIndex" @keyup.enter="editAspect(null)" dark autofocus name="aspect" label="Aspect naam" v-model="aspect.name" single-line></v-text-field>
+                    </v-list-tile>
+                </v-list-group>
+                <v-list-tile class="white--text">
+                    <v-text-field class="pb-2" auto-focus v-if="addAspectenActive" @keyup.enter="enterAddition(AspectenAddString, selectedcriteria.aspecten, 'aspect', selectedcriteria.indexes )" prepend-icon="add" label="Nieuw Aspect" v-model="AspectenAddString" single-line hide-details dark></v-text-field>
+                    <v-btn flat color="white darken-1" v-if="!addAspectenActive" @click="addAspectenActive = true" full-width>+ Nieuw Aspect</v-btn>
+                </v-list-tile>
+            </v-list>
+        </v-flex>
+    </v-layout>
 </main>
 </template>
 
@@ -39,19 +127,8 @@ export default {
     props: ["givenmajor"],
     data() {
         return {
-            headers: [{
-                    text: "Module",
-                    align: "left",
-                    value: "module"
-                },
-                {
-                    text: "",
-                    value: "actionbtns"
-                }
-            ],
             snackbar: false,
             opleidingsnaam: "",
-            modulenaam: "",
             editingModule: false,
             editingCategorie: false,
             editingDoelstelling: false,
@@ -171,7 +248,6 @@ export default {
         },
         editModule(payload) {
             this.payload = payload;
-            this.modulenaam = this.opleiding[payload].name;
             this.editingModule = !this.editingModule;
             this.hideCategorie();
         },
@@ -261,10 +337,14 @@ export default {
                 this.$http.updateOpleiding(
                     this.givenmajor.id,
                     this.opleidingsnaam
+                    /*function(response) {
+                      console.log(response);
+                      //self.saveModules();*/
+                    //}
                 );
                 this.removeDeletedItems();
             }
-            // self.saveModules();
+            self.saveModules();
             this.loading = false;
         },
         saveModules() {
@@ -420,10 +500,43 @@ export default {
             this.opleidingsnaam = self.givenmajor.name;
             const fullOpleiding = await this.$http.getFullOpleiding(this.givenmajor.id);
             console.log("FullOpleiding", fullOpleiding);
-            fullOpleiding.forEach(function (module, moduleindex) {
+            fullOpleiding.modules.forEach(function (module, moduleindex) {
                 module["indexes"] = [moduleindex + 1];
+                module.doelstellingCategories.forEach(function (
+                    categorie,
+                    categorieIndex
+                ) {
+                    categorie["indexes"] = [moduleindex + 1, categorieIndex + 1];
+                    categorie.doelstellingen.forEach(function (
+                        doelstelling,
+                        doelstellingIndex
+                    ) {
+                        doelstelling["indexes"] = [
+                            moduleindex + 1,
+                            categorieIndex + 1,
+                            doelstellingIndex + 1
+                        ];
+                        doelstelling.evaluatieCriteria.forEach(function (criterium, criteriumIndex) {
+                            criterium["indexes"] = [
+                                moduleindex + 1,
+                                categorieIndex + 1,
+                                doelstellingIndex + 1,
+                                criteriumIndex + 1
+                            ];
+                            criterium.aspecten.forEach(function (aspect, aspectIndex) {
+                                aspect["indexes"] = [
+                                    moduleindex + 1,
+                                    categorieIndex + 1,
+                                    doelstellingIndex + 1,
+                                    criteriumIndex + 1,
+                                    aspectIndex + 1
+                                ];
+                            });
+                        });
+                    });
+                });
             });
-            self.opleiding = fullOpleiding;
+            self.opleiding = fullOpleiding.modules;
         }
     }
 };

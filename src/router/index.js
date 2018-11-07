@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 
 /* import pages */
+import Modules from "@/pages/modules/Modules";
 import Index from "@/pages/Index";
 import Dashboard from "@/pages/Dashboard";
 import Users from "@/pages/users/Users";
@@ -34,6 +35,7 @@ import SuccesDialog from "@/components/dialogs/succesDialog";
 import AddUser from "@/components/users/AddUser";
 import ChooseDiscipline from "@/components/disciplines/ChooseDiscipline";
 import UserDetailCard from "@/components/users/UserDetailCard";
+import EditableModule from "@/components/modules/EditableModule";
 /* import components */
 
 /* set components */
@@ -52,6 +54,7 @@ Vue.component("confirmdialog", ConfirmDialog);
 Vue.component("succesdialog", SuccesDialog);
 Vue.component("choosediscipline", ChooseDiscipline);
 Vue.component("userdetailcard", UserDetailCard);
+Vue.component("editablemodule", EditableModule);
 /* set components */
 
 Vue.use(Router);
@@ -164,7 +167,17 @@ export default new Router({
             path: "/invitation",
             name: "invitation",
             component: ChoosePassword,
-            beforeEnter: requireUnauth
+            beforeEnter: requireUnauth,
+        },
+        {
+            path: "/modules",
+            name: "modules",
+            component: Modules
+        },
+        {
+            path: "/evaluate",
+            name: "evaluate",
+            component: Evaluate
         },
         { path: '/404', component: NotFound },
         { path: '*', redirect: '/404' },
