@@ -40,6 +40,7 @@ import NewModuleDialog from "@/components/dialogs/NewModuleDialog";
 import ModuleList from "@/components/modules/ModuleList";
 import CreateEvaluationForm from "@/components/evaluation/CreateEvaluationForm";
 import StudentEvaluation from "@/components/evaluation/StudentEvaluation";
+import GradeBoxes from "@/components/evaluation/GradeBoxes";
 /* import components */
 
 /* set components */
@@ -61,6 +62,7 @@ Vue.component("userdetailcard", UserDetailCard);
 Vue.component("editablemodule", EditableModule);
 Vue.component("newmoduledialog", NewModuleDialog);
 Vue.component("modulelist", ModuleList);
+Vue.component("gradeboxes", GradeBoxes);
 /* set components */
 
 Vue.use(Router);

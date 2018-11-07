@@ -20,7 +20,6 @@
     <v-text-field v-model="assignmentName" label="Naam van de opdracht" required :rules="nameRules"></v-text-field>
     <v-layout row>
         <modulelist :module="module"></modulelist>
-        <modulelist :module="module"></modulelist>
     </v-layout>
 </v-container>
 </template>
