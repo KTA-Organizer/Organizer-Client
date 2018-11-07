@@ -11,6 +11,8 @@
                   <v-icon light>cached</v-icon>
                 </span>
             </v-btn>
+            <v-btn class="primary" @click="newModule=true">+ Nieuwe Module</v-btn>
+
         </v-flex>
     </v-layout>
     <v-data-table v-bind:headers="headers" :items="opleiding" v-if="!editingModule" hide-actions class="elevation-1">
@@ -30,6 +32,7 @@
         </tr>
     </template>
     </v-data-table>
+    <newmoduledialog v-bind:model.sync="newModule"></newmoduledialog>
 </main>
 </template>
 
@@ -50,6 +53,7 @@ export default {
                 }
             ],
             snackbar: false,
+            newModule: false,
             opleidingsnaam: "",
             modulenaam: "",
             editingModule: false,
