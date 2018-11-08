@@ -24,7 +24,7 @@
             <v-btn color="primary" flat v-on:click="$emit('update:model', !model)">
                 Annuleer
             </v-btn>
-            <v-btn color="error" flat v-on:click="removeGoal">
+            <v-btn color="error" flat v-on:click="removeCriteria">
                 Bevestig
             </v-btn>
         </v-card-actions>
@@ -50,11 +50,11 @@ export default {
         };
     },
     methods: {
-        async removeGoal() {
+        async removeCriteria() {
             var self = this;
 
-            const selectedGoalId = this.goals.filter(x => x.name === this.selectedGoal).map(x => x.id)[0];
-            await this.$http.setGoalInactive(selectedGoalId);
+            const selectedCriteriaId = this.criteria.filter(x => x.name === this.selectedCriteria).map(x => x.id)[0];
+            await this.$http.setCriteriaInactive(selectedGoalId);
             this.$emit('confirm');
             this.$emit('update:model', !this.model);
         },

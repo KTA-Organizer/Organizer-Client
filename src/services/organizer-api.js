@@ -145,6 +145,15 @@ export const updateModule = (moduleId, name) =>
         "put"
     );
 
+    export const setCriteriaInactive = (criteriaid) =>
+    processReq(
+        `/criteria/${criteriaid}/status`,
+        {
+            active: 0
+        },
+        "put"
+    );
+
 
 // export const updateDoelstellingscategorie = (doelstellingscategorieId, name) =>
 //   processReq(
