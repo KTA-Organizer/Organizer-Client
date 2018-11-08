@@ -45,6 +45,7 @@ import NewDomainDialog from "@/components/dialogs/NewDomainDialog";
 import NewGoalDialog from "@/components/dialogs/NewGoalDialog";
 import NewCriteriaDialog from "@/components/dialogs/NewCriteriaDialog";
 import RemoveDomainDialog from "@/components/dialogs/RemoveDomainDialog";
+import RemoveGoalDialog from "@/components/dialogs/RemoveGoalDialog";
 /* import components */
 
 /* set components */
@@ -71,6 +72,7 @@ Vue.component("newdomaindialog", NewDomainDialog);
 Vue.component("newgoaldialog", NewGoalDialog);
 Vue.component("newcriteriadialog", NewCriteriaDialog);
 Vue.component("removedomaindialog", RemoveDomainDialog);
+Vue.component("removegoaldialog", RemoveGoalDialog);
 /* set components */
 
 Vue.use(Router);

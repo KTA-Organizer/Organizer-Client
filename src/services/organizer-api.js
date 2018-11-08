@@ -136,6 +136,15 @@ export const updateModule = (moduleId, name) =>
         "put"
     );
 
+    export const setGoalInactive = (goalid) =>
+    processReq(
+        `/goals/${goalid}/status`,
+        {
+            active: 0
+        },
+        "put"
+    );
+
 
 // export const updateDoelstellingscategorie = (doelstellingscategorieId, name) =>
 //   processReq(
