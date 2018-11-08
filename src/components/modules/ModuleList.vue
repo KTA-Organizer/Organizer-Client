@@ -5,7 +5,7 @@
         <v-layout row class="" v-if="categorie.active">
             <v-data-table hide-headers :items="categorie.goals" hide-actions class="elevation-1 criteriaTable mb-5">
                 <template slot="items" slot-scope="props">
-                    <tr>
+                    <tr v-if="props.item.active">
                         <th>{{ props.item.name }}</th>
                         <v-layout class="py-2 mt-2" v-for="(criteria) in props.item.criteria" v-bind:key="criteria.name" row>
                             <v-layout class="criteriaText">

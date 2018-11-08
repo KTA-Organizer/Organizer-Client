@@ -65,7 +65,6 @@ export default {
                 this.goals.push(goal);
             })
             this.goalNames = this.goals.map(x => x.name);
-            console.log(this.goalNames, "iere");
         }
     },
     async created() {
