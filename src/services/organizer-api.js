@@ -136,17 +136,15 @@ export const updateModule = (moduleId, name) =>
 //     "put"
 //   );  // NOT THERE YET
 
-// export const createDoelstelling = (name, doelstellingscategorieId, creatorId) =>
-//   processReq(
-//     "/doelstellingen",
-//     {
-//       name,
-//       doelstellingscategorieId,
-//       inGebruik: 1,
-//       creatorId
-//     },
-//     "post"
-//   ); // NOT THERE YET
+ export const createGoal = (name, domainid) =>
+   processReq(
+     "/goals",
+     {
+       name,
+       domainid
+     },
+     "post"
+   );
 
 // export const updateDoelstelling = (doelstellingId, name) =>
 //   processReq(
