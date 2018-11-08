@@ -140,8 +140,8 @@ export const updateModule = (moduleId, name) =>
    processReq(
      "/goals",
      {
-       name,
-       domainid
+       domainid,
+       name
      },
      "post"
    );

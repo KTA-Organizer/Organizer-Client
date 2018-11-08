@@ -38,6 +38,7 @@
         <modulelist :module="module"></modulelist>
     </v-container>
     <newdomaindialog v-bind:model.sync="addingDomain" :moduleId="module.id" v-on:confirm="refreshModule"></newdomaindialog>
+    <newgoaldialog v-bind:model.sync="addingGoal" :moduleId="module.id" v-on:confirm="refreshModule"></newgoaldialog>
 </main>
 </template>
 
@@ -52,7 +53,7 @@ export default {
             insertPossibilities: ["Categorie", "Doelstelling", "Criteria"],
             addingDomain: false,
             addingGoal: false,
-            addingCriteria: false
+            addingCriteria: false,
         };
     },
     methods: {

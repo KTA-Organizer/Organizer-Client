@@ -42,6 +42,7 @@ import CreateEvaluationForm from "@/components/evaluation/CreateEvaluationForm";
 import StudentEvaluation from "@/components/evaluation/StudentEvaluation";
 import GradeBoxes from "@/components/evaluation/GradeBoxes";
 import NewDomainDialog from "@/components/dialogs/NewDomainDialog";
+import NewGoalDialog from "@/components/dialogs/NewGoalDialog";
 /* import components */
 
 /* set components */
@@ -65,6 +66,7 @@ Vue.component("newmoduledialog", NewModuleDialog);
 Vue.component("modulelist", ModuleList);
 Vue.component("gradeboxes", GradeBoxes);
 Vue.component("newdomaindialog", NewDomainDialog);
+Vue.component("newgoaldialog", NewGoalDialog);
 /* set components */
 
 Vue.use(Router);

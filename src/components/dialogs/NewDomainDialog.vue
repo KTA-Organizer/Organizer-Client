@@ -2,11 +2,11 @@
     <v-dialog width="500" v-model="model">
         <v-card>
             <v-card-title class="headline grey lighten-2" primary-title>
-                Aanmaak nieuwe categorie
+                Aanmaak nieuw domein
             </v-card-title>
 
             <v-card-text>
-                <v-text-field label="Naam categorie" v-model="nameNewDomain"></v-text-field>
+                <v-text-field label="Naam domein" v-model="nameNewDomain"></v-text-field>
             </v-card-text>
 
             <v-divider></v-divider>
