@@ -5,7 +5,7 @@
             <h1 class="display-3">{{ 'Modules' }}</h1>
         </v-flex>
     </v-layout>
-    <v-container v-if="editMode" >
+    <v-container v-if="editMode">
         <editablemodule v-bind:module="module" v-bind:edit.sync="editMode"> </editablemodule>
     </v-container>
     <v-container v-else>
@@ -20,13 +20,24 @@
                     <v-icon light>cached</v-icon>
                     </span>
                 </v-btn>
-                <v-btn color="primary" @click="editMode = !editMode"><v-icon dark>edit</v-icon>Edit</v-btn>
-            </v-flex>
-            
+                <v-btn color="primary" @click="editMode = !editMode">
+                    <v-icon dark>edit</v-icon>Edit
+                </v-btn>
+                <v-menu offset-y>
+                    <v-btn slot="activator" color="primary" dark>
+                        <v-icon light>control_point</v-icon>
+                    </v-btn>
+                    <v-list>
+                        <v-list-tile v-for="(item) in insertPossibilities" :key="item" @click="showCorrectDialog">
+                            <v-list-tile-title>{{ item }}</v-list-tile-title>
+                        </v-list-tile>
+                    </v-list>
+                </v-menu>
+            </v-flex> 
         </v-layout>
         <modulelist :module="module"></modulelist>
     </v-container>
-    
+
 </main>
 </template>
 
@@ -37,7 +48,8 @@ export default {
         return {
             module: null,
             currentUserId: this.$store.getters.currentUser.id,
-            editMode: false
+            editMode: false,
+            insertPossibilities: ["Categorie", "Doelstelling", "Criteria"]
         };
     },
     methods: {
@@ -47,6 +59,9 @@ export default {
                 this.module.id,
                 this.module.name
             );
+        },
+        showCorrectDialog(){
+
         }
     },
     async created() {
@@ -71,6 +86,6 @@ div.menu__content--autocomplete {
 
 .categorieTitle {
     margin-bottom: 2%;
-    width:100%;
+    width: 100%;
 }
 </style>
