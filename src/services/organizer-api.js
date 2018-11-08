@@ -155,18 +155,16 @@ export const updateModule = (moduleId, name) =>
 //     "put"
 //   ); // NOT THERE YET
 
-// export const createCriteria = (name, doelstellingId, creatorId) =>
-//   processReq(
-//     "/evaluatieCriteria",
-//     {
-//       name,
-//       doelstellingId,
-//       inGebruik: 1,
-//       gewicht: 1,
-//       creatorId
-//     },
-//     "post"
-//   ); // NOT THERE YET
+ export const createCriteria = (name, goalid) =>
+   processReq(
+     "/criteria",
+     {
+       name,
+       goalid,
+       weight: 1
+    },
+     "post"
+   ); 
 
 // export const updateCriteria = (criteriaId, name) =>
 //   processReq(

@@ -24,7 +24,7 @@
             <v-btn color="primary" flat v-on:click="$emit('update:model', !model), nameNewCriteria=''">
                 Annuleer
             </v-btn>
-            <v-btn color="error" flat v-on:click="createNewGoal">
+            <v-btn color="error" flat v-on:click="createNewCriteria">
                 Bevestig
             </v-btn>
         </v-card-actions>
@@ -48,11 +48,11 @@ export default {
         };
     },
     methods: {
-        async createNewGoal() {
+        async createNewCriteria() {
             var self = this;
 
-            const selectedDomainId = this.domains.filter(x => x.name === this.selectedDomain).map(x => x.id)[0];
-            await this.$http.createGoal(this.nameNewCriteria, selectedDomainId);
+            const selectedGoalId = this.goals.filter(x => x.name === this.selectedGoal).map(x => x.id)[0];
+            await this.$http.createCriteria(this.nameNewCriteria, selectedGoalId);
             this.nameNewCriteria = "";
             this.$emit('confirm');
             this.$emit('update:model', !this.model);
