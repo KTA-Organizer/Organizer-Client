@@ -31,7 +31,7 @@
 <script>
 export default {
     name: "newGoalDialog",
-    props: ["new", "confirm", "model", "moduleId"],
+    props: ["new", "confirm", "model", "moduleId", "module"],
     data() {
         return {
             nameNewGoal: "",
@@ -49,13 +49,21 @@ export default {
             this.nameNewGoal = "";
             this.$emit('confirm');
             this.$emit('update:model', !this.model);
+        },
+        refreshDomains(){
+            var self = this;
+            this.domains = this.module.domains;
+            this.domainNames = this.domains.map(x => x.name);
         }
     },
     async created() {
         var self = this;
-        const module = await this.$http.getModule(this.moduleId);
-        this.domains = module.domains;
-        this.domainNames = this.domains.map(x => x.name);
+        this.refreshDomains();
+    },
+    watch: {
+        module(){
+            this.refreshDomains();
+        }
     }
 }
 </script>

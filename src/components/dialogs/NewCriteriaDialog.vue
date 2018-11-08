@@ -35,7 +35,7 @@
 <script>
 export default {
     name: "newGoalDialog",
-    props: ["new", "confirm", "model", "moduleId"],
+    props: ["new", "confirm", "model", "moduleId", "module"],
     data() {
         return {
             nameNewCriteria: "",
@@ -67,15 +67,21 @@ export default {
                 this.goals.push(goal);
             })
             this.goalNames = this.goals.map(x => x.name);
+        },
+        refreshDomains(){
+            var self = this;
+            this.domains = this.module.domains;
+            this.domainNames = this.domains.map(x => x.name);
         }
     },
     async created() {
         var self = this;
-        const module = await this.$http.getModule(this.moduleId);
-        this.domains = module.domains;
-        this.domainNames = this.domains.map(x => x.name);
-        console.log(this.goals);
-        console.log(this.goalNames);
+        this.refreshDomains();
+    },
+    watch: {
+        module(){
+            this.refreshDomains();
+        }
     }
 }
 </script>
