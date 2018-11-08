@@ -11,20 +11,14 @@
     <v-container v-else>
         <v-layout row class="ml-5 mb-4">
             <v-flex xs4>
-                <v-text-field name="modulenaam" label="Naam van de module" v-model="module.name" single-line></v-text-field>
+                <h1 class="text-xs-left">{{ module.name }}</h1>
             </v-flex>
             <v-flex xs5>
-                <v-btn color="success" @click.native="saveModule">
-                    Opslaan
-                    <span slot="loader" class="custom-loader">
-                    <v-icon light>cached</v-icon>
-                    </span>
-                </v-btn>
                 <v-btn color="primary" @click="editMode = !editMode">
                     <v-icon dark>edit</v-icon>Edit
                 </v-btn>
                 <v-menu offset-y>
-                    <v-btn slot="activator" color="primary" dark>
+                    <v-btn slot="activator" color="success" dark>
                         <v-icon light>control_point</v-icon>
                     </v-btn>
                     <v-list>
