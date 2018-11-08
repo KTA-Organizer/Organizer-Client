@@ -32,7 +32,7 @@
         </tr>
     </template>
     </v-data-table>
-    <newmoduledialog v-bind:model.sync="newModule"></newmoduledialog>
+    <newmoduledialog v-bind:model.sync="newModule" :disciplineId="opleiding[0].disciplineid" v-on:confirm="getModules"></newmoduledialog>
 </main>
 </template>
 
@@ -82,6 +82,14 @@ export default {
         };
     },
     methods: {
+        async getModules(){
+            var self= this;
+            const fullOpleiding = await this.$http.getFullOpleiding(this.givenmajor.id);
+            fullOpleiding.forEach(function (module, moduleindex) {
+                module["indexes"] = [moduleindex + 1];
+            });
+            self.opleiding = fullOpleiding;
+        },
         enterAddition(title, object, level, parentIndexes) {
             if (title !== "") {
                 switch (level) {

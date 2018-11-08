@@ -6,18 +6,17 @@
             </v-card-title>
 
             <v-card-text>
-                <p>Naam van de nieuwe module</p>
-                <v-text-field placeholder="vul iets in"></v-text-field>
+                <v-text-field label="Naam module" v-model="nameNewModule"></v-text-field>
             </v-card-text>
 
             <v-divider></v-divider>
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" flat v-on:click="$emit('update:model', !model)">
+                <v-btn color="primary" flat v-on:click="$emit('update:model', !model), nameNewModule=''">
                     Annuleer
                 </v-btn>
-                <v-btn color="error" flat v-on:click="$emit('confirm')">
+                <v-btn color="error" flat v-on:click="createNewModule">
                     Bevestig
                 </v-btn>
             </v-card-actions>
@@ -27,6 +26,21 @@
 <script>
 export default {
     name: "newModuleDialog",
-    props: ["new", "confirm", "model"]
+    data(){
+        return{
+            nameNewModule: ""
+        };
+    },
+    methods: {
+        async createNewModule(){
+            var self= this;
+            console.log(this.nameNewModule, this.disciplineId);
+            await this.$http.createModule(this.nameNewModule, this.disciplineId);
+            this.nameNewModule= "";
+            this.$emit('confirm');
+            this.$emit('update:model', !this.model);
+        }
+    },
+    props: ["new", "confirm", "model", "disciplineId"]
 }
 </script>
