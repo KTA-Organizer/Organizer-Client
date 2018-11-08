@@ -2,7 +2,7 @@
 <v-dialog width="500" v-model="model">
     <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>
-            Verwijderen bestaande doelstelling
+            Verwijderen bestaande criterion
         </v-card-title>
 
         <v-card-text>
@@ -54,7 +54,7 @@ export default {
             var self = this;
 
             const selectedCriteriaId = this.criteria.filter(x => x.name === this.selectedCriteria).map(x => x.id)[0];
-            await this.$http.setCriteriaInactive(selectedGoalId);
+            await this.$http.setCriteriaInactive(selectedCriteriaId);
             this.$emit('confirm');
             this.$emit('update:model', !this.model);
         },

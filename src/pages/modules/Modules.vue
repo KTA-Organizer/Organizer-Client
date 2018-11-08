@@ -46,6 +46,7 @@
     <newcriteriadialog v-bind:model.sync="addingCriteria" :moduleId="module.id" :module="module" v-on:confirm="refreshModule"></newcriteriadialog>
     <removedomaindialog v-bind:model.sync="removingDomain" :moduleId="module.id" :module="module" v-on:confirm="refreshModule"></removedomaindialog>
     <removegoaldialog v-bind:model.sync="removingGoal" :moduleId="module.id" :module="module" v-on:confirm="refreshModule"></removegoaldialog>
+    <removecriteriadialog v-bind:model.sync="removingCriteria" :moduleId="module.id" :module="module" v-on:confirm="refreshModule"></removecriteriadialog>
 </main>
 </template>
 

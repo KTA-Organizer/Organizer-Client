@@ -8,7 +8,7 @@
                     <tr v-if="props.item.active">
                         <th>{{ props.item.name }}</th>
                         <v-layout class="py-2 mt-2" v-for="(criteria) in props.item.criteria" v-bind:key="criteria.name" row>
-                            <v-layout class="criteriaText">
+                            <v-layout class="criteriaText" v-if="criteria.active">
                                 <v-flex>
                                     <div>
                                         <td class="text-xs-left pl-0 xs-5">{{ criteria.name }}</td>
