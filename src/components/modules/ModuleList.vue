@@ -8,18 +8,32 @@
                     <tr>
                         <th>{{ props.item.name }}</th>
                         <v-layout class="py-2 mt-2" v-for="(criteria) in props.item.criteria" v-bind:key="criteria.name" row>
-                            <v-layout class="criteriaText">
+                            <v-layout v-if="evaluating" class="criteriaTextSm">
                                 <v-flex>
-                                    <div>
-                                        <td class="text-xs-left pl-0 xs-5">{{ criteria.name }}</td>
-                                    </div>
+                                    <td d-block class="text-xs-left pl-0 xs-5">{{ criteria.name }}</td>
                                     <v-divider></v-divider>
                                 </v-flex>
                             </v-layout>
-                            <v-spacer></v-spacer>
-                            <td v-if="evaluating" class="gradeBox">
-                                <gradeboxes :criteriaid="criteria.id"></gradeboxes>
-                            </td>
+                            <v-layout v-else class="criteriaText">
+                                <v-flex>
+                                    <td d-block class="text-xs-left pl-0 xs-5">{{ criteria.name }}</td>
+                                    <v-divider></v-divider>
+                                </v-flex>
+                            </v-layout>
+                            <template v-if="evaluating">
+
+                                <v-flex class="scores">
+                                    <td xs1 class="score" v-for="assignment in evaluations" v-bind:key="assignment.name">
+                                        {{getEvalForCriteria(assignment, criteria.id)}}
+                                    </td>
+                                </v-flex>
+
+                                <v-spacer></v-spacer>
+
+                                <td v-if="evaluating" class="gradeBox">
+                                    <gradeboxes :criteriaid="criteria.id"></gradeboxes>
+                                </td>
+                            </template>
                         </v-layout>
                     </tr>
                 </template>
@@ -30,13 +44,33 @@
 </template>
 
 <script>
+import * as grades from "../../constants/grades";
+
 export default {
     name: "moduleList",
-    props: ["module", "evaluating"],
+    props: ["module", "evaluating", "evaluations"],
     data() {
-        return {}
+        return {
+            klasse: "criteriaText"
+        };
+    },
+    methods: {
+        getEvalForCriteria(assignment, id) {
+            let score = "NVT";
+            console.log(assignment);
+            const grade = assignment.find(x => x.criteriaid === id);
+            if (grade) {
+                score = this.getKeyByValue(grades.gradeValues, grade.grade);
+                score = grades.gradeKeys[score];
+            }
+            console.log(grade);
+            return score;
+        },
+        getKeyByValue(object, value) {
+            return Object.keys(object).find(key => object[key] === value);
+        },
     }
-}
+};
 </script>
 
 <style scoped>
@@ -53,11 +87,28 @@ div.menu__content--autocomplete {
     width: 100%;
 }
 
+.criteriaTextSm {
+    width: 30%;
+}
+
 .criteriaText {
-    max-width: 70%;
+    width: 60%;
 }
 
 .gradeBox {
-    max-width: 30%;
+    max-width: 15%;
+}
+
+.scores {
+    width: 20%;
+}
+
+.score:not(:last-child) {
+    border-right: 1px black dashed;
+}
+
+table tr td.score {
+    /* margin: 1% 1em; */
+    width: 15%;
 }
 </style>

@@ -19,7 +19,7 @@
     </table>
     <v-text-field v-model="assignmentName" label="Naam van de opdracht" required :rules="nameRules"></v-text-field>
     <v-layout row>
-        <modulelist :module="module" :evaluating="true"></modulelist>
+        <modulelist :module="module" :evaluating="true" :evaluations="evaluationsPerAssignment"></modulelist>
     </v-layout>
 </v-container>
 </template>
@@ -58,11 +58,17 @@ export default {
         this.module = await this.$http.getModule(moduleId);
         this.discipline = await this.$http.getOpleidingForStudent(studentId);
         this.evaluations = await this.$http.getEvalsForStudentInModule(studentId, moduleId)
-        this.evaluationsPerAssignment = this.evaluations.reduce((acc, current, index) => {
-
+        this.evaluationsPerAssignment = this.evaluations.reduce((acc, evaluation, index) => {
+            if (acc[evaluation.name]) {
+                console.log("Add")
+                acc[evaluation.name].push(evaluation);
+            } else {
+                console.log("Make")
+                acc[evaluation.name] = [evaluation];
+            }
             return acc;
         }, {});
-        console.log(this.evaluations);
+        console.log(this.evaluationsPerAssignment);
     }
 };
 </script>
