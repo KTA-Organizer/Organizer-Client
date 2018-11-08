@@ -28,7 +28,7 @@
                         <v-icon light>control_point</v-icon>
                     </v-btn>
                     <v-list>
-                        <v-list-tile v-for="(item) in insertPossibilities" :key="item" @click="showCorrectDialog">
+                        <v-list-tile v-for="(item) in insertPossibilities" :key="item" @click="showCorrectDialog(item)">
                             <v-list-tile-title>{{ item }}</v-list-tile-title>
                         </v-list-tile>
                     </v-list>
@@ -49,7 +49,10 @@ export default {
             module: null,
             currentUserId: this.$store.getters.currentUser.id,
             editMode: false,
-            insertPossibilities: ["Categorie", "Doelstelling", "Criteria"]
+            insertPossibilities: ["Categorie", "Doelstelling", "Criteria"],
+            addingDomain: false,
+            addingGoal: false,
+            addingCriteria: false
         };
     },
     methods: {
@@ -60,8 +63,19 @@ export default {
                 this.module.name
             );
         },
-        showCorrectDialog(){
-
+        showCorrectDialog(choice){
+            var self = this;
+            switch(choice){
+                case "Categorie":
+                    self.addingDomain = true;
+                    break;
+                case "Doelstelling":
+                    self.addingGoal = true;
+                    break;
+                case "Criteria":
+                    self.addingCriteria = true;
+                    break;
+            }
         }
     },
     async created() {
