@@ -28,7 +28,17 @@
                         <v-icon light>control_point</v-icon>
                     </v-btn>
                     <v-list>
-                        <v-list-tile v-for="(item) in insertPossibilities" :key="item" @click="showCorrectDialog(item)">
+                        <v-list-tile v-for="(item) in insertPossibilities" :key="item" @click="showCorrectAddDialog(item)">
+                            <v-list-tile-title>{{ item }}</v-list-tile-title>
+                        </v-list-tile>
+                    </v-list>
+                </v-menu>
+                <v-menu offset-y>
+                    <v-btn slot="activator" color="error" dark>
+                        <v-icon light>remove_circle_outline</v-icon>
+                    </v-btn>
+                    <v-list>
+                        <v-list-tile v-for="(item) in insertPossibilities" :key="item" @click="showCorrectRemoveDialog(item)">
                             <v-list-tile-title>{{ item }}</v-list-tile-title>
                         </v-list-tile>
                     </v-list>
@@ -55,6 +65,9 @@ export default {
             addingDomain: false,
             addingGoal: false,
             addingCriteria: false,
+            removingDomain: false,
+            removingGoal: false,
+            removingCriteria: false,
         };
     },
     methods: {
@@ -71,7 +84,7 @@ export default {
                 this.module.id
             );
         },
-        showCorrectDialog(choice){
+        showCorrectAddDialog(choice){
             var self = this;
             switch(choice){
                 case "Categorie":
@@ -82,6 +95,20 @@ export default {
                     break;
                 case "Criteria":
                     self.addingCriteria = true;
+                    break;
+            }
+        },
+        showCorrectRemoveDialog(choice){
+            var self = this;
+            switch(choice){
+                case "Categorie":
+                    self.removingDomain = true;
+                    break;
+                case "Doelstelling":
+                    self.removingGoal = true;
+                    break;
+                case "Criteria":
+                    self.removingCriteria = true;
                     break;
             }
         }
