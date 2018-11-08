@@ -10,11 +10,11 @@
         </v-card-text>
 
         <v-card-text>
-            <v-select :items="domainNames" v-model="selectedDomain" menu-props="auto" label="Naam domein" hide-details single-line></v-select>
+            <v-select :items="domainNames" v-model="selectedDomain" v-on:change="changedDomain" menu-props="auto" label="Naam domein" hide-details single-line></v-select>
         </v-card-text>
-
+ 
         <v-card-text>
-            <v-select :items="goalNames" v-model="selectedCriteria" menu-props="auto" label="Naam doelstelling" hide-details single-line></v-select>
+            <v-select :items="goalNames" v-model="selectedGoal" menu-props="auto" label="Naam doelstelling" hide-details single-line></v-select>
         </v-card-text>
 
         <v-divider></v-divider>
@@ -42,9 +42,9 @@ export default {
             domains: [],
             domainNames: null,
             goals: [],
-            goalNames: null,
+            goalNames: [],
             selectedDomain: null,
-            selectedCriteria: null
+            selectedGoal: null
         };
     },
     methods: {
@@ -56,6 +56,17 @@ export default {
             this.nameNewCriteria = "";
             this.$emit('confirm');
             this.$emit('update:model', !this.model);
+        },
+        changedDomain(){
+            console.log("halloooo");
+            console.log(this.selectedDomain);
+            this.goals = [];
+            const domain = this.domains.filter(x => x.name === this.selectedDomain)[0];
+            console.log(domain);
+            domain.goals.forEach(goal => {
+                this.goals.push(goal);
+            })
+            this.goalNames = this.goals.map(x => x.name);
         }
     },
     async created() {
@@ -63,10 +74,8 @@ export default {
         const module = await this.$http.getModule(this.moduleId);
         this.domains = module.domains;
         this.domainNames = this.domains.map(x => x.name);
-        this.domains.forEach(domain => {
-            this.goals.push(domain.goals);
-        });
-        this.goalNames = this.goals.map(x => x.name);
+        console.log(this.goals);
+        console.log(this.goalNames);
     }
 }
 </script>
