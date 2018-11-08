@@ -6,7 +6,7 @@
             </v-card-title>
 
             <v-card-text>
-                <v-text-field label="Naam domein" v-model="nameDomain"></v-text-field>
+                <v-select :items="domains" v-model="selectedDomain" menu-props="auto" label="Naam domain" hide-details single-line></v-select>
             </v-card-text>
 
             <v-divider></v-divider>
@@ -26,21 +26,26 @@
 <script>
 export default {
     name: "newDomainDialog",
+    props: ["new", "confirm", "model", "moduleId", "module"],
     data(){
         return{
-            nameDomain: ""
+            selectedDomain: "",
+            domains: []
         };
     },
     methods: {
         async removeDomain(){
-            /*var self= this;
-            console.log(this.nameDomain, this.moduleId);
-            await this.$http.createDomain(this.nameDomain, this.moduleId);
+            var self= this;
+            const domainId = this.module.domains.filter(x => x.name === this.selectedDomain).map(x => x.id)[0];
+            await this.$http.setDomainInactive(domainId, this.moduleId);
             this.nameDomain= "";
             this.$emit('confirm');
-            this.$emit('update:model', !this.model);*/
+            this.$emit('update:model', !this.model);
         }
     },
-    props: ["new", "confirm", "model", "moduleId"]
+    async created() {
+        var self = this;
+        this.domains = this.module.domains.map(x => x.name);
+    }
 }
 </script>

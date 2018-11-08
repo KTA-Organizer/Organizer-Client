@@ -1,8 +1,8 @@
 <template>
 <v-container>
     <v-layout wrap class="" dark v-for="(categorie) in module.domains" :value="categorie.active" v-bind:key="categorie.name">
-        <h2 class="categorieTitle mb-4 text-xs-left">{{ categorie.name }}</h2>
-        <v-layout row class="">
+        <h2 class="categorieTitle mb-4 text-xs-left" v-if="categorie.active">{{ categorie.name }}</h2>
+        <v-layout row class="" v-if="categorie.active">
             <v-data-table hide-headers :items="categorie.goals" hide-actions class="elevation-1 criteriaTable mb-5">
                 <template slot="items" slot-scope="props">
                     <tr>

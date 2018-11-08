@@ -127,6 +127,16 @@ export const updateModule = (moduleId, name) =>
      "post"
    );
 
+   export const setDomainInactive = (domainid) =>
+    processReq(
+        `/domains/${domainid}/status`,
+        {
+            active: 0
+        },
+        "put"
+    );
+
+
 // export const updateDoelstellingscategorie = (doelstellingscategorieId, name) =>
 //   processReq(
 //     "/doelstellingsCategorie/" + doelstellingscategorieId,
