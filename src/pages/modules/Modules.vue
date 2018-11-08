@@ -50,6 +50,7 @@
     <newdomaindialog v-bind:model.sync="addingDomain" :moduleId="module.id" v-on:confirm="refreshModule"></newdomaindialog>
     <newgoaldialog v-bind:model.sync="addingGoal" :moduleId="module.id" :module="module" v-on:confirm="refreshModule"></newgoaldialog>
     <newcriteriadialog v-bind:model.sync="addingCriteria" :moduleId="module.id" :module="module" v-on:confirm="refreshModule"></newcriteriadialog>
+    <removedomaindialog v-bind:model.sync="removingDomain" :moduleId="module.id" v-on:confirm="refreshModule"></removedomaindialog>
 </main>
 </template>
 
