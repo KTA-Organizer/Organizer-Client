@@ -37,7 +37,7 @@
         </v-layout>
         <modulelist :module="module"></modulelist>
     </v-container>
-
+    <newdomaindialog v-bind:model.sync="addingDomain" :moduleId="module.id" v-on:confirm="refreshModule"></newdomaindialog>
 </main>
 </template>
 
@@ -61,6 +61,12 @@ export default {
             self.$http.updateModule(
                 this.module.id,
                 this.module.name
+            );
+        },
+        async refreshModule(){
+            var self = this;
+            this.module = await self.$http.getModule(
+                this.module.id
             );
         },
         showCorrectDialog(choice){

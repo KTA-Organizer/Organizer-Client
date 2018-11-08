@@ -120,12 +120,12 @@ export const createModule = (name, disciplineid) =>
 export const updateModule = (moduleId, name) =>
     processReq(`/modules/${moduleId}`, { name }, "put"); // OK
 
- export const createDomain = (name, moduleId, creatorId) =>
+ export const createDomain = (name, moduleid) =>
    processReq(
-     "/doelstellingsCategorie",
-     { name, moduleId, inGebruik: 1, creatorId },
+     "/domains",
+     { moduleid, name },
      "post"
-   ); // NOT THERE YET
+   );
 
 // export const updateDoelstellingscategorie = (doelstellingscategorieId, name) =>
 //   processReq(
