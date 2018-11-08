@@ -10,7 +10,11 @@
         </v-card-text>
 
         <v-card-text>
-            <v-select :items="goalNames" v-model="selectedGoal"  menu-props="auto" label="Naam doelstelling" hide-details single-line></v-select>
+            <v-select :items="goalNames" v-model="selectedGoal" v-on:change="changedGoal"  menu-props="auto" label="Naam doelstelling" hide-details single-line></v-select>
+        </v-card-text>
+
+        <v-card-text>
+            <v-select :items="criteriaNames" v-model="selectedCriteria"  menu-props="auto" label="Naam criteria" hide-details single-line></v-select>
         </v-card-text>
 
         <v-divider></v-divider>
@@ -38,8 +42,11 @@ export default {
             domainNames: null,
             goals: [],
             goalNames: [],
+            criteria: [],
+            criteriaNames: [],
             selectedDomain: null,
-            selectedGoal: null
+            selectedGoal: null,
+            selectedCriteria: null
         };
     },
     methods: {
@@ -60,11 +67,19 @@ export default {
             var self = this;
             this.goals = [];
             const domain = this.domains.filter(x => x.name === this.selectedDomain)[0];
-            console.log(domain);
             domain.goals.forEach(goal => {
                 this.goals.push(goal);
             })
             this.goalNames = this.goals.map(x => x.name);
+        },
+        changedGoal(){
+            var self = this;
+            this.criteria = [];
+            const goal = this.goals.filter(x => x.name === this.selectedGoal)[0];
+            goal.criteria.forEach(criterion => {
+                this.criteria.push(criterion);
+            })
+            this.criteriaNames = this.criteria.map(x => x.name);
         }
     },
     async created() {

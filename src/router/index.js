@@ -46,6 +46,7 @@ import NewGoalDialog from "@/components/dialogs/NewGoalDialog";
 import NewCriteriaDialog from "@/components/dialogs/NewCriteriaDialog";
 import RemoveDomainDialog from "@/components/dialogs/RemoveDomainDialog";
 import RemoveGoalDialog from "@/components/dialogs/RemoveGoalDialog";
+import RemoveCriteriaDialog from "@/components/dialogs/RemoveCriteriaDialog";
 /* import components */
 
 /* set components */
@@ -73,6 +74,7 @@ Vue.component("newgoaldialog", NewGoalDialog);
 Vue.component("newcriteriadialog", NewCriteriaDialog);
 Vue.component("removedomaindialog", RemoveDomainDialog);
 Vue.component("removegoaldialog", RemoveGoalDialog);
+Vue.component("removecriteriadialog", RemoveCriteriaDialog);
 /* set components */
 
 Vue.use(Router);
