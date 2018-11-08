@@ -41,7 +41,6 @@ export default {
             );
             this.filteredStudentNames = this.students
                 .filter(x => {
-                    console.log(x.discipline.id === selectedDiscipline.id);
                     return x.discipline.id === selectedDiscipline.id;
                 })
                 .map(x => `${x.firstname} ${x.lastname}`);

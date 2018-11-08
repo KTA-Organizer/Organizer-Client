@@ -49,13 +49,11 @@ export default {
     methods: {
         getEvalForCriteria(assignment, id) {
             let score = "NI";
-            console.log(assignment);
             const grade = assignment.find(x => x.criteriaid === id);
             if (grade) {
                 score = this.getKeyByValue(grades.gradeValues, grade.grade);
                 score = grades.gradeKeys[score];
             }
-            console.log(grade);
             return score;
         },
         getKeyByValue(object, value) {
@@ -88,7 +86,7 @@ div.menu__content--autocomplete {
 }
 
 .criteriaText {
-    width: 60%;
+    width: 80%;
 }
 
 .gradeBox {

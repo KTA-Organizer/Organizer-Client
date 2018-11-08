@@ -80,15 +80,12 @@ export default {
         this.evaluations = await this.$http.getEvalsForStudentInModule(studentId, moduleId)
         this.evaluationsPerAssignment = this.evaluations.reduce((acc, evaluation, index) => {
             if (acc[evaluation.name]) {
-                console.log("Add")
                 acc[evaluation.name].push(evaluation);
             } else {
-                console.log("Make")
                 acc[evaluation.name] = [evaluation];
             }
             return acc;
         }, {});
-        console.log(this.evaluationsPerAssignment);
     },
     computed: mapGetters(["currentUser"])
 };
