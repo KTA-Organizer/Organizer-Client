@@ -36,7 +36,9 @@ export default {
             module: {},
             discipline: {},
             assignmentName: "",
-            nameRules: nameRules
+            nameRules: nameRules,
+            evaluations: [],
+            evaluationsPerAssignment: {},
         };
     },
     methods: {
@@ -55,6 +57,12 @@ export default {
         this.student = await this.$http.getUser(studentId);
         this.module = await this.$http.getModule(moduleId);
         this.discipline = await this.$http.getOpleidingForStudent(studentId);
+        this.evaluations = await this.$http.getEvalsForStudentInModule(studentId, moduleId)
+        this.evaluationsPerAssignment = this.evaluations.reduce((acc, current, index) => {
+
+            return acc;
+        }, {});
+        console.log(this.evaluations);
     }
 };
 </script>

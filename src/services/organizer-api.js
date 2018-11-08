@@ -23,7 +23,7 @@ export const getStudentOpleiding = studId =>
 
 export const getStudent = id => processReq(`/students/${id}`); // BROKEN
 
-export const getStudents = () => processReq('/users/', {/*role: "STUDENT"*/}, "get"); // BROKEN fix filter
+export const getStudents = () => processReq('/users/', {role: "STUDENT"}, "get");
 
 export const getUser = id => processReq(`/users/${id}`); // OK
 
@@ -85,8 +85,8 @@ export const updateReport = () => processReq("/updateReport", report, "patch"); 
 
 export const getFullOpleiding = id => processReq(`/modules`, { disciplineid: id }); // OK
 
-export const getEvalForStudent = id =>
-    processReq("/evaluatieVoorStudent", { id }, "get"); // NOT THERE YET
+export const getEvalsForStudentInModule = (studentid, moduleid) =>
+    processReq(`/evaluations/student/${studentid}/module/${moduleid}`, {}, "get"); // OK
 
 export const getModulesForStudent = studId =>
     processReq(`/modules/${studId}/student`); // ??
