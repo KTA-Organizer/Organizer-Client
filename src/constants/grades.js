@@ -2,14 +2,16 @@ export const grades = [
     "G",
     "V",
     "OV",
-    "ROV"
+    "RO",
+    "NI"
 ]
 
 export const gradeKeys = {
     "Goed": "G",
     "Voldoende": "V",
     "Onvoldoende": "OV",
-    "Ruim onvoldoende": "ROV"
+    "Ruim onvoldoende": "RO",
+    "Niet ingevuld": "NI",
 }
 
 export const gradeValues = {

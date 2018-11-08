@@ -8,13 +8,7 @@
                     <tr>
                         <th>{{ props.item.name }}</th>
                         <v-layout class="py-2 mt-2" v-for="(criteria) in props.item.criteria" v-bind:key="criteria.name" row>
-                            <v-layout v-if="evaluating" class="criteriaTextSm">
-                                <v-flex>
-                                    <td d-block class="text-xs-left pl-0 xs-5">{{ criteria.name }}</td>
-                                    <v-divider></v-divider>
-                                </v-flex>
-                            </v-layout>
-                            <v-layout v-else class="criteriaText">
+                            <v-layout :class="getClass">
                                 <v-flex>
                                     <td d-block class="text-xs-left pl-0 xs-5">{{ criteria.name }}</td>
                                     <v-divider></v-divider>
@@ -50,13 +44,11 @@ export default {
     name: "moduleList",
     props: ["module", "evaluating", "evaluations"],
     data() {
-        return {
-            klasse: "criteriaText"
-        };
+        return {};
     },
     methods: {
         getEvalForCriteria(assignment, id) {
-            let score = "NVT";
+            let score = "NI";
             console.log(assignment);
             const grade = assignment.find(x => x.criteriaid === id);
             if (grade) {
@@ -69,6 +61,11 @@ export default {
         getKeyByValue(object, value) {
             return Object.keys(object).find(key => object[key] === value);
         },
+    },
+    computed: {
+        getClass() {
+            return this.evaluating ? "criteriaTextSm" : "criteriaText";
+        }
     }
 };
 </script>
@@ -80,7 +77,6 @@ div.menu__content--autocomplete {
 
 .criteriaTable {
     margin-bottom: 4%;
-    max-width: 90%;
 }
 
 .categorieTitle {

@@ -5,28 +5,47 @@
         <v-spacer></v-spacer>
         <h1>Evaluatiefiche opleiding {{discipline.name}}</h1>
     </v-layout>
-    <table id="headerTable" cellspacing="0">
-        <tr>
-            <td>Naam: <strong>{{student.lastname}}</strong></td>
-            <td>Schooljaar: <strong>{{createSchoolyear()}}</strong></td>
-            <!-- <td class='togetherTop'>Opdrachten =></td> -->
-        </tr>
-        <tr>
-            <td>Voornaam: <strong>{{student.firstname}}</strong></td>
-            <td>Leerkracht: <strong>{{"joske"}}</strong></td>
-            <!-- <td class="togetherBottom"></td> -->
-        </tr>
-    </table>
+    <v-layout row>
+        <table id="headerTable" cellspacing="0">
+            <th>Info</th>
+            <tr>
+                <td>Naam: <strong>{{student.lastname}}</strong></td>
+                <td>Schooljaar: <strong>{{createSchoolyear()}}</strong></td>
+            </tr>
+            <tr>
+                <td>Voornaam: <strong>{{student.firstname}}</strong></td>
+                <td>Leerkracht: <strong>{{currentUser.firstname}} {{currentUser.lastname}}</strong></td>
+            </tr>
+        </table>
+        <v-spacer></v-spacer>
+        <table id="headerTable" cellspacing="0">
+            <th>Legende</th>
+            <tr>
+                <td v-for="key in Object.keys(gradeKeys)" v-bind:key="key">{{gradeKeys[key]}}</td>
+            </tr>
+            <tr>
+                <td v-for="key in Object.keys(gradeKeys)" v-bind:key="key">{{key}}</td>
+            </tr>
+        </table>
+    </v-layout>
     <v-text-field v-model="assignmentName" label="Naam van de opdracht" required :rules="nameRules"></v-text-field>
     <v-layout row>
         <modulelist :module="module" :evaluating="true" :evaluations="evaluationsPerAssignment"></modulelist>
     </v-layout>
+    <v-btn color="primary"><v-icon>save</v-icon> Opslaan</v-btn>
 </v-container>
 </template>
 
 <script>
 import moment from "moment";
-import {name as nameRules} from "../../constants/rules";
+import { mapGetters } from 'vuex';
+
+import {
+    name as nameRules
+} from "../../constants/rules";
+import {
+    gradeKeys
+} from "../../constants/grades";
 
 export default {
     name: "StudentEvaluation",
@@ -39,6 +58,7 @@ export default {
             nameRules: nameRules,
             evaluations: [],
             evaluationsPerAssignment: {},
+            gradeKeys: gradeKeys,
         };
     },
     methods: {
@@ -69,7 +89,8 @@ export default {
             return acc;
         }, {});
         console.log(this.evaluationsPerAssignment);
-    }
+    },
+    computed: mapGetters(["currentUser"])
 };
 </script>
 
@@ -96,5 +117,4 @@ export default {
 #headerTable tr td.togetherBottom {
     border-top: 0;
 }
-
 </style>
