@@ -38,7 +38,7 @@ import UserDetailCard from "@/components/users/UserDetailCard";
 import EditableModule from "@/components/modules/EditableModule";
 import NewModuleDialog from "@/components/dialogs/NewModuleDialog";
 import ModuleList from "@/components/modules/ModuleList";
-import CreateEvaluationForm from "@/components/evaluation/CreateEvaluationForm";
+import CreateEvaluationOrReportForm from "@/components/evaluation/CreateEvaluationOrReportForm";
 import StudentEvaluation from "@/components/evaluation/StudentEvaluation";
 import GradeBoxes from "@/components/evaluation/GradeBoxes";
 /* import components */
@@ -112,9 +112,27 @@ export default new Router({
                     component: Dashboard
                 },
                 {
-                    path: "/rapporten",
-                    name: "rapporten",
-                    component: Reports
+                    path: "/rapport",
+                    component: Reports,
+                    props: true,
+                    children: [
+                        {
+                            path: "/",
+                            name: "rapport",
+                            component: CreateEvaluationOrReportForm,
+                            props: {isReportGenerator: true}
+                        },
+                        {
+                            path: ":studentId/:moduleId",
+                            name: "ReportForUser",
+                            component: CreateEvaluationOrReportForm,
+                        },
+                        {
+                            path: ":moduleId",
+                            name: "ReportsForModule",
+                            component: CreateEvaluationOrReportForm,
+                        }
+                    ]
                 },
                 {
                     path: "/afdrukken",
@@ -133,7 +151,7 @@ export default new Router({
                         {
                             path: "/",
                             name: "Evaluatie",
-                            component: CreateEvaluationForm
+                            component: CreateEvaluationOrReportForm
                         },
                         {
                             path: ":studentId/:moduleId",

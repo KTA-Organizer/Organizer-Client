@@ -1,14 +1,13 @@
 <template>
 <v-container>
-    
-    <h1>Evaluatie maken</h1>
+    <h1>{{$route.name.capitalize()}} maken</h1>
+    <v-checkbox v-on:change="forUser = !forUser" v-if="isReportGenerator" color="primary" label="Genereer rapporten voor module"></v-checkbox>
     <v-form ref="form" lazy-validation>
         <v-select label="Opleiding" v-model="discipline" :items="disciplineNames" v-on:input="filterStudents" :rules="defaultRule" required></v-select>
         <v-select label="Module" v-model="module" :items="moduleNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
-        <v-select label="Student" v-model="student" :items="filteredStudentNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
-        <v-btn @click="createEvaluation" color="primary">Maak evaluatie aan</v-btn>
+        <v-select v-if="forUser" label="Student" v-model="student" :items="filteredStudentNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
+        <v-btn @click="createThing" color="primary">Genereer {{$route.name}}</v-btn>
     </v-form>
-
 </v-container>
 </template>
 
@@ -17,6 +16,7 @@ import {defaultRule} from "../../constants/rules";
 
 export default {
     name: "EvaluationForm",
+    props: ["isReportGenerator"],
     data() {
         return {
             module: undefined,
@@ -31,7 +31,8 @@ export default {
             studentNames: [],
             filteredStudentNames: [],
             disciplineChosen: false,
-            defaultRule: defaultRule
+            defaultRule: defaultRule,
+            forUser: true,
         };
     },
     methods: {
@@ -49,13 +50,18 @@ export default {
             this.moduleNames = this.modules.map(x => x.name);
             this.disciplineChosen = true;
         },
-        createEvaluation() {
+        createThing() {
             const selectedModule = this.modules.find(x => x.name === this.module);
             const selectedStudent = this.students.find(
                 x => `${x.firstname} ${x.lastname}` === this.student
             );
             if (this.$refs.form.validate()) {
-                this.$router.push(`/Evaluatie/${selectedStudent.id}/${selectedModule.id}`);
+                let route = `/${this.$route.name}`;
+                if (this.forUser) {
+                    route += `/${selectedStudent.id}`;
+                }
+                route += `/${selectedModule.id}`
+                this.$router.push(route);
             }
         }
     },
@@ -73,4 +79,7 @@ export default {
         this.disciplineNames = this.disciplines.map(x => x.name);
     }
 };
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
 </script>
