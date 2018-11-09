@@ -2,7 +2,7 @@
 <v-container>
     <v-layout wrap class="" dark v-for="(categorie) in module.domains" :value="categorie.active" v-bind:key="categorie.name">
         <h2 class="categorieTitle mb-4 text-xs-left">{{ categorie.name }}</h2>
-        <v-layout row class="">
+        <v-layout row>
             <v-data-table hide-headers :items="categorie.goals" hide-actions class="elevation-1 criteriaTable mb-5">
                 <template slot="items" slot-scope="props">
                     <tr>
@@ -17,8 +17,8 @@
                             <template v-if="evaluating">
 
                                 <v-flex class="scores">
-                                    <td xs1 class="score" v-for="assignment in evaluations" v-bind:key="assignment.name">
-                                        {{getEvalForCriteria(assignment, criteria.id)}}
+                                    <td xs1 class="score" v-for="[assignmentName, assignments] in Array.from(evaluations)" v-bind:key="assignmentName">
+                                        {{getEvalForCriteria(assignments, criteria.id)}}
                                     </td>
                                 </v-flex>
 
@@ -44,7 +44,8 @@ export default {
     name: "moduleList",
     props: ["module", "evaluating", "evaluations"],
     data() {
-        return {};
+        return {
+        };
     },
     methods: {
         getEvalForCriteria(assignment, id) {
@@ -102,7 +103,6 @@ div.menu__content--autocomplete {
 }
 
 table tr td.score {
-    /* margin: 1% 1em; */
     width: 15%;
 }
 </style>

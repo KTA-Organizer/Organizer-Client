@@ -57,7 +57,7 @@ export default {
             assignmentName: "",
             nameRules: nameRules,
             evaluations: [],
-            evaluationsPerAssignment: {},
+            evaluationsPerAssignment: new Map(),
             gradeKeys: gradeKeys,
         };
     },
@@ -79,13 +79,14 @@ export default {
         this.discipline = await this.$http.getOpleidingForStudent(studentId);
         this.evaluations = await this.$http.getEvalsForStudentInModule(studentId, moduleId)
         this.evaluationsPerAssignment = this.evaluations.reduce((acc, evaluation, index) => {
-            if (acc[evaluation.name]) {
-                acc[evaluation.name].push(evaluation);
+            if (acc.get(evaluation.name)) {
+                acc.get(evaluation.name).push(evaluation);
             } else {
-                acc[evaluation.name] = [evaluation];
+                acc.set(evaluation.name, [evaluation]);
             }
             return acc;
-        }, {});
+        }, new Map());
+        console.log(this.evaluationsPerAssignment)
     },
     computed: mapGetters(["currentUser"])
 };

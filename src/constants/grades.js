@@ -3,7 +3,6 @@ export const grades = [
     "V",
     "OV",
     "RO",
-    "NI"
 ]
 
 export const gradeKeys = {
