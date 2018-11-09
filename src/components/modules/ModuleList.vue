@@ -19,13 +19,14 @@
                                 <v-flex class="scores">
                                     <td xs1 class="score" v-for="[assignmentName, assignments] in Array.from(evaluations)" v-bind:key="assignmentName">
                                         {{getEvalForCriteria(assignments, criteria.id)}}
+                                        <small>{{assignmentName}}</small>
                                     </td>
                                 </v-flex>
 
                                 <v-spacer></v-spacer>
 
                                 <td v-if="evaluating" class="gradeBox">
-                                    <gradeboxes :criteriaid="criteria.id"></gradeboxes>
+                                    <gradeboxes :criteriaid="criteria.id" :newEvaluation="newEvaluation" v-on:graded="graded"></gradeboxes>
                                 </td>
                             </template>
                         </v-layout>
@@ -42,7 +43,7 @@ import * as grades from "../../constants/grades";
 
 export default {
     name: "moduleList",
-    props: ["module", "evaluating", "evaluations"],
+    props: ["module", "evaluating", "evaluations", "newEvaluation"],
     data() {
         return {
         };
@@ -60,6 +61,10 @@ export default {
         getKeyByValue(object, value) {
             return Object.keys(object).find(key => object[key] === value);
         },
+        graded() {
+            console.log(this.newEvaluation);
+            this.$emit("graded");
+        }
     },
     computed: {
         getClass() {

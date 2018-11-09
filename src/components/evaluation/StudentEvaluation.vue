@@ -28,17 +28,23 @@
             </tr>
         </table>
     </v-layout>
-    <v-text-field v-model="assignmentName" label="Naam van de opdracht" required :rules="nameRules"></v-text-field>
+    <v-form ref="form" lazy-validation>
+        <v-text-field v-model="assignmentName" label="Naam van de opdracht" required :rules="nameRules"></v-text-field>
+    </v-form>
     <v-layout row>
-        <modulelist :module="module" :evaluating="true" :evaluations="evaluationsPerAssignment"></modulelist>
+        <modulelist :module="module" :evaluating="true" :evaluations="evaluationsPerAssignment" :newEvaluation="newEvaluation" v-on:graded="graded"></modulelist>
     </v-layout>
-    <v-btn color="primary"><v-icon>save</v-icon> Opslaan</v-btn>
+    <v-btn color="primary" @click="saveEvaluation">
+        <v-icon>save</v-icon> Opslaan
+    </v-btn>
 </v-container>
 </template>
 
 <script>
 import moment from "moment";
-import { mapGetters } from 'vuex';
+import {
+    mapGetters
+} from 'vuex';
 
 import {
     name as nameRules
@@ -59,6 +65,7 @@ export default {
             evaluations: [],
             evaluationsPerAssignment: new Map(),
             gradeKeys: gradeKeys,
+            newEvaluation: {},
         };
     },
     methods: {
@@ -69,6 +76,35 @@ export default {
                 `${moment().format("YYYY")} - ${moment().add(1, "y").format("YYYY")}` :
                 `${moment().subtract(1).format("YYYY")} - ${moment().format("YYYY")}`;
             return date;
+        },
+        graded() {
+            console.log("in evaluation", this.newEvaluation);
+        },
+        saveEvaluation() {
+            if (!this.$refs.form.validate()) {
+                window.scrollTo(0, 0);
+                return;
+            };
+            if (Object.keys(this.newEvaluation).length < 1) {
+                alert("Vul minstens 1 punt in");
+                window.scrollTo(0, 0);
+                return;
+            }
+            const newEvaluationObj = {
+                evaluations: []
+            }
+            for (const criteriaid in this.newEvaluation) {
+                const grade = this.newEvaluation[criteriaid];
+                const score = {
+                    name: this.assignmentName,
+                    grade,
+                    criteriaid: +criteriaid,
+                    studentid: this.student.id,
+                    creatorId: this.currentUser.id
+                }
+                newEvaluationObj.evaluations.push(score);
+            }
+            console.log(newEvaluationObj);
         }
     },
     async created() {
