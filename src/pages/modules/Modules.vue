@@ -1,5 +1,5 @@
 <template>
-<main>
+<main v-if="module">
     <v-layout row-wrap>
         <v-flex xs12 offset-xs1 class="text-xs-left">
             <h1 class="display-3">{{ 'Modules' }}</h1>
@@ -69,49 +69,44 @@ export default {
     },
     methods: {
         saveModule() {
-            var self = this;
-            self.$http.updateModule(
+            this.$http.updateModule(
                 this.module.id,
                 this.module.name
             );
         },
         async refreshModule(){
-            var self = this;
-            this.module = await self.$http.getModule(
+            this.module = await this.$http.getModule(
                 this.module.id
             );
         },
         showCorrectAddDialog(choice){
-            var self = this;
             switch(choice){
                 case "Categorie":
-                    self.addingDomain = true;
+                    this.addingDomain = true;
                     break;
                 case "Doelstelling":
-                    self.addingGoal = true;
+                    this.addingGoal = true;
                     break;
                 case "Criteria":
-                    self.addingCriteria = true;
+                    this.addingCriteria = true;
                     break;
             }
         },
         showCorrectRemoveDialog(choice){
-            var self = this;
             switch(choice){
                 case "Categorie":
-                    self.removingDomain = true;
+                    this.removingDomain = true;
                     break;
                 case "Doelstelling":
-                    self.removingGoal = true;
+                    this.removingGoal = true;
                     break;
                 case "Criteria":
-                    self.removingCriteria = true;
+                    this.removingCriteria = true;
                     break;
             }
         }
     },
     async created() {
-        var self = this;
         const moduleFetched = await this.$http.getModule(parseInt(this.$route.query.id));
         this.module = moduleFetched;
         console.log(moduleFetched);
