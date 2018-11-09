@@ -13,8 +13,9 @@ import Print from "@/pages/utils/Print";
 import NotFound from "@/pages/utils/NotFound";
 import AddMelding from "@/pages/notifications/AddMelding";
 import Login from "@/pages/auth/Login";
-import Subjects from "@/pages/disciplines/Subjects";
-import SubjectEditor from "@/pages/disciplines/SubjectEditor";
+import Disciplines from "@/pages/disciplines/Disciplines";
+import DisciplinesList from "@/pages/disciplines/DisciplinesList";
+import DisciplineOverview from "@/pages/disciplines/DisciplineOverview";
 import Reports from "@/pages/grading/Reports";
 import Evaluate from "@/pages/grading/Evaluate";
 /* import pages */
@@ -54,7 +55,6 @@ import ReportTable from "@/components/report/ReportTable";
 /* set components */
 Vue.component("checkboxes", checkboxes);
 Vue.component("searchbar", SearchBar);
-Vue.component("subjecteditor", SubjectEditor);
 Vue.component("datatableselects", DataTableSelects);
 Vue.component("datepicker", Datepicker);
 Vue.component("userdetail", UserDetail);
@@ -156,8 +156,20 @@ export default new Router({
                 },
                 {
                     path: "/opleidingen",
-                    name: "opleidingen",
-                    component: Subjects
+                    name: "Disciplines",
+                    component: Disciplines,
+                    children: [
+                        {
+                            path: "/",
+                            name: "DisciplineList",
+                            component: DisciplinesList,
+                        },
+                        {
+                            path: ":disciplineid",
+                            name: "DisciplineOverview",
+                            component: DisciplineOverview
+                        },
+                    ]
                 },
                 {
                     path: "/evaluatie",
@@ -202,7 +214,7 @@ export default new Router({
                     component: AddMelding
                 },
                 {
-                    path: "/modules",
+                    path: "/modules/:moduleid",
                     name: "modules",
                     component: Modules
                 },

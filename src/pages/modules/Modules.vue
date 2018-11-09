@@ -1,19 +1,12 @@
 <template>
 <main v-if="module">
-    <v-layout row-wrap>
-        <v-flex xs12 offset-xs1 class="text-xs-left">
-            <h1 class="display-3">{{ 'Modules' }}</h1>
-        </v-flex>
-    </v-layout>
     <v-container v-if="editMode">
         <editablemodule v-bind:module="module" v-bind:edit.sync="editMode"> </editablemodule>
     </v-container>
     <v-container v-else>
         <v-layout row class="ml-5 mb-4">
-            <v-flex xs4>
-                <h1 class="text-xs-left">{{ module.name }}</h1>
-            </v-flex>
-            <v-flex xs5>
+            <h1 class="text-xs-left">Module: {{ module.name }}</h1>
+            <v-flex xs5 v-if="isAdmin">
                 <v-btn color="primary" @click="editMode = !editMode">
                     <v-icon dark>edit</v-icon>Edit
                 </v-btn>
@@ -51,6 +44,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
     name: "Modules",
     data() {
@@ -67,6 +61,7 @@ export default {
             removingCriteria: false,
         };
     },
+    computed: mapGetters(["isAdmin"]),
     methods: {
         saveModule() {
             this.$http.updateModule(
@@ -107,9 +102,8 @@ export default {
         }
     },
     async created() {
-        const moduleFetched = await this.$http.getModule(parseInt(this.$route.query.id));
-        this.module = moduleFetched;
-        console.log(moduleFetched);
+        const id = this.$route.params.moduleid;
+        this.module = await this.$http.getModule(id);
     }
 };
 </script>

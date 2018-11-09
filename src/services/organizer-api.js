@@ -81,7 +81,9 @@ export const saveReport = () => processReq("/saveReport", report, "post"); // NO
 
 export const updateReport = () => processReq("/updateReport", report, "patch"); // NOT THERE YET
 
-export const getFullOpleiding = id => processReq(`/modules`, { disciplineid: id }); // OK
+export const getDiscipline = id => processReq(`/disciplines/${id}`); // OK
+
+export const getModulesForDiscipline = id => processReq(`/modules`, { disciplineid: id }); // OK
 
 export const getEvalsForStudentInModule = (studentid, moduleid) =>
     processReq(`/evaluations/student/${studentid}/module/${moduleid}`, {}, "get"); // OK
