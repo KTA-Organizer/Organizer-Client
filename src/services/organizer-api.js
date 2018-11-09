@@ -18,12 +18,7 @@ export const getCurrentUser = () => processReq("/users/current"); // OK
 
 export const getStudentsWithEdu = () => processReq("/studentModules"); // BROKEN
 
-export const getStudentOpleiding = studId =>
-    processReq(`/studentModules/${studId}`); // BROKEN
-
-export const getStudent = id => processReq(`/students/${id}`); // BROKEN
-
-export const getStudents = () => processReq('/users/', {/*role: "STUDENT"*/}, "get"); // BROKEN fix filter
+export const getStudents = () => processReq('/users/', {role: "STUDENT"}, "get"); // OK
 
 export const getUser = id => processReq(`/users/${id}`); // OK
 
@@ -85,28 +80,28 @@ export const updateReport = () => processReq("/updateReport", report, "patch"); 
 
 export const getFullOpleiding = id => processReq(`/modules`, { disciplineid: id }); // OK
 
-export const getEvalForStudent = id =>
-    processReq("/evaluatieVoorStudent", { id }, "get"); // NOT THERE YET
+export const getEvalsForStudentInModule = (studentid, moduleid) =>
+    processReq(`/evaluations/student/${studentid}/module/${moduleid}`, {}, "get"); // OK
 
 export const getModulesForStudent = studId =>
     processReq(`/modules/${studId}/student`); // ??
 
 export const getModule = moduleId => processReq(`/modules/${moduleId}`); // OK
 
-export const createEval = evalJson =>
-    processReq("/saveEvaluatie", evalJson, "post"); // NOT THERE YET
+export const saveEvaluation = evaluationsObj =>
+    processReq("/evaluations", evaluationsObj, "post"); // NOT THERE YET
 
-export const updateEval = evalJson =>
-    processReq("/updateEvaluatie", evalJson, "post"); // NOT THERE YET
+// export const updateEval = evalJson =>
+//     processReq("/updateEvaluatie", evalJson, "post"); // NOT THERE YET
 
-export const getEvalsByStudent = studId =>
-    processReq(`/evaluaties/${studId}/student`); // NOT THERE YET
+// export const getEvalsByStudent = studId =>
+//     processReq(`/evaluaties/${studId}/student`); // NOT THERE YET
 
-export const getAllEvalsByStudent = studId =>
-    processReq("/studentAllEvaluationsFull", { studId }, "get"); // NOT THERE YET
+// export const getAllEvalsByStudent = studId =>
+//     processReq("/studentAllEvaluationsFull", { studId }, "get"); // NOT THERE YET
 
-export const deleteEval = id =>
-    processReq("/deleteEvaluatie", { id }, "delete"); // NOT THERE YET
+// export const deleteEval = id =>
+//     processReq("/deleteEvaluatie", { id }, "delete"); // NOT THERE YET
 
 export const createOpleiding = (creatorId, name) =>
     processReq("/disciplines", { creatorId, active: 1, name }, "post"); // OK

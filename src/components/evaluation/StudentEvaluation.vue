@@ -5,28 +5,53 @@
         <v-spacer></v-spacer>
         <h1>Evaluatiefiche opleiding {{discipline.name}}</h1>
     </v-layout>
-    <table id="headerTable" cellspacing="0">
-        <tr>
-            <td>Naam: <strong>{{student.lastname}}</strong></td>
-            <td>Schooljaar: <strong>{{createSchoolyear()}}</strong></td>
-            <!-- <td class='togetherTop'>Opdrachten =></td> -->
-        </tr>
-        <tr>
-            <td>Voornaam: <strong>{{student.firstname}}</strong></td>
-            <td>Leerkracht: <strong>{{"joske"}}</strong></td>
-            <!-- <td class="togetherBottom"></td> -->
-        </tr>
-    </table>
-    <v-text-field v-model="assignmentName" label="Naam van de opdracht" required :rules="nameRules"></v-text-field>
     <v-layout row>
-        <modulelist :module="module" :evaluating="true"></modulelist>
+        <table id="headerTable" cellspacing="0">
+            <th>Info</th>
+            <tr>
+                <td>Naam: <strong>{{student.lastname}}</strong></td>
+                <td>Schooljaar: <strong>{{createSchoolyear()}}</strong></td>
+            </tr>
+            <tr>
+                <td>Voornaam: <strong>{{student.firstname}}</strong></td>
+                <td>Leerkracht: <strong>{{currentUser.firstname}} {{currentUser.lastname}}</strong></td>
+            </tr>
+        </table>
+        <v-spacer></v-spacer>
+        <table id="headerTable" cellspacing="0">
+            <th>Legende</th>
+            <tr>
+                <td v-for="key in Object.keys(gradeKeys)" v-bind:key="key">{{gradeKeys[key]}}</td>
+            </tr>
+            <tr>
+                <td v-for="key in Object.keys(gradeKeys)" v-bind:key="key">{{key}}</td>
+            </tr>
+        </table>
     </v-layout>
+    <v-form ref="form" lazy-validation>
+        <v-text-field v-model="assignmentName" label="Naam van de opdracht" required :rules="nameRules"></v-text-field>
+    </v-form>
+    <v-layout row>
+        <modulelist :module="module" :evaluating="true" :evaluations="evaluationsPerAssignment" :newEvaluation="newEvaluation" v-on:graded="graded"></modulelist>
+    </v-layout>
+    <v-btn color="primary" @click="saveEvaluation">
+        <v-icon>save</v-icon> Opslaan
+    </v-btn>
 </v-container>
 </template>
 
 <script>
 import moment from "moment";
-import {name as nameRules} from "../../constants/rules";
+import {
+    mapGetters
+} from 'vuex';
+
+import {
+    name as nameRules
+} from "../../constants/rules";
+import {
+    gradeKeys
+} from "../../constants/grades";
 
 export default {
     name: "StudentEvaluation",
@@ -36,7 +61,11 @@ export default {
             module: {},
             discipline: {},
             assignmentName: "",
-            nameRules: nameRules
+            nameRules: nameRules,
+            evaluations: [],
+            evaluationsPerAssignment: new Map(),
+            gradeKeys: gradeKeys,
+            newEvaluation: {},
         };
     },
     methods: {
@@ -47,6 +76,36 @@ export default {
                 `${moment().format("YYYY")} - ${moment().add(1, "y").format("YYYY")}` :
                 `${moment().subtract(1).format("YYYY")} - ${moment().format("YYYY")}`;
             return date;
+        },
+        graded() {
+            console.log("in evaluation", this.newEvaluation);
+        },
+        async saveEvaluation() {
+            if (!this.$refs.form.validate()) {
+                window.scrollTo(0, 0);
+                return;
+            };
+            if (Object.keys(this.newEvaluation).length < 1) {
+                alert("Vul minstens 1 punt in");
+                window.scrollTo(0, 0);
+                return;
+            }
+            const newEvaluationObj = {
+                evaluations: []
+            }
+            for (const criteriaid in this.newEvaluation) {
+                const grade = this.newEvaluation[criteriaid];
+                const score = {
+                    name: this.assignmentName,
+                    grade,
+                    criteriaid: +criteriaid,
+                    studentid: this.student.id,
+                    creatorId: this.currentUser.id
+                }
+                newEvaluationObj.evaluations.push(score);
+            }
+            console.log(newEvaluationObj);
+            await this.$http.saveEvaluation(newEvaluationObj);
         }
     },
     async created() {
@@ -55,7 +114,18 @@ export default {
         this.student = await this.$http.getUser(studentId);
         this.module = await this.$http.getModule(moduleId);
         this.discipline = await this.$http.getOpleidingForStudent(studentId);
-    }
+        this.evaluations = await this.$http.getEvalsForStudentInModule(studentId, moduleId)
+        this.evaluationsPerAssignment = this.evaluations.reduce((acc, evaluation, index) => {
+            if (acc.get(evaluation.name)) {
+                acc.get(evaluation.name).push(evaluation);
+            } else {
+                acc.set(evaluation.name, [evaluation]);
+            }
+            return acc;
+        }, new Map());
+        console.log(this.evaluationsPerAssignment)
+    },
+    computed: mapGetters(["currentUser"])
 };
 </script>
 
@@ -82,5 +152,4 @@ export default {
 #headerTable tr td.togetherBottom {
     border-top: 0;
 }
-
 </style>

@@ -41,7 +41,6 @@ export default {
             );
             this.filteredStudentNames = this.students
                 .filter(x => {
-                    console.log(x.discipline.id === selectedDiscipline.id);
                     return x.discipline.id === selectedDiscipline.id;
                 })
                 .map(x => `${x.firstname} ${x.lastname}`);
@@ -62,7 +61,7 @@ export default {
     },
     async created() {
         const students = await this.$http.getStudents();
-        this.students = students.items.filter(x => x.roles.indexOf("STUDENT") > -1);
+        this.students = students.items;
         this.students.map(async x => {
             x.discipline = await this.$http.getOpleidingForStudent(x.id);
         });
