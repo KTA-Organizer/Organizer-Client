@@ -56,11 +56,12 @@ export default {
                 x => `${x.firstname} ${x.lastname}` === this.student
             );
             if (this.$refs.form.validate()) {
-                let route = `/${this.$route.name}`;
+                let route = `/${this.$route.name}/${this.discipline}`;
                 if (this.forUser) {
                     route += `/${selectedStudent.id}`;
                 }
                 route += `/${selectedModule.id}`
+                console.log("route: ", route)
                 this.$router.push(route);
             }
         }

@@ -41,6 +41,8 @@ import ModuleList from "@/components/modules/ModuleList";
 import CreateEvaluationOrReportForm from "@/components/evaluation/CreateEvaluationOrReportForm";
 import StudentEvaluation from "@/components/evaluation/StudentEvaluation";
 import GradeBoxes from "@/components/evaluation/GradeBoxes";
+import UserReport from "@/components/report/UserReport";
+import ReportTable from "@/components/report/ReportTable";
 /* import components */
 
 /* set components */
@@ -63,6 +65,7 @@ Vue.component("editablemodule", EditableModule);
 Vue.component("newmoduledialog", NewModuleDialog);
 Vue.component("modulelist", ModuleList);
 Vue.component("gradeboxes", GradeBoxes);
+Vue.component("table-report", ReportTable);
 /* set components */
 
 Vue.use(Router);
@@ -123,9 +126,9 @@ export default new Router({
                             props: {isReportGenerator: true}
                         },
                         {
-                            path: ":studentId/:moduleId",
+                            path: ":disciplinename/:studentId/:moduleId",
                             name: "ReportForUser",
-                            component: CreateEvaluationOrReportForm,
+                            component: UserReport,
                         },
                         {
                             path: ":moduleId",
