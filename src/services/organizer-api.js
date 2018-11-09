@@ -18,12 +18,7 @@ export const getCurrentUser = () => processReq("/users/current"); // OK
 
 export const getStudentsWithEdu = () => processReq("/studentModules"); // BROKEN
 
-export const getStudentOpleiding = studId =>
-    processReq(`/studentModules/${studId}`); // BROKEN
-
-export const getStudent = id => processReq(`/students/${id}`); // BROKEN
-
-export const getStudents = () => processReq('/users/', {role: "STUDENT"}, "get");
+export const getStudents = () => processReq('/users/', {role: "STUDENT"}, "get"); // OK
 
 export const getUser = id => processReq(`/users/${id}`); // OK
 
@@ -93,20 +88,20 @@ export const getModulesForStudent = studId =>
 
 export const getModule = moduleId => processReq(`/modules/${moduleId}`); // OK
 
-export const createEval = evalJson =>
-    processReq("/saveEvaluatie", evalJson, "post"); // NOT THERE YET
+export const saveEvaluation = evaluationsObj =>
+    processReq("/evaluations", evaluationsObj, "post"); // NOT THERE YET
 
-export const updateEval = evalJson =>
-    processReq("/updateEvaluatie", evalJson, "post"); // NOT THERE YET
+// export const updateEval = evalJson =>
+//     processReq("/updateEvaluatie", evalJson, "post"); // NOT THERE YET
 
-export const getEvalsByStudent = studId =>
-    processReq(`/evaluaties/${studId}/student`); // NOT THERE YET
+// export const getEvalsByStudent = studId =>
+//     processReq(`/evaluaties/${studId}/student`); // NOT THERE YET
 
-export const getAllEvalsByStudent = studId =>
-    processReq("/studentAllEvaluationsFull", { studId }, "get"); // NOT THERE YET
+// export const getAllEvalsByStudent = studId =>
+//     processReq("/studentAllEvaluationsFull", { studId }, "get"); // NOT THERE YET
 
-export const deleteEval = id =>
-    processReq("/deleteEvaluatie", { id }, "delete"); // NOT THERE YET
+// export const deleteEval = id =>
+//     processReq("/deleteEvaluatie", { id }, "delete"); // NOT THERE YET
 
 export const createOpleiding = (creatorId, name) =>
     processReq("/disciplines", { creatorId, active: 1, name }, "post"); // OK

@@ -80,7 +80,7 @@ export default {
         graded() {
             console.log("in evaluation", this.newEvaluation);
         },
-        saveEvaluation() {
+        async saveEvaluation() {
             if (!this.$refs.form.validate()) {
                 window.scrollTo(0, 0);
                 return;
@@ -105,6 +105,7 @@ export default {
                 newEvaluationObj.evaluations.push(score);
             }
             console.log(newEvaluationObj);
+            await this.$http.saveEvaluation(newEvaluationObj);
         }
     },
     async created() {
