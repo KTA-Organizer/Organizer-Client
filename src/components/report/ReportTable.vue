@@ -20,10 +20,9 @@
                 <template slot="items" slot-scope="props">
                     <tr>
                         <td class="text-xs-left">{{ props.item.name }}</td>
-                        <td>{{getScore(props.item.id, "G")}}</td>
-                        <td>{{getScore(props.item.id, "V")}}</td>
-                        <td>{{getScore(props.item.id, "OV")}}</td>
-                        <td>{{getScore(props.item.id, "RO")}}</td>
+                        <td v-for="grade in grades.grades" v-bind:key="grade" v-if="grade != 'NI'">
+                            {{getScore(props.item.id, grade)}}
+                        </td>
                         <td><v-text-field v-bind:key="props.item.id" label="Opmerking"></v-text-field></td>
                     </tr>
                 </template>
@@ -70,7 +69,8 @@ export default {
                     text: "Opmerkingen",
                     sortable: false
                 }
-            ]
+            ],
+            grades: grades,
         }
     },
     methods: {
