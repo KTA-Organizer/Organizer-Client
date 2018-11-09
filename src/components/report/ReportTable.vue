@@ -24,7 +24,7 @@
                         <td>{{getScore(props.item.id, "V")}}</td>
                         <td>{{getScore(props.item.id, "OV")}}</td>
                         <td>{{getScore(props.item.id, "RO")}}</td>
-                        <td></td>
+                        <td><v-text-field v-bind:key="props.item.id" label="Opmerking"></v-text-field></td>
                     </tr>
                 </template>
             </v-data-table>
