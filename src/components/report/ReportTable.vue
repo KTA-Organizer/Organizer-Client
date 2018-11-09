@@ -1,5 +1,8 @@
 <template>
 <v-container v-if="report">
+    <v-flex>
+        
+    </v-flex>
     <h1 class="categorieTitle mb-4 text-xs-left">{{discipline}}</h1>
     <h2 class="text-xs-left mb-1">MODULE: {{module.name}}</h2>
     <v-flex wrap class="" dark v-for="(categorie) in module.domains" :value="categorie.active" v-bind:key="categorie.name">
@@ -32,6 +35,7 @@
 
 <script>
 import * as grades from "../../constants/grades";
+import * as helper from "../../constants/helpers";
 
 export default {
     name: "ReportTable",
@@ -78,10 +82,7 @@ export default {
         },
         getScoreKey(score) {
             const scoreToFind = Math.round(score);
-            return grades.gradeKeys[this.getKeyByValue(grades.gradeValues, scoreToFind)];
-        },
-        getKeyByValue(object, value) {
-            return Object.keys(object).find(key => object[key] === value);
+            return grades.gradeKeys[helper.getKeyByValue(grades.gradeValues, scoreToFind)];
         },
     },
 }

@@ -9,10 +9,10 @@
               <template slot="items" slot-scope="gebruiker">
                 <tr>
                   <td class="text-xs-left">{{ gebruiker.item.naam }}</td>
-                  <td class="text-xs-left">{{ getKeyByValue(constants.roleKeys, gebruiker.item.role) }}</td>
+                  <td class="text-xs-left">{{ helper.getKeyByValue(constants.roleKeys, gebruiker.item.role) }}</td>
                   <td class="text-xs-left">{{ gebruiker.item.email }}</td>
                   <td class="text-xs-left">{{ gebruiker.item.gender }}</td>
-                  <td class="text-xs-left">{{ getKeyByValue(constants.statusKeys, gebruiker.item.status) }}</td>
+                  <td class="text-xs-left">{{ helper.getKeyByValue(constants.statusKeys, gebruiker.item.status) }}</td>
                   <td class="text-xs-left">{{ readableDate(gebruiker.item.accountCreatedTimestamp) }}</td>
                   <td><router-link :to="`/Gebruikers/${gebruiker.item.id}`"><v-btn color="primary"><i class="material-icons">remove_red_eye</i></v-btn></router-link></td>
                 </tr>
@@ -25,20 +25,20 @@
 import * as router from "../../router/index";
 import moment from "moment";
 import * as constants from "../../constants/user"
+import * as helper from "../../constants/helpers";
+
 export default {
   name: "UserDetail",
   props: ["users", "headers"],
   data() {
     return {
       constants: constants,
+      helper: helper
     };
   },
   methods: {
     readableDate(timeStamp) {
       return moment(timeStamp).format('L LT');
-    },
-    getKeyByValue(object, value) {
-      return Object.keys(object).find(key => object[key] === value);
     },
     redirectToDetails(id) {
       this.$router.push(`Gebruikers/${id}`);

@@ -18,6 +18,7 @@ import {
     mapGetters
 } from "vuex";
 import * as constants from "../../constants/user";
+import * as helper from "../../constants/helpers";
 
 export default {
     name: "DetailUser",
@@ -43,9 +44,6 @@ export default {
             this.deleteDialog = false;
             this.confirmDeleteDialog = true;
         },
-        getKeyByValue(object, value) {
-            return Object.keys(object).find(key => object[key] === value);
-        },
         async updateUser() {
             console.log("Updating")
             const gender = constants.genderKeys[this.userFields.gender];
@@ -61,12 +59,12 @@ export default {
             this.user = await this.$http.getUser(userId);
 
             this.userFields = Object.assign({}, this.user);
-            this.userFields.gender = this.getKeyByValue(
+            this.userFields.gender = helper.getKeyByValue(
                 constants.genderKeys,
                 this.user.gender
             );
             this.userFields.roles = this.user.roles.map(r =>
-                this.getKeyByValue(constants.roleKeys, r)
+                helper.getKeyByValue(constants.roleKeys, r)
             );
             if (this.user.roles.indexOf('STUDENT') > -1) {
                 this.opleidingen = await this.$http.getOpleidingen();

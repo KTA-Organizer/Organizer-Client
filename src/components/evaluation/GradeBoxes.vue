@@ -4,6 +4,8 @@
 
 <script>
 import * as grades from "../../constants/grades";
+import * as helper from "../../constants/helpers";
+
 export default {
     name: "GradeBoxes",
     props: ["criteriaid", "newEvaluation"],
@@ -15,7 +17,7 @@ export default {
     },
     methods: {
         addScore() {
-            const scoreName = this.getKeyByValue(grades.gradeKeys, this.score);
+            const scoreName = helper.getKeyByValue(grades.gradeKeys, this.score);
             const scoreValue = grades.gradeValues[scoreName];
             if (!scoreValue) {
                 delete this.newEvaluation[this.criteriaid];
@@ -23,9 +25,6 @@ export default {
                 this.newEvaluation[this.criteriaid] = scoreValue;
             }
             this.$emit('graded');
-        },
-        getKeyByValue(object, value) {
-            return Object.keys(object).find(key => object[key] === value);
         },
     }
 };

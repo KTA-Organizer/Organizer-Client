@@ -181,9 +181,6 @@ export default {
             let minutes = time[1];
             return `${day}/${month}/${year}, ${+hour + 2}:${minutes}`;
         },
-        getKeyByValue(object, value) {
-            return Object.keys(object).find(key => object[key] === value);
-        },
         clearNameFilter() {
             this.nameFilter = "";
             this.applyFilters();

@@ -10,7 +10,7 @@
             <th>Info</th>
             <tr>
                 <td>Naam: <strong>{{student.lastname}}</strong></td>
-                <td>Schooljaar: <strong>{{createSchoolyear()}}</strong></td>
+                <td>Schooljaar: <strong>{{helper.createSchoolyear()}}</strong></td>
             </tr>
             <tr>
                 <td>Voornaam: <strong>{{student.firstname}}</strong></td>
@@ -52,6 +52,7 @@ import {
 import {
     gradeKeys
 } from "../../constants/grades";
+import * as helper from "../../constants/helpers";
 
 export default {
     name: "StudentEvaluation",
@@ -66,17 +67,10 @@ export default {
             evaluationsPerAssignment: new Map(),
             gradeKeys: gradeKeys,
             newEvaluation: {},
+            helper: helper
         };
     },
     methods: {
-        createSchoolyear() {
-            const date =
-                moment().month() + 1 >= 9 // September indicates new schoolyear
-                ?
-                `${moment().format("YYYY")} - ${moment().add(1, "y").format("YYYY")}` :
-                `${moment().subtract(1).format("YYYY")} - ${moment().format("YYYY")}`;
-            return date;
-        },
         graded() {
             console.log("in evaluation", this.newEvaluation);
         },

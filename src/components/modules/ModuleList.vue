@@ -40,6 +40,7 @@
 
 <script>
 import * as grades from "../../constants/grades";
+import * as helper from "../../constants/helpers";
 
 export default {
     name: "moduleList",
@@ -53,13 +54,10 @@ export default {
             let score = "NI";
             const grade = assignment.find(x => x.criteriaid === id);
             if (grade) {
-                score = this.getKeyByValue(grades.gradeValues, grade.grade);
+                score = helper.getKeyByValue(grades.gradeValues, grade.grade);
                 score = grades.gradeKeys[score];
             }
             return score;
-        },
-        getKeyByValue(object, value) {
-            return Object.keys(object).find(key => object[key] === value);
         },
         graded() {
             console.log(this.newEvaluation);
