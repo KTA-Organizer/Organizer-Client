@@ -18,7 +18,7 @@ export const getCurrentUser = () => processReq("/users/current"); // OK
 
 export const getStudentsWithEdu = () => processReq("/studentModules"); // BROKEN
 
-export const getStudents = () => processReq('/users/', {role: "STUDENT"}, "get"); // OK
+export const getStudents = () => processReq('/users/', { role: "STUDENT" }, "get"); // OK
 
 export const getUser = id => processReq(`/users/${id}`); // OK
 
@@ -73,6 +73,9 @@ export const getOpleiding = id => processReq(`/disciplines/${id}`); // BROKEN
 
 export const getOpleidingForStudent = id =>
     processReq(`/disciplines/student/${id}`, {}, "get"); // OK
+
+export const getReportForStudentForModule = (studentid, moduleid) =>
+    processReq(`/reports/student/${studentid}/module/${moduleid}`);
 
 export const saveReport = () => processReq("/saveReport", report, "post"); // NOT THERE YET
 

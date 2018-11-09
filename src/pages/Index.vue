@@ -59,7 +59,7 @@ export default {
   name: "Index",
   data: () => ({
     drawer: false,
-    navigation: ["Dashboard", "Evaluatie", "Rapporten", "Opleidingen", "Afdrukken"],
+    navigation: ["Dashboard", "Evaluatie", "Rapport", "Opleidingen", "Afdrukken"],
     fav: true,
     menu: false,
     message: false,

@@ -38,7 +38,7 @@ import UserDetailCard from "@/components/users/UserDetailCard";
 import EditableModule from "@/components/modules/EditableModule";
 import NewModuleDialog from "@/components/dialogs/NewModuleDialog";
 import ModuleList from "@/components/modules/ModuleList";
-import CreateEvaluationForm from "@/components/evaluation/CreateEvaluationForm";
+import CreateEvaluationOrReportForm from "@/components/evaluation/CreateEvaluationOrReportForm";
 import StudentEvaluation from "@/components/evaluation/StudentEvaluation";
 import GradeBoxes from "@/components/evaluation/GradeBoxes";
 import NewDomainDialog from "@/components/dialogs/NewDomainDialog";
@@ -47,6 +47,8 @@ import NewCriteriaDialog from "@/components/dialogs/NewCriteriaDialog";
 import RemoveDomainDialog from "@/components/dialogs/RemoveDomainDialog";
 import RemoveGoalDialog from "@/components/dialogs/RemoveGoalDialog";
 import RemoveCriteriaDialog from "@/components/dialogs/RemoveCriteriaDialog";
+import UserReport from "@/components/report/UserReport";
+import ReportTable from "@/components/report/ReportTable";
 /* import components */
 
 /* set components */
@@ -75,6 +77,7 @@ Vue.component("newcriteriadialog", NewCriteriaDialog);
 Vue.component("removedomaindialog", RemoveDomainDialog);
 Vue.component("removegoaldialog", RemoveGoalDialog);
 Vue.component("removecriteriadialog", RemoveCriteriaDialog);
+Vue.component("table-report", ReportTable);
 /* set components */
 
 Vue.use(Router);
@@ -124,9 +127,27 @@ export default new Router({
                     component: Dashboard
                 },
                 {
-                    path: "/rapporten",
-                    name: "rapporten",
-                    component: Reports
+                    path: "/rapport",
+                    component: Reports,
+                    props: true,
+                    children: [
+                        {
+                            path: "/",
+                            name: "rapport",
+                            component: CreateEvaluationOrReportForm,
+                            props: {isReportGenerator: true}
+                        },
+                        {
+                            path: ":disciplinename/:studentId/:moduleId",
+                            name: "ReportForUser",
+                            component: UserReport,
+                        },
+                        {
+                            path: ":moduleId",
+                            name: "ReportsForModule",
+                            component: CreateEvaluationOrReportForm,
+                        }
+                    ]
                 },
                 {
                     path: "/afdrukken",
@@ -145,7 +166,7 @@ export default new Router({
                         {
                             path: "/",
                             name: "Evaluatie",
-                            component: CreateEvaluationForm
+                            component: CreateEvaluationOrReportForm
                         },
                         {
                             path: ":studentId/:moduleId",
