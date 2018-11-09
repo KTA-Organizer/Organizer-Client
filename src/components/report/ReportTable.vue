@@ -1,7 +1,7 @@
 <template>
 <v-container v-if="report">
     <h1 class="categorieTitle mb-4 text-xs-left">{{discipline}}</h1>
-    <h2 class="text-xs-left">MODULE: {{module.name}}</h2>
+    <h2 class="text-xs-left mb-1">MODULE: {{module.name}}</h2>
     <v-flex wrap class="" dark v-for="(categorie) in module.domains" :value="categorie.active" v-bind:key="categorie.name">
         <v-flex v-for="domain in categorie.goals" v-bind:key="domain.id">
             <h3 class="text-xs-left mb-2">{{domain.name}}</h3>
@@ -16,7 +16,7 @@
                 </template>
                 <template slot="items" slot-scope="props">
                     <tr>
-                        <td>{{ props.item.name }}</td>
+                        <td class="text-xs-left">{{ props.item.name }}</td>
                         <td>{{getScore(props.item.id, "G")}}</td>
                         <td>{{getScore(props.item.id, "V")}}</td>
                         <td>{{getScore(props.item.id, "OV")}}</td>
