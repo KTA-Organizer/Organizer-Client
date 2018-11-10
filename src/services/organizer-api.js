@@ -16,8 +16,6 @@ export const getAccessToken = token => processReq(`/auth/token/${token}`); // OK
 
 export const getCurrentUser = () => processReq("/users/current"); // OK
 
-export const getStudentsWithEdu = () => processReq("/studentModules"); // BROKEN
-
 export const getStudents = () => processReq('/users/', { role: "STUDENT" }, "get"); // OK
 
 export const getUser = id => processReq(`/users/${id}`); // OK

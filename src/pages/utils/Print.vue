@@ -1,11 +1,6 @@
 <template>
 
 <main>
-  <v-layout row-wrap>
-      <v-flex xs12 offset-xs1 class="text-xs-left">
-        <h1 class="display-3">Rapporten afdrukken</h1>
-      </v-flex>
-  </v-layout>
   <v-layout row-wrap class="mt-5">
   <v-flex xs2 offset-xs1>
     <checkboxes @update-filters="updateFilters" :listobject="opleidingen" v-if="receivedData"></checkboxes>
@@ -45,14 +40,6 @@ export default {
     }
   },
   created () {
-    var self = this
-    this.$http.getStudentsWithEdu(function (data) {
-      self.items = data
-    })
-    this.$http.getOpleidingen(function (data) {
-      self.opleidingen = data
-      self.receivedData = true
-    })
   }
 }
 </script>

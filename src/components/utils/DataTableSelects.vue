@@ -121,14 +121,6 @@ export default {
     }
   },
   created() {
-    var self = this;
-    console.log("DataTableSelects.vue");
-    this.$http.getStudentsWithEdu(function(data) {
-      self.items = data;
-      self.items.forEach(function(student) {
-        student["value"] = false;
-      });
-    });
   }
 };
 </script>

@@ -2,7 +2,7 @@
 <div>
   <v-layout row-wrap>
     <v-flex xs4 offset-xs1>
-      <searchbar @select-item="applySelection" :list="disciplines" :concat_keys="keys" label="Opleiding zoeken" :item_concat_key="item_name" :item_value="item_value"></searchbar>
+      <searchbar @select-item="applySelection" :list="disciplines" :concat_keys="keys" :labeltext="'opleiding'" :item_concat_key="item_name" :item_value="item_value"></searchbar>
     </v-flex>
     <v-flex xs1 offset-xs4 class="mr-5">
       <v-btn class="primary" @click="editMode=true">

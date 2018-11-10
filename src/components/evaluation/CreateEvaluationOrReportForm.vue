@@ -45,7 +45,7 @@ export default {
                     return x.discipline.id === selectedDiscipline.id;
                 })
                 .map(x => `${x.firstname} ${x.lastname}`);
-            const modules = await this.$http.getFullOpleiding(selectedDiscipline.id);
+            const modules = await this.$http.getModulesForDiscipline(selectedDiscipline.id);
             this.modules = modules;
             this.moduleNames = this.modules.map(x => x.name);
             this.disciplineChosen = true;
