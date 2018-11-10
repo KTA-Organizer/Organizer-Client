@@ -77,7 +77,6 @@ export default {
                 }
                 this.opleidingnames = this.opleidingen.map(opl => opl.name);
             }
-            console.log(this.user)
         },
         async activateUser(id) {
             await this.$http.activateUser(id);

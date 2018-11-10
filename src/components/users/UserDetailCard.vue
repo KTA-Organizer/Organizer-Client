@@ -19,19 +19,19 @@
     <v-card-text>
         <v-form ref="form" lazy-validation>
             <v-layout align-center justify-space-between row fill-height>
-                <v-text-field label="Voornaam" v-model="userFields.firstname" :rules="firstnameRules" required :disabled="!edit"></v-text-field>
-                <v-text-field label="Naam" v-model="userFields.lastname" :rules="nameRules" required :disabled="!edit"></v-text-field>
+                <v-text-field label="Voornaam" v-model="userFields.firstname" :rules="firstnameRules" required :readonly="!edit"></v-text-field>
+                <v-text-field label="Naam" v-model="userFields.lastname" :rules="nameRules" required :readonly="!edit"></v-text-field>
             </v-layout>
             <v-layout align-center justify-space-between row fill-height>
-                <v-text-field label="E-mail" v-model="userFields.email" :rules="emailRules" required :disabled="!edit"></v-text-field>
+                <v-text-field label="E-mail" v-model="userFields.email" :rules="emailRules" required :readonly="!edit"></v-text-field>
             </v-layout>
             <v-layout align-center justify-space-between row fill-height>
-                <v-text-field label="Rijksregisternummer" v-model="userFields.nationalRegisterNumber" :rules='rgnRules' required mask="##.##.##-###.##" :disabled="!edit">
+                <v-text-field label="Rijksregisternummer" v-model="userFields.nationalRegisterNumber" :rules='rgnRules' required mask="##.##.##-###.##" :readonly="!edit">
                 </v-text-field>
             </v-layout>
             <v-layout align-center justify-space-between row fill-height>
-                <v-select label="Geslacht" v-model="userFields.gender" :rules="selectGenderRules" required :disabled="!edit" :items="constants.genders"></v-select>
-                <v-select label="Rollen" v-model="userFields.roles" :rules="selectRoleRules" :multiple="true" required :disabled="!edit" :items="constants.roles"></v-select>
+                <v-select label="Geslacht" v-model="userFields.gender" :rules="selectGenderRules" required :readonly="!edit" :items="constants.genders"></v-select>
+                <v-select label="Rollen" v-model="userFields.roles" :rules="selectRoleRules" :multiple="true" required :readonly="!edit" :items="constants.roles"></v-select>
             </v-layout>
             <v-btn @click="$emit('update')" color="primary" v-if="edit">
                 <v-icon>save</v-icon>
