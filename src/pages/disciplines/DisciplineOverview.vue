@@ -1,7 +1,7 @@
 <template>
 <main>
   <v-layout column class="ml-5 mb-3">
-    <h1 class="text-xs-left">Opleiding: {{ discipline.name }}</h1>
+    <h1 class="text-xs-left">{{ discipline.name }}</h1>
     <v-layout row v-if="isAdmin">
       <v-text-field :name="discipline.name" label="Naam van de opleiding" v-model="discipline.name" single-line></v-text-field>
       <v-flex>
@@ -21,7 +21,7 @@
       <tr v-if="props.item.active">
         <td class="text-xs-left">{{ props.item.name }}</td>
         <td class="text-xs-right">
-          <router-link :to="{ name: 'modules', params: { moduleid: props.item.id }}" style="text-decoration: none">
+          <router-link :to="{ name: 'Module', params: { moduleid: props.item.id }}" style="text-decoration: none">
             <v-btn color="primary" class="ma-1" dark>
               <v-icon dark>remove_red_eye</v-icon>
             </v-btn>

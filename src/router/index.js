@@ -112,18 +112,17 @@ function requireUnauth(to, from, next) {
     }
 }
 
-export default new Router({
+const router = new Router({
     routes: [
         {
             path: "/",
-            name: "index",
             component: Index,
             beforeEnter: requireAuth,
             redirect: "/dashboard",
             children: [
                 {
+                    name: "Dashboard",
                     path: "/dashboard",
-                    name: "dashboard",
                     component: Dashboard
                 },
                 {
@@ -132,41 +131,40 @@ export default new Router({
                     props: true,
                     children: [
                         {
+                            name: "Rapport",
                             path: "/",
-                            name: "rapport",
                             component: CreateEvaluationOrReportForm,
                             props: {isReportGenerator: true}
                         },
                         {
+                            name: "Rapport van Student",
                             path: ":disciplinename/:studentId/:moduleId",
-                            name: "ReportForUser",
                             component: UserReport,
                         },
                         {
                             path: ":moduleId",
-                            name: "ReportsForModule",
+                            name: "Rapport voor module",
                             component: CreateEvaluationOrReportForm,
                         }
                     ]
                 },
                 {
+                    name: "Afdrukken",
                     path: "/afdrukken",
-                    name: "afdrukken",
                     component: Print
                 },
                 {
                     path: "/opleidingen",
-                    name: "Disciplines",
                     component: Disciplines,
                     children: [
                         {
+                            name: "Opleidingen",
                             path: "/",
-                            name: "DisciplineList",
                             component: DisciplinesList,
                         },
                         {
+                            name: "Opleiding",
                             path: ":disciplineid",
-                            name: "DisciplineOverview",
                             component: DisciplineOverview
                         },
                     ]
@@ -176,13 +174,13 @@ export default new Router({
                     component: Evaluate,
                     children: [
                         {
-                            path: "/",
                             name: "Evaluatie",
+                            path: "/",
                             component: CreateEvaluationOrReportForm
                         },
                         {
+                            name: "Evaluatie voor Student",
                             path: ":studentId/:moduleId",
-                            name: "EvaluatieStudent",
                             component: StudentEvaluation
                         }
                     ]
@@ -192,49 +190,49 @@ export default new Router({
                     component: Users,
                     children: [
                         {
-                            path: "",
                             name: "Gebruikers",
+                            path: "",
                             component: UsersOverview
                         },
                         {
+                            name: "Gebruiker Toevoegen",
                             path: "Toevoegen",
-                            name: "addUser",
                             component: AddUser
                         },
                         {
+                            name: "Gebruiker",
                             path: ":id",
-                            name: "detailUser",
                             component: DetailUser
                         }
                     ]
                 },
                 {
-                    path: "/addMelding",
-                    name: "addMelding",
+                    name: "Melding toevoegen",
+                    path: "/melding/toevoegen",
                     component: AddMelding
                 },
                 {
+                    name: "Module",
                     path: "/modules/:moduleid",
-                    name: "modules",
                     component: Modules
                 },
             ]
         },
         {
+            name: "Inloggen",
             path: "/login",
-            name: "login",
             component: Login,
             beforeEnter: requireUnauth
         },
         {
+            name: "Wachtwoord vergeten",
             path: "/reset",
-            name: "reset",
             component: ChoosePassword,
             beforeEnter: requireUnauth
         },
         {
+            name: "Uitnodiging",
             path: "/invitation",
-            name: "invitation",
             component: ChoosePassword,
             beforeEnter: requireUnauth,
         },
@@ -242,3 +240,10 @@ export default new Router({
         { path: '*', redirect: '/404' },
     ]
 });
+
+router.beforeEach((to, from, next) => {
+    document.title = to.name
+    next()
+});
+
+export default router;

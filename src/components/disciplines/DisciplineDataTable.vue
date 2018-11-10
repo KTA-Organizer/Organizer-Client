@@ -12,7 +12,7 @@
                         <v-icon dark>build</v-icon> Activeer
                     </v-btn>
                 </div>
-                <v-btn color="primary" class="ma-1 right" dark :to="{ name: 'DisciplineOverview', params: { disciplineid: props.item.id }}">
+                <v-btn color="primary" class="ma-1 right" dark :to="{ name: 'Opleiding', params: { disciplineid: props.item.id }}">
                     <v-icon dark>remove_red_eye</v-icon> Bekijken
                 </v-btn>
             </td>

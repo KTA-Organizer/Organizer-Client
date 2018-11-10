@@ -11,7 +11,7 @@
   <v-flex column xs12 md6>
     <v-card>
       <v-layout reverse row>
-        <v-btn v-if="isAdmin || isTeacher" to="AddMelding" dark hover color="primary">
+        <v-btn v-if="isAdmin || isTeacher" to="/melding/toevoegen" dark hover color="primary">
           <v-icon>add</v-icon>
           melding maken
         </v-btn>
