@@ -5,7 +5,7 @@
       <searchbar @select-item="applySelection" :list="disciplines" :concat_keys="keys" :labeltext="'opleiding'" :item_concat_key="item_name" :item_value="item_value"></searchbar>
     </v-flex>
     <v-flex xs1 offset-xs4 class="mr-5">
-      <v-btn class="primary" @click="editMode=true">
+      <v-btn v-if="isAdmin" class="primary" @click="editMode=true">
         <v-icon>add</v-icon> Opleiding Aanmaken
       </v-btn>
     </v-flex>
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   name: "DisciplinesList",
   data() {
@@ -39,6 +40,7 @@ export default {
       item_value: "id"
     };
   },
+  computed: mapGetters(["isAdmin"]),
   methods: {
     applySelection(id) {
       if (!id) {

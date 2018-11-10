@@ -38,8 +38,8 @@ export default {
       state.loginStatus = LoginStatus.loggedIn;
     },
     USER_LOGGED_OUT(state) {
-      state.currentUser = {};
       state.loginStatus = LoginStatus.loggedOut;
+      state.currentUser = {};
     }
   },
   actions: {
