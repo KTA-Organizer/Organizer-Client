@@ -72,12 +72,11 @@ export const getOpleiding = id => processReq(`/disciplines/${id}`); // BROKEN
 export const getOpleidingForStudent = id =>
     processReq(`/disciplines/student/${id}`, {}, "get"); // OK
 
-export const getReportForStudentForModule = (studentid, moduleid) =>
-    processReq(`/reports/student/${studentid}/module/${moduleid}`);
+export const getReports = () =>
+    processReq(`/reports`);
 
-export const saveReport = () => processReq("/saveReport", report, "post"); // NOT THERE YET
-
-export const updateReport = () => processReq("/updateReport", report, "patch"); // NOT THERE YET
+export const getReport = (id) =>
+    processReq(`/reports/${id}`);
 
 export const getDiscipline = id => processReq(`/disciplines/${id}`); // OK
 

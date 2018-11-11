@@ -18,6 +18,7 @@ import DisciplinesList from "@/pages/disciplines/DisciplinesList";
 import DisciplineOverview from "@/pages/disciplines/DisciplineOverview";
 import Reports from "@/pages/grading/Reports";
 import Evaluate from "@/pages/grading/Evaluate";
+import ReportList from "@/pages/grading/ReportList";
 /* import pages */
 
 /* import components */
@@ -131,20 +132,20 @@ const router = new Router({
                     props: true,
                     children: [
                         {
-                            name: "Rapport",
+                            name: "Rapporten",
                             path: "/",
+                            component: ReportList,
+                        },
+                        {
+                            name: "Rapport Aanmaken",
+                            path: "/create",
                             component: CreateEvaluationOrReportForm,
                             props: {isReportGenerator: true}
                         },
                         {
-                            name: "Rapport van Student",
-                            path: ":disciplinename/:studentId/:moduleId",
+                            name: "Rapport",
+                            path: ":reportid",
                             component: UserReport,
-                        },
-                        {
-                            path: ":moduleId",
-                            name: "Rapport voor module",
-                            component: CreateEvaluationOrReportForm,
                         }
                     ]
                 },
