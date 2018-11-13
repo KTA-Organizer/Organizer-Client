@@ -201,7 +201,7 @@ const router = new Router({
                             component: AddUser
                         },
                         {
-                            name: "Gebruiker",
+                            name: "Gebruiker Details",
                             path: ":id",
                             component: DetailUser
                         }
@@ -237,7 +237,7 @@ const router = new Router({
             component: ChoosePassword,
             beforeEnter: requireUnauth,
         },
-        { path: '/404', component: NotFound },
+        { path: '/404', component: NotFound , name: "Deze pagina werd niet gevonden"},
         { path: '*', redirect: '/404' },
     ]
 });
