@@ -78,6 +78,9 @@ export const getReports = () =>
 export const getReport = (id) =>
     processReq(`/reports/${id}`);
 
+export const saveReportComments = (id, { generalComment, goalComments }) =>
+    processReq(`/reports/${id}`, {generalComment, goalComments}, "PUT");
+
 export const getDiscipline = id => processReq(`/disciplines/${id}`); // OK
 
 export const getModulesForDiscipline = id => processReq(`/modules`, { disciplineid: id }); // OK
