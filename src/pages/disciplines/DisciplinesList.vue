@@ -5,7 +5,7 @@
       <searchbar @select-item="applySelection" :list="disciplines" :concat_keys="keys" :labeltext="'opleiding'" :item_concat_key="item_name" :item_value="item_value"></searchbar>
     </v-flex>
     <v-flex xs1 offset-xs4 class="mr-5">
-      <v-btn v-if="isAdmin" class="primary" @click="editMode=true">
+      <v-btn v-if="isAdmin" class="primary" @click="addDiscipline=true">
         <v-icon>add</v-icon> Opleiding Aanmaken
       </v-btn>
     </v-flex>
@@ -19,6 +19,7 @@
   </confirmdialog>
   <confirmdialog v-bind:model.sync="activateOpleidingStatus" v-on:confirm="activateOpleiding" :name="selectedOpleiding.name" :action="'activeren'">
   </confirmdialog>
+  <newdisciplinedialog v-bind:model.sync="addDiscipline" v-on:confirm="getDisciplines"></newdisciplinedialog>
 </div>
 </template>
 
@@ -30,7 +31,7 @@ export default {
     return {
       disciplines: [],
       filteredList: [],
-
+      addDiscipline: false,
       deactivateOpleidingStatus: false,
       activateOpleidingStatus: false,
       selectedOpleiding: {},
@@ -53,13 +54,13 @@ export default {
       await this.$http.setOpleidingInactive(this.selectedOpleiding.id);
       this.deactivateOpleidingStatus = false;
       this.selectedOpleiding = {};
-      this.getOpleidingen();
+      this.getDisciplines();
     },
     async activateOpleiding() {
       await this.$http.setOpleidingActive(this.selectedOpleiding.id);
       this.activateOpleidingStatus = false;
       this.selectedOpleiding = {};
-      this.getOpleidingen();
+      this.getDisciplines();
     },
     checkSelected(id) {
       if (this.selectedid === null) {
@@ -70,8 +71,8 @@ export default {
         return false;
       }
     },
-    async getOpleidingen() {
-      this.disciplines = await this.$http.getOpleidingen();
+    async getDisciplines() {
+      this.disciplines = await this.$http.getDisciplines();
       this.applySelection();
     },
     showDialogActivate(opleidingen, opleiding) {
@@ -84,10 +85,10 @@ export default {
     },
     setSelectedOpleiding(opleidingen, opleiding) {
       this.selectedOpleiding = opleiding;
-    },
+    }
   },
   async created() {
-    await this.getOpleidingen();
+    await this.getDisciplines();
   }
 };
 </script>

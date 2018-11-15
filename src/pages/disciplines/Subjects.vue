@@ -27,6 +27,7 @@
     </confirmdialog>
     <confirmdialog v-bind:model.sync="activateOpleidingStatus" v-on:confirm="activateOpleiding" :name="selectedOpleidingName" :action="'activeren'">
     </confirmdialog>
+    
 </main>
 </template>
 
@@ -43,6 +44,7 @@ export default {
                 name: null
             },
             addSubjectFile: false,
+            addDiscipline: false,
             items: [],
             filters: [],
             deactivateOpleidingStatus: false,
@@ -62,17 +64,17 @@ export default {
             this.selectedid = payload;
         },
         async deactivateOpleiding() {
-            await this.$http.setOpleidingInactive(this.selectedOpleiding.id);
+            await this.$http.setDisciplineInactive(this.selectedOpleiding.id);
             this.deactivateOpleidingStatus = false;
-            this.getOpleidingen();
+            this.getDisciplines();
             this.selectedOpleidingen = null;
             this.selectedOpleidingName = null;
             this.selectedOpleiding = null;
         },
         async activateOpleiding() {
-            await this.$http.setOpleidingActive(this.selectedOpleiding.id);
+            await this.$http.setDisciplineActive(this.selectedOpleiding.id);
             this.activateOpleidingStatus = false;
-            this.getOpleidingen();
+            this.getDisciplines();
             this.selectedOpleidingen = null;
             this.selectedOpleidingName = null;
             this.selectedOpleiding = null;
@@ -86,8 +88,8 @@ export default {
                 return false;
             }
         },
-        async getOpleidingen() {
-            this.items = await this.$http.getOpleidingen();
+        async getDisciplines() {
+            this.items = await this.$http.getDisciplines();
         },
         showDialogActivate(opleidingen, opleiding) {
             this.activateOpleidingStatus = true;
@@ -105,11 +107,11 @@ export default {
         setGivenMajor(major) {
             this.givenmajor = major;
             this.editMode = true;
-        },
+        }
     },
     async created() {
         var self = this;
-        const opleidingen = await this.$http.getOpleidingen();
+        const opleidingen = await this.$http.getDisciplines();
         this.items = opleidingen;
     }
 };
