@@ -89,9 +89,6 @@ export default {
             this.moduleNames = this.modules.map(x => x.name);
             this.disciplineChosen = true;
         },
-            const selectedStudent = this.students.find(
-                x => `${x.firstname} ${x.lastname}` === this.student
-            );
         updateEvaluation(evaluationid) {
             // const selectedModule = this.modules.find(x => x.name === this.module);
             // const selectedStudent = this.students.find(
