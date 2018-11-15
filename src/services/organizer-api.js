@@ -196,14 +196,14 @@ export const updateDomain = (domainId, name) =>
      "post"
    ); 
 
-// export const updateCriteria = (criteriaId, name) =>
-//   processReq(
-//     "/evaluatieCriteria/" + criteriaId,
-//     {
-//       name
-//     },
-//     "put"
-//   ); // NOT THERE YET
+ export const updateCriteria = (criteriaId, name) =>
+   processReq(
+     "/criteria/" + criteriaId,
+     {
+       name
+     },
+     "put"
+   ); 
 
 // export const createAspect = (name, evaluatiecriteriumId, creatorId) =>
 //   processReq(
