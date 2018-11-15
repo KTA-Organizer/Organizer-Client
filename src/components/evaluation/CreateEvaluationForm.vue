@@ -5,16 +5,20 @@
         <v-select label="Opleiding" v-model="discipline" :items="disciplineNames" v-on:input="filterStudents" :rules="defaultRule" required></v-select>
         <v-select label="Module" v-model="module" :items="moduleNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
         <v-select v-on:input="fetchEvaluations" v-if="forUser" label="Student" v-model="student" :items="filteredStudentNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
-        <v-btn @click="createEvaluation" color="primary">Vul evaluatie aan</v-btn>
+        <!-- <v-btn @click="createEvaluation" color="primary">Vul evaluatie aan</v-btn> -->
         <v-btn @click="newEvaluationDialog" color="primary">Maak nieuwe evaluatie</v-btn>
     </v-form>
     <v-layout v-if="student">
         <v-flex v-for="evaluation in evaluations" v-bind:key="evaluation.id">
             <v-card>
-                <v-card-title><h2>{{evaluation.date}}</h2></v-card-title>
-                <v-card-action>
-                    <v-btn color="primary"><v-icon>edit</v-icon>Vul aan</v-btn>
-                </v-card-action>
+                <v-card-title>
+                    <h2>{{student}}: {{formatDate(evaluation.creation)}}</h2>
+                </v-card-title>
+                <v-card-actions>
+                    <v-btn color="primary" @click="updateEvaluation(evaluation.id)">
+                        <v-icon>edit</v-icon>Vul aan
+                    </v-btn>
+                </v-card-actions>
             </v-card>
         </v-flex>
     </v-layout>
@@ -42,6 +46,7 @@
 import {
     defaultRule
 } from "../../constants/rules";
+import moment from "moment";
 
 export default {
     name: "EvaluationForm",
@@ -63,10 +68,13 @@ export default {
             forUser: true,
             newEvaluation: false,
             newEvaluationDate: new Date().toISOString().substr(0, 10),
-            evaluations: []
+            evaluations: [],
         };
     },
     methods: {
+        formatDate(date) {
+            return moment(date).format('LL');
+        },
         async filterStudents() {
             const selectedDiscipline = this.disciplines.find(
                 x => x.name === this.discipline
@@ -81,22 +89,28 @@ export default {
             this.moduleNames = this.modules.map(x => x.name);
             this.disciplineChosen = true;
         },
-        createEvaluation() {
-            const selectedModule = this.modules.find(x => x.name === this.module);
             const selectedStudent = this.students.find(
                 x => `${x.firstname} ${x.lastname}` === this.student
             );
+        updateEvaluation(evaluationid) {
+            // const selectedModule = this.modules.find(x => x.name === this.module);
+            // const selectedStudent = this.students.find(
+            //     x => `${x.firstname} ${x.lastname}` === this.student
+            // );
+            // if (this.$refs.form.validate()) {
+            //     let route = `/${this.$route.name}`;
+            //     if (this.forUser) {
+            //         route += `/${selectedStudent.id}`;
+            //     }
+            //     route += `/${selectedModule.id}`
+            //     console.log("route: ", route)
+            //     this.$router.push(route);
+            // }
             if (this.$refs.form.validate()) {
-                let route = `/${this.$route.name}`;
-                if (this.forUser) {
-                    route += `/${selectedStudent.id}`;
-                }
-                route += `/${selectedModule.id}`
-                console.log("route: ", route)
-                this.$router.push(route);
+                this.$router.push(`/Evaluatie/${evaluationid}`);
             }
         },
-        newEvaluationDialog () {
+        newEvaluationDialog() {
             if (this.$refs.form.validate()) {
                 this.newEvaluation = true;
             }
@@ -106,7 +120,7 @@ export default {
             console.log(new Date(this.newEvaluationDate));
         },
         async fetchEvaluations() {
-            console.log("fetching");
+            this.evaluations = await this.$http.getEvaluationSheetsForStudentInModule(this.student.id, this.module.id);
         }
     },
     async created() {
@@ -121,6 +135,9 @@ export default {
         const disciplines = await this.$http.getOpleidingen();
         this.disciplines = disciplines;
         this.disciplineNames = this.disciplines.map(x => x.name);
+    },
+    computed: {
+
     }
 };
 String.prototype.capitalize = function () {

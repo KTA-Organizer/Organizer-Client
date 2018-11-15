@@ -66,6 +66,7 @@ export default {
             evaluationsPerAssignment: new Map(),
             gradeKeys: gradeKeys,
             newEvaluation: {},
+            evaluationsheet: {},
         };
     },
     methods: {
@@ -109,13 +110,13 @@ export default {
         }
     },
     async created() {
-        const studentId = this.$route.params.studentId;
-        const moduleId = this.$route.params.moduleId;
-        this.student = await this.$http.getUser(studentId);
-        this.module = await this.$http.getModule(moduleId);
-        this.discipline = await this.$http.getOpleidingForStudent(studentId);
-        this.evaluations = await this.$http.getEvalsForStudentInModule(studentId, moduleId)
-        this.evaluationsPerAssignment = this.evaluations.reduce((acc, evaluation, index) => {
+        const evaluationid = this.$route.params.evaluationid;
+        this.evaluationsheet = await this.$http.getEvaluationSheetById(evaluationid);
+        console.log(this.evaluationsheet);
+        this.student = this.evaluationsheet.student;
+        this.module = await this.evaluationsheet.module;
+        // this.discipline = await this.$http.getOpleidingForStudent(studentId);
+        this.evaluationsPerAssignment = this.evaluationsheet.scores.reduce((acc, evaluation, index) => {
             if (acc.get(evaluation.name)) {
                 acc.get(evaluation.name).push(evaluation);
             } else {

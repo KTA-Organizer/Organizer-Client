@@ -183,7 +183,7 @@ const router = new Router({
                         },
                         {
                             name: "Evaluatie voor Student",
-                            path: ":studentId/:moduleId",
+                            path: ":evaluationid",
                             component: StudentEvaluation
                         }
                     ]
