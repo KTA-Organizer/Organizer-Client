@@ -16,17 +16,17 @@
             
         </v-layout>
         <v-layout wrap class="ml-5" dark v-for="(categorie) in module.domains" :value="categorie.active" v-bind:key="categorie.name">
-            <h2 class="categorieTitle text-xs-left"> <v-text-field name="categorienaam" label="Naam categorie" @change="addUpdateAddition("goal",categorie.id)" v-model="moduleMap[categorie.id]" single-line ></v-text-field></h2>
+            <h2 class="categorieTitle text-xs-left"> <v-text-field name="categorienaam" label="Naam categorie" @change="addUpdateAddition('domain',categorie.id)" v-model="moduleMap[categorie.id]" single-line ></v-text-field></h2>
             <v-data-table hide-headers :items="categorie.goals" hide-actions class="elevation-1 criteriaTable">
                 <template slot="items" slot-scope="props">
                     <tr>
-                        <th><v-text-field name="doelstellingnaam" label="Naam doelstelling" v-model="goalMap[props.item.id]" single-line></v-text-field></th>
+                        <th><v-text-field name="doelstellingnaam" label="Naam doelstelling" @change="addUpdateAddition('goal',props.item.id)" v-model="goalMap[props.item.id]" single-line></v-text-field></th>
                         <v-flex d-flex xs48 sm24 md12>
                             <v-layout row wrap>
                                 <v-flex d-flex>
                                     <v-layout row wrap>
                                         <v-flex  v-for="(criteria) in props.item.criteria" v-bind:key="criteria.name" d-flex xs12>
-                                            <div><td class="text-xs-left"><v-text-field name="criterianaam" label="Naam criteria" v-model="criteriaMap[criteria.id]" single-line></v-text-field></td></div>
+                                            <div><td class="text-xs-left"><v-text-field name="criterianaam" label="Naam criteria" @change="addUpdateAddition('criteria',criteria.id)" v-model="criteriaMap[criteria.id]" single-line></v-text-field></td></div>
                                             <v-divider></v-divider>
                                         </v-flex>
                                     </v-layout>
@@ -62,17 +62,19 @@ export default {
             this.updates.forEach(update => {
                 switch(update.type){
                     case "domain":
-
+                        self.$http.updateDomain(update.id, this.moduleMap[update.id]);
                         break;
                     case "goal":
+                        self.$http.updateGoal(update.id, this.goalMap[update.id]);
                         break;
                     case "criteria":
+                        self.$http.updateCriteria(update.id, this.criteriaMap[update.id]);
                         break;
                 }
             })
         },
         addUpdateAddition(type, id){
-            this.updates.push(type, id);
+            this.updates.push({"type": type, "id": id});
         }
     },
     async created() {
