@@ -41,7 +41,7 @@ import UserDetailCard from "@/components/users/UserDetailCard";
 import EditableModule from "@/components/modules/EditableModule";
 import NewModuleDialog from "@/components/dialogs/NewModuleDialog";
 import ModuleList from "@/components/modules/ModuleList";
-import CreateEvaluationOrReportForm from "@/components/evaluation/CreateEvaluationOrReportForm";
+import CreateEvaluationForm from "@/components/evaluation/CreateEvaluationForm";
 import StudentEvaluation from "@/components/evaluation/StudentEvaluation";
 import GradeBoxes from "@/components/evaluation/GradeBoxes";
 import NewDomainDialog from "@/components/dialogs/NewDomainDialog";
@@ -53,6 +53,7 @@ import RemoveCriteriaDialog from "@/components/dialogs/RemoveCriteriaDialog";
 import UserReport from "@/components/report/UserReport";
 import ReportTable from "@/components/report/ReportTable";
 import NewDisciplineDialog from "@/components/dialogs/NewDisciplineDialog";
+import ListForUser from "@/components/evaluation/ListForUser";
 /* import components */
 
 /* set components */
@@ -82,6 +83,7 @@ Vue.component("removegoaldialog", RemoveGoalDialog);
 Vue.component("removecriteriadialog", RemoveCriteriaDialog);
 Vue.component("table-report", ReportTable);
 Vue.component("newdisciplinedialog", NewDisciplineDialog);
+Vue.component("list-user-evaluation", ListForUser);
 /* set components */
 
 Vue.use(Router);
@@ -179,11 +181,11 @@ const router = new Router({
                         {
                             name: "Evaluatie",
                             path: "/",
-                            component: CreateEvaluationOrReportForm
+                            component: CreateEvaluationForm
                         },
                         {
                             name: "Evaluatie voor Student",
-                            path: ":studentId/:moduleId",
+                            path: ":evaluationid",
                             component: StudentEvaluation
                         }
                     ]
