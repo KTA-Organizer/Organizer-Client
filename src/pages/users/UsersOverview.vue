@@ -24,7 +24,7 @@
             </v-flex>
             <v-flex xs12 sm6 md3>
                 <v-layout>
-                    <v-select :items="roles" v-model="roleFilter" label="Filter op rol" v-on:input="applyFilters()"></v-select>
+                    <v-select no-data-text="Geen data beschikbaar" :items="roles" v-model="roleFilter" label="Filter op rol" v-on:input="applyFilters()"></v-select>
                     <v-btn flat icon v-on:click="clearRoleFilter">
                         <v-icon>clear</v-icon>
                     </v-btn>
@@ -32,7 +32,7 @@
             </v-flex>
             <v-flex xs12 sm6 md3>
                 <v-layout>
-                    <v-select :items="genders" v-model="genderFilter" label="Filter op geslacht" v-on:input="applyFilters()"></v-select>
+                    <v-select no-data-text="Geen data beschikbaar" :items="genders" v-model="genderFilter" label="Filter op geslacht" v-on:input="applyFilters()"></v-select>
                     <v-btn flat icon v-on:click="clearGenderFilter">
                         <v-icon>clear</v-icon>
                     </v-btn>
@@ -40,7 +40,7 @@
             </v-flex>
             <v-flex xs12 sm6 md3>
                 <v-layout>
-                    <v-select v-model="statusFilter" label="Filter op status" :items="statusses" v-on:input="applyFilters()"></v-select>
+                    <v-select no-data-text="Geen data beschikbaar" v-model="statusFilter" label="Filter op status" :items="statusses" v-on:input="applyFilters()"></v-select>
                     <v-btn flat icon v-on:click="clearStatusFilter">
                         <v-icon>clear</v-icon>
                     </v-btn>

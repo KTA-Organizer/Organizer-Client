@@ -13,8 +13,8 @@
                 <v-text-field label="E-mail" v-model="email" :rules="emailRules" required></v-text-field>
                 <v-text-field label="Rijksregisternummer" v-model="rgn" :rules='rgnRules' required mask="##.##.##-###.##">
                 </v-text-field>
-                <v-select label="Geslacht" v-model="gender" :rules="selectGenderRules" required :items="genders"></v-select>
-                <v-select label="Rol" v-model="role" :rules="selectRoleRules" required :multiple="true" :items="roles"></v-select>
+                <v-select no-data-text="Geen data beschikbaar" label="Geslacht" v-model="gender" :rules="selectGenderRules" required :items="genders"></v-select>
+                <v-select no-data-text="Geen data beschikbaar" label="Rol" v-model="role" :rules="selectRoleRules" required :multiple="true" :items="roles"></v-select>
                 <router-link to="/Gebruikers">
                     <v-btn color="secondary">Terug naar overzicht</v-btn>
                 </router-link>

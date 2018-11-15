@@ -11,7 +11,7 @@
     </v-card-title>
     <v-card-text>
         <v-layout align-center justify-space-between row fill-height>
-            <v-select label="Opleiding" :readonly="!model" v-model="selected" v-on:change="updateDiscipline" :rules="selectOpleidingRules" :items="items"></v-select>
+            <v-select no-data-text="Geen data beschikbaar" label="Opleiding" :readonly="!model" v-model="selected" v-on:change="updateDiscipline" :rules="selectOpleidingRules" :items="items"></v-select>
         </v-layout>
         <v-btn @click="$emit('confirm')" v-if="model" color="primary">Opleiding aanpassen</v-btn>
     </v-card-text>

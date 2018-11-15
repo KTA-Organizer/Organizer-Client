@@ -2,9 +2,9 @@
 <v-container>
   <h1>Rapport maken</h1>
   <v-form ref="form" lazy-validation>
-    <v-select label="Opleiding" v-model="disciplineName" v-on:input="handleDisciplineChange" :items="disciplineNames" :rules="defaultRule" required></v-select>
-    <v-select label="Module" :disabled="modules.length < 1" v-model="moduleName" :items="moduleNames" :rules="defaultRule" required></v-select>
-    <v-select label="Student" :disabled="students.length < 1" v-model="studentName" :items="studentNames" :rules="defaultRule" required></v-select>
+    <v-select no-data-text="Geen data beschikbaar" label="Opleiding" v-model="disciplineName" v-on:input="handleDisciplineChange" :items="disciplineNames" :rules="defaultRule" required></v-select>
+    <v-select no-data-text="Geen data beschikbaar" label="Module" :disabled="modules.length < 1" v-model="moduleName" :items="moduleNames" :rules="defaultRule" required></v-select>
+    <v-select no-data-text="Geen data beschikbaar" label="Student" :disabled="students.length < 1" v-model="studentName" :items="studentNames" :rules="defaultRule" required></v-select>
     <v-btn :disabled="!disciplineName || !moduleName || !studentName" @click="onGenerateClick" color="primary">Genereer rapport</v-btn>
   </v-form>
 </v-container>

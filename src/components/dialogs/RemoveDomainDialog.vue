@@ -6,7 +6,7 @@
             </v-card-title>
 
             <v-card-text>
-                <v-select :items="domains" v-model="selectedDomain" menu-props="auto" label="Naam domain" hide-details single-line></v-select>
+                <v-select no-data-text="Geen data beschikbaar" :items="domains" v-model="selectedDomain" menu-props="auto" label="Naam domain" hide-details single-line></v-select>
             </v-card-text>
 
             <v-divider></v-divider>

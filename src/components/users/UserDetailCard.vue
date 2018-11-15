@@ -30,8 +30,8 @@
                 </v-text-field>
             </v-layout>
             <v-layout align-center justify-space-between row fill-height>
-                <v-select label="Geslacht" v-model="userFields.gender" :rules="selectGenderRules" required :readonly="!edit" :items="constants.genders"></v-select>
-                <v-select label="Rollen" v-model="userFields.roles" :rules="selectRoleRules" :multiple="true" required :readonly="!edit" :items="constants.roles"></v-select>
+                <v-select no-data-text="Geen data beschikbaar" label="Geslacht" v-model="userFields.gender" :rules="selectGenderRules" required :readonly="!edit" :items="constants.genders"></v-select>
+                <v-select no-data-text="Geen data beschikbaar" label="Rollen" v-model="userFields.roles" :rules="selectRoleRules" :multiple="true" required :readonly="!edit" :items="constants.roles"></v-select>
             </v-layout>
             <v-btn @click="$emit('update')" color="primary" v-if="edit">
                 <v-icon>save</v-icon>

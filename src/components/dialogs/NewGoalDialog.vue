@@ -10,7 +10,7 @@
         </v-card-text>
 
         <v-card-text>
-            <v-select :items="domainNames" v-model="selectedDomain" menu-props="auto" label="Naam domein" hide-details single-line></v-select>
+            <v-select no-data-text="Geen data beschikbaar" :items="domainNames" v-model="selectedDomain" menu-props="auto" label="Naam domein" hide-details single-line></v-select>
         </v-card-text>
 
         <v-divider></v-divider>

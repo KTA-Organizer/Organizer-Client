@@ -1,5 +1,5 @@
 <template>
-    <v-select v-model="score" class="grade" :id="`${criteriaid}`" label="Score" :items="grades.grades" xs1 v-on:input="addScore"></v-select>
+    <v-select no-data-text="Geen data beschikbaar" v-model="score" class="grade" :id="`${criteriaid}`" label="Score" :items="grades.grades" xs1 v-on:input="addScore"></v-select>
 </template>
 
 <script>

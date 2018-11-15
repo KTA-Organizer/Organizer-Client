@@ -6,11 +6,11 @@
         </v-card-title>
 
         <v-card-text>
-            <v-select :items="domainNames" v-model="selectedDomain" v-on:change="changedDomain" menu-props="auto" label="Naam domein" hide-details single-line></v-select>
+            <v-select no-data-text="Geen data beschikbaar" :items="domainNames" v-model="selectedDomain" v-on:change="changedDomain" menu-props="auto" label="Naam domein" hide-details single-line></v-select>
         </v-card-text>
 
         <v-card-text>
-            <v-select :items="goalNames" v-model="selectedGoal"  menu-props="auto" label="Naam doelstelling" hide-details single-line></v-select>
+            <v-select no-data-text="Geen data beschikbaar" :items="goalNames" v-model="selectedGoal"  menu-props="auto" label="Naam doelstelling" hide-details single-line></v-select>
         </v-card-text>
 
         <v-divider></v-divider>

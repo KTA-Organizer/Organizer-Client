@@ -3,9 +3,9 @@
     <h1>Evaluatie maken</h1>
     <v-checkbox v-on:change="forUser = !forUser" v-if="isReportGenerator" color="primary" label="Genereer rapporten voor module"></v-checkbox>
     <v-form ref="form" lazy-validation>
-        <v-select label="Opleiding" v-model="discipline" :items="disciplineNames" v-on:input="filterStudents" :rules="defaultRule" required></v-select>
-        <v-select label="Module" v-model="module" :items="moduleNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
-        <v-select v-if="forUser" label="Student" v-model="student" :items="filteredStudentNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
+        <v-select no-data-text="Geen data beschikbaar" label="Opleiding" v-model="discipline" :items="disciplineNames" v-on:input="filterStudents" :rules="defaultRule" required></v-select>
+        <v-select no-data-text="Geen data beschikbaar" label="Module" v-model="module" :items="moduleNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
+        <v-select no-data-text="Geen data beschikbaar" v-if="forUser" label="Student" v-model="student" :items="filteredStudentNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
         <v-btn @click="createThing" color="primary">Genereer {{$route.name}}</v-btn>
     </v-form>
 </v-container>
