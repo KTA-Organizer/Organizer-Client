@@ -16,7 +16,7 @@
             
         </v-layout>
         <v-layout wrap class="ml-5" dark v-for="(categorie) in module.domains" :value="categorie.active" v-bind:key="categorie.name">
-            <h2 class="categorieTitle text-xs-left"> <v-text-field name="categorienaam" label="Naam categorie" @change="addUpdateAddition('domain',categorie.id)" v-model="moduleMap[categorie.id]" single-line ></v-text-field></h2>
+            <h2 class="categorieTitle text-xs-left"> <v-text-field name="categorienaam" label="Naam categorie" @change="addUpdateAddition('domain',categorie.id)" v-model="domainMap[categorie.id]" single-line ></v-text-field></h2>
             <v-data-table hide-headers :items="categorie.goals" hide-actions class="elevation-1 criteriaTable">
                 <template slot="items" slot-scope="props">
                     <tr>
@@ -46,10 +46,12 @@ export default {
     props: ["module", "edit"],
     data(){
       return{
-          moduleMap: {},
+          domainMap: {},
           goalMap: {},
           criteriaMap: {},
-          updates: []
+          updates: [],
+          allGoals: [],
+          allCriteria: []
       }  
     },
     methods: {
@@ -59,10 +61,19 @@ export default {
                 this.module.id,
                 this.module.name
             );
+            this.sendUpdates();
+        },
+        addUpdateAddition(type, id){
+            this.updates.push({"type": type, "id": id});
+        },
+        sendUpdates(){
+            var self = this;
             this.updates.forEach(update => {
                 switch(update.type){
                     case "domain":
-                        self.$http.updateDomain(update.id, this.moduleMap[update.id]);
+                        console.log(update);
+                        console.log(this.domainMap[update.id]);
+                        self.$http.updateDomain(update.id, this.domainMap[update.id]);
                         break;
                     case "goal":
                         self.$http.updateGoal(update.id, this.goalMap[update.id]);
@@ -72,35 +83,39 @@ export default {
                         break;
                 }
             })
+            this.updates = [];
         },
-        addUpdateAddition(type, id){
-            this.updates.push({"type": type, "id": id});
+        initializeDomainMap(){
+            this.domainMap = this.module.domains.filter(x => x.active === 1).reduce((agg, val) => {
+                return Object.assign(agg, { [val.id]: val.name })
+            }, {});
+        },
+        setAllGoalsAndCriteria(){
+            this.module.domains.forEach(element => {
+                element.goals.forEach(goal => {
+                    this.allGoals.push(goal);
+                    goal.criteria.forEach(criteria => {
+                        this.allCriteria.push(criteria);
+                    })
+                })
+            });
+            this.initializeGoalMap();
+            this.initializeCriteriaMap();
+        },
+        initializeGoalMap(){
+            this.goalMap = this.allGoals.filter(goal => goal.active === 1).reduce((agg, val) => {
+                return Object.assign(agg, { [val.id]: val.name })
+            }, {});
+        },
+        initializeCriteriaMap(){
+            this.criteriaMap = this.allCriteria.filter(criterion => criterion.active === 1).reduce((agg, val) => {
+                return Object.assign(agg, { [val.id]: val.name })
+            }, {});
         }
     },
     async created() {
-        console.log(this.module);
-        this.moduleMap = this.module.domains.filter(x => x.active === 1).reduce((agg, val) => {
-        return Object.assign(agg, { [val.id]: val.name })
-      }, {});
-      const allGoals = [];
-      const allCriteria = [];
-        this.module.domains.forEach(element => {
-            element.goals.forEach(goal => {
-                allGoals.push(goal);
-                goal.criteria.forEach(criteria => {
-                    allCriteria.push(criteria);
-                })
-            })
-        });
-        this.goalMap = allGoals.filter(x => x.active === 1).reduce((agg, val) => {
-        return Object.assign(agg, { [val.id]: val.name })
-      }, {});
-      this.criteriaMap = allCriteria.filter(x => x.active === 1).reduce((agg, val) => {
-        return Object.assign(agg, { [val.id]: val.name })
-      }, {});
-      console.log(this.moduleMap);
-      console.log(this.goalMap);
-      console.log(this.criteriaMap);
+        this.initializeDomainMap();
+        this.setAllGoalsAndCriteria();
   }
 }
 </script>
