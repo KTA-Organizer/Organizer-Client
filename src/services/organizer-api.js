@@ -96,8 +96,8 @@ export const saveEvaluation = evaluationsObj =>
 // export const updateEval = evalJson =>
 //     processReq("/updateEvaluatie", evalJson, "post"); // NOT THERE YET
 
-// export const getEvalsByStudent = studId =>
-//     processReq(`/evaluaties/${studId}/student`); // NOT THERE YET
+export const getEvalsForStudent = studId =>
+    processReq(`/evaluations/student/${studId}`); // NOT THERE YET
 
 // export const getAllEvalsByStudent = studId =>
 //     processReq("/studentAllEvaluationsFull", { studId }, "get"); // NOT THERE YET
