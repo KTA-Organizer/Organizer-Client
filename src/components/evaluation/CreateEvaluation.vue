@@ -70,12 +70,12 @@ export default {
         const students = await this.$http.getStudents();
         this.students = students.items;
         this.students.map(async x => {
-            x.discipline = await this.$http.getOpleidingForStudent(x.id);
+            x.discipline = await this.$http.getDisciplineForStudent(x.id);
         });
         this.studentNames = this.students.map(x => `${x.firstname} ${x.lastname}`);
         this.filteredStudentNames = this.studentNames;
 
-        const disciplines = await this.$http.getOpleidingen();
+        const disciplines = await this.$http.getDisciplines();
         this.disciplines = disciplines;
         this.disciplineNames = this.disciplines.map(x => x.name);
     }

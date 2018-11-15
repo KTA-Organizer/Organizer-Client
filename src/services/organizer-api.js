@@ -63,14 +63,12 @@ export const updateUser = user =>
     "put"
   ); // OK
 
-export const assignOpleidingToUser = (disciplineid, userId) =>
+export const assignDisciplineToUser = (disciplineid, userId) =>
   processReq(`/disciplines/student/${userId}`, { disciplineid }, "put"); // OK
 
 export const getDisciplines = () => processReq("/disciplines", {}, "get"); // OK
 
-export const getOpleiding = id => processReq(`/disciplines/${id}`); // BROKEN
-
-export const getOpleidingForStudent = id =>
+export const getDisciplineForStudent = id =>
   processReq(`/disciplines/student/${id}`, {}, "get"); // OK
 
 export const getReports = () => processReq(`/reports`);
@@ -119,7 +117,7 @@ export const createNewEvaluation = (studentid, moduleid, startdate) =>
 export const createDiscipline = ( name) =>
     processReq("/disciplines", { name }, "post"); // OK
 
-export const updateOpleiding = (opleidingId, name) =>
+export const updateDiscipline = (opleidingId, name) =>
   processReq(`/disciplines/${opleidingId}`, { name }, "put"); // OK
 
 export const createModule = (name, disciplineid) =>

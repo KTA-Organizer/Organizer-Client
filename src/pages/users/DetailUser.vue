@@ -4,7 +4,7 @@
         <userdetailcard v-on:update="updateUser" v-bind:user.sync="user" v-bind:delete.sync="deleteDialog" v-bind:edit.sync="editUserMode" v-bind:activate.sync="activateDialog" v-bind:userFields.sync="userFields"></userdetailcard>
     </v-flex>
     <v-flex xs12 md6 v-if="user.roles && user.roles.indexOf('STUDENT') > -1">
-        <choosediscipline v-on:confirm="updateOpleiding" v-bind:model.sync="editOpleidingMode" v-bind:discipline.sync="opleiding" :items="opleidingnames"></choosediscipline>
+        <choosediscipline v-on:confirm="updateDiscipline" v-bind:model.sync="editOpleidingMode" v-bind:discipline.sync="opleiding" :items="opleidingnames"></choosediscipline>
         <list-user-evaluation class="mt-4" :userid="user.id"></list-user-evaluation>
     </v-flex>
     <confirmdialog v-bind:model.sync="deleteDialog" :name="user.firstname + ' ' + user.lastname" :action="'verwijderen'" v-on:confirm="deleteUser(user.id)"></confirmdialog>
@@ -70,9 +70,9 @@ export default {
                 this.getKeyByValue(constants.roleKeys, r)
             );
             if (this.user.roles.indexOf('STUDENT') > -1) {
-                this.opleidingen = await this.$http.getOpleidingen();
+                this.opleidingen = await this.$http.getDisciplines();
                 console.log(this.opleidingen)
-                const userOpleiding = await this.$http.getOpleidingForStudent(userId);
+                const userOpleiding = await this.$http.getDisciplineForStudent(userId);
                 if (userOpleiding) {
                     this.opleiding = userOpleiding.name;
                 }
@@ -84,7 +84,7 @@ export default {
             await this.fetchUser();
             this.activateDialog = false;
         },
-        async updateOpleiding() {
+        async updateDiscipline() {
             console.log("updating")
             const selectedOpleiding = this.opleidingen.find(
                 x => x.name === this.opleiding
@@ -92,7 +92,7 @@ export default {
             if (!selectedOpleiding) {
                 throw new Error("Deze opleiding bestaat niet.");
             }
-            await this.$http.assignOpleidingToUser(
+            await this.$http.assignDisciplineToUser(
                 selectedOpleiding.id,
                 this.user.id
             );

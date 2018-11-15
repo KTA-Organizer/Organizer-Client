@@ -118,7 +118,7 @@ export default {
         console.log(this.evaluationsheet);
         this.student = this.evaluationsheet.student;
         this.module = await this.evaluationsheet.module;
-        // this.discipline = await this.$http.getOpleidingForStudent(studentId);
+        // this.discipline = await this.$http.getDisciplineForStudent(studentId);
         this.evaluationsPerAssignment = this.evaluationsheet.scores.reduce((acc, evaluation, index) => {
             if (acc.get(evaluation.name)) {
                 acc.get(evaluation.name).push(evaluation);

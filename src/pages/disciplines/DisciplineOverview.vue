@@ -269,7 +269,7 @@ export default {
       if (this.discipline.id === null) {
         this.createOpleiding();
       } else {
-        this.$http.updateOpleiding(
+        this.$http.updateDiscipline(
           this.discipline.id,
           this.discipline.name
         );

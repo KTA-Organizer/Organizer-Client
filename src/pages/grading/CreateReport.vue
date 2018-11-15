@@ -69,7 +69,7 @@ export default {
       console.log(data)
     },
     async fetchData() {
-      this.disciplines = await this.$http.getOpleidingen();
+      this.disciplines = await this.$http.getDisciplines();
     }
   },
   async created() {
