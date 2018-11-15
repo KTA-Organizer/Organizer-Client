@@ -40,7 +40,7 @@ import UserDetailCard from "@/components/users/UserDetailCard";
 import EditableModule from "@/components/modules/EditableModule";
 import NewModuleDialog from "@/components/dialogs/NewModuleDialog";
 import ModuleList from "@/components/modules/ModuleList";
-import CreateEvaluationOrReportForm from "@/components/evaluation/CreateEvaluationOrReportForm";
+import CreateEvaluationForm from "@/components/evaluation/CreateEvaluationForm";
 import StudentEvaluation from "@/components/evaluation/StudentEvaluation";
 import GradeBoxes from "@/components/evaluation/GradeBoxes";
 import NewDomainDialog from "@/components/dialogs/NewDomainDialog";
@@ -141,7 +141,7 @@ const router = new Router({
                         {
                             name: "Rapport Aanmaken",
                             path: "/create",
-                            component: CreateEvaluationOrReportForm,
+                            component: CreateEvaluationForm,
                             props: {isReportGenerator: true}
                         },
                         {
@@ -179,7 +179,7 @@ const router = new Router({
                         {
                             name: "Evaluatie",
                             path: "/",
-                            component: CreateEvaluationOrReportForm
+                            component: CreateEvaluationForm
                         },
                         {
                             name: "Evaluatie voor Student",

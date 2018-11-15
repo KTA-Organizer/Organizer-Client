@@ -1,12 +1,11 @@
 <template>
 <v-container>
-    <h1>{{$route.name.capitalize()}} maken</h1>
-    <v-checkbox v-on:change="forUser = !forUser" v-if="isReportGenerator" color="primary" label="Genereer rapporten voor module"></v-checkbox>
+    <h1>Evaluatie maken</h1>
     <v-form ref="form" lazy-validation>
         <v-select label="Opleiding" v-model="discipline" :items="disciplineNames" v-on:input="filterStudents" :rules="defaultRule" required></v-select>
         <v-select label="Module" v-model="module" :items="moduleNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
         <v-select v-if="forUser" label="Student" v-model="student" :items="filteredStudentNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
-        <v-btn @click="createThing" color="primary">Genereer {{$route.name}}</v-btn>
+        <v-btn @click="createEvaluation" color="primary">Genereer evaluatie</v-btn>
     </v-form>
 </v-container>
 </template>
@@ -16,7 +15,6 @@ import {defaultRule} from "../../constants/rules";
 
 export default {
     name: "EvaluationForm",
-    props: ["isReportGenerator"],
     data() {
         return {
             module: undefined,
@@ -50,7 +48,7 @@ export default {
             this.moduleNames = this.modules.map(x => x.name);
             this.disciplineChosen = true;
         },
-        createThing() {
+        createEvaluation() {
             const selectedModule = this.modules.find(x => x.name === this.module);
             const selectedStudent = this.students.find(
                 x => `${x.firstname} ${x.lastname}` === this.student
