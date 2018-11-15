@@ -8,7 +8,7 @@
       </v-card-text>
     </v-card>
   </v-flex>
-  <v-flex column xs12 md6>
+  <v-flex column xs12 md6 v-if="isAdmin || isTeacher">
     <v-card>
       <v-layout reverse row>
         <v-btn v-if="isAdmin" to="/melding/toevoegen" dark hover color="primary">
