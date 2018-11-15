@@ -71,8 +71,6 @@ export default {
             this.updates.forEach(update => {
                 switch(update.type){
                     case "domain":
-                        console.log(update);
-                        console.log(this.domainMap[update.id]);
                         self.$http.updateDomain(update.id, this.domainMap[update.id]);
                         break;
                     case "goal":
