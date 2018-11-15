@@ -65,7 +65,7 @@ export const updateUser = user =>
 export const assignOpleidingToUser = (disciplineid, userId) =>
     processReq(`/disciplines/student/${userId}`, { disciplineid }, "put"); // OK
 
-export const getOpleidingen = () => processReq("/disciplines", {}, "get"); // OK
+export const getDisciplines = () => processReq("/disciplines", {}, "get"); // OK
 
 export const getOpleiding = id => processReq(`/disciplines/${id}`); // BROKEN
 
@@ -110,8 +110,8 @@ export const saveEvaluation = evaluationsObj =>
 // export const deleteEval = id =>
 //     processReq("/deleteEvaluatie", { id }, "delete"); // NOT THERE YET
 
-export const createOpleiding = (creatorId, name) =>
-    processReq("/disciplines", { creatorId, active: 1, name }, "post"); // OK
+export const createDiscipline = ( name) =>
+    processReq("/disciplines", { name }, "post"); // OK
 
 export const updateOpleiding = (opleidingId, name) =>
     processReq(`/disciplines/${opleidingId}`, { name }, "put"); // OK
@@ -228,7 +228,7 @@ export const updateModule = (moduleId, name) =>
 //     "put"
 //   );
 
-export const setOpleidingInactive = (opleidingId) =>
+export const setDisciplineInactive = (opleidingId) =>
     processReq(
         `/disciplines/${opleidingId}/status`,
         {
@@ -237,7 +237,7 @@ export const setOpleidingInactive = (opleidingId) =>
         "put"
     ); // BROKEN
 
-export const setOpleidingActive = (opleidingId) =>
+export const setDisciplineActive = (opleidingId) =>
     processReq(
         "/disciplines/" + opleidingId + "/status",
         {

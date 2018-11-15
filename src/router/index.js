@@ -52,6 +52,7 @@ import RemoveGoalDialog from "@/components/dialogs/RemoveGoalDialog";
 import RemoveCriteriaDialog from "@/components/dialogs/RemoveCriteriaDialog";
 import UserReport from "@/components/report/UserReport";
 import ReportTable from "@/components/report/ReportTable";
+import NewDisciplineDialog from "@/components/dialogs/NewDisciplineDialog";
 /* import components */
 
 /* set components */
@@ -80,6 +81,7 @@ Vue.component("removedomaindialog", RemoveDomainDialog);
 Vue.component("removegoaldialog", RemoveGoalDialog);
 Vue.component("removecriteriadialog", RemoveCriteriaDialog);
 Vue.component("table-report", ReportTable);
+Vue.component("newdisciplinedialog", NewDisciplineDialog);
 /* set components */
 
 Vue.use(Router);
@@ -201,7 +203,7 @@ const router = new Router({
                             component: AddUser
                         },
                         {
-                            name: "Gebruiker",
+                            name: "Gebruiker Details",
                             path: ":id",
                             component: DetailUser
                         }
@@ -237,7 +239,7 @@ const router = new Router({
             component: ChoosePassword,
             beforeEnter: requireUnauth,
         },
-        { path: '/404', component: NotFound },
+        { path: '/404', component: NotFound , name: "Deze pagina werd niet gevonden"},
         { path: '*', redirect: '/404' },
     ]
 });
