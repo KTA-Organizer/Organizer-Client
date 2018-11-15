@@ -85,6 +85,8 @@ export const getDiscipline = id => processReq(`/disciplines/${id}`); // OK
 
 export const getModulesForDiscipline = id => processReq(`/modules`, { disciplineid: id }); // OK
 
+export const getStudentsForDiscipline = (disciplineid) => processReq('/users/', { role: "STUDENT", disciplineid }, "get"); // OK
+
 export const getEvalsForStudentInModule = (studentid, moduleid) =>
     processReq(`/evaluations/student/${studentid}/module/${moduleid}`, {}, "get"); // OK
 
