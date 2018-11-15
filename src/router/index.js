@@ -19,6 +19,7 @@ import DisciplineOverview from "@/pages/disciplines/DisciplineOverview";
 import Reports from "@/pages/grading/Reports";
 import Evaluate from "@/pages/grading/Evaluate";
 import ReportList from "@/pages/grading/ReportList";
+import CreateReport from "@/pages/grading/CreateReport";
 /* import pages */
 
 /* import components */
@@ -51,6 +52,7 @@ import RemoveGoalDialog from "@/components/dialogs/RemoveGoalDialog";
 import RemoveCriteriaDialog from "@/components/dialogs/RemoveCriteriaDialog";
 import UserReport from "@/components/report/UserReport";
 import ReportTable from "@/components/report/ReportTable";
+import NewDisciplineDialog from "@/components/dialogs/NewDisciplineDialog";
 /* import components */
 
 /* set components */
@@ -79,6 +81,7 @@ Vue.component("removedomaindialog", RemoveDomainDialog);
 Vue.component("removegoaldialog", RemoveGoalDialog);
 Vue.component("removecriteriadialog", RemoveCriteriaDialog);
 Vue.component("table-report", ReportTable);
+Vue.component("newdisciplinedialog", NewDisciplineDialog);
 /* set components */
 
 Vue.use(Router);
@@ -139,8 +142,7 @@ const router = new Router({
                         {
                             name: "Rapport Aanmaken",
                             path: "/create",
-                            component: CreateEvaluationOrReportForm,
-                            props: {isReportGenerator: true}
+                            component: CreateReport,
                         },
                         {
                             name: "Rapport",

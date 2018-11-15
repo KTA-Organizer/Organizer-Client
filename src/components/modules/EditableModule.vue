@@ -11,22 +11,22 @@
                     <v-icon light>cached</v-icon>
                     </span>
                 </v-btn>
-                <v-btn color="primary" @click="$emit('update:edit', !edit)">Return</v-btn>
+                <v-btn color="primary" @click="$emit('confirm'), $emit('update:edit', !edit)">Return</v-btn>
             </v-flex>
             
         </v-layout>
         <v-layout wrap class="ml-5" dark v-for="(categorie) in module.domains" :value="categorie.active" v-bind:key="categorie.name">
-            <h2 class="categorieTitle text-xs-left"> <v-text-field name="categorienaam" label="Naam categorie" v-model="categorie.name" single-line ></v-text-field></h2>
+            <h2 class="categorieTitle text-xs-left" v-if="categorie.active"> <v-text-field name="categorienaam" label="Naam categorie" @change="addUpdateAddition('domain',categorie.id)" v-model="domainMap[categorie.id]" single-line ></v-text-field></h2>
             <v-data-table hide-headers :items="categorie.goals" hide-actions class="elevation-1 criteriaTable">
-                <template slot="items" slot-scope="props">
+                <template slot="items" slot-scope="props" v-if="props.item.active">
                     <tr>
-                        <th><v-text-field name="doelstellingnaam" label="Naam doelstelling" v-model="props.item.name" single-line></v-text-field></th>
+                        <th><v-text-field name="doelstellingnaam" label="Naam doelstelling" @change="addUpdateAddition('goal',props.item.id)" v-model="goalMap[props.item.id]" single-line></v-text-field></th>
                         <v-flex d-flex xs48 sm24 md12>
                             <v-layout row wrap>
                                 <v-flex d-flex>
                                     <v-layout row wrap>
                                         <v-flex  v-for="(criteria) in props.item.criteria" v-bind:key="criteria.name" d-flex xs12>
-                                            <div><td class="text-xs-left"><v-text-field name="criterianaam" label="Naam criteria" v-model="criteria.name" single-line></v-text-field></td></div>
+                                            <div v-if="criteria.active"><td class="text-xs-left"><v-text-field name="criterianaam" label="Naam criteria" @change="addUpdateAddition('criteria',criteria.id)" v-model="criteriaMap[criteria.id]" single-line></v-text-field></td></div>
                                             <v-divider></v-divider>
                                         </v-flex>
                                     </v-layout>
@@ -44,6 +44,16 @@
 export default {
     name: "editableModule",
     props: ["module", "edit"],
+    data(){
+      return{
+          domainMap: {},
+          goalMap: {},
+          criteriaMap: {},
+          updates: [],
+          allGoals: [],
+          allCriteria: []
+      }  
+    },
     methods: {
         saveModule() {
             var self = this;
@@ -51,7 +61,69 @@ export default {
                 this.module.id,
                 this.module.name
             );
+            this.sendUpdates();
+        },
+        addUpdateAddition(type, id){
+            this.updates.push({"type": type, "id": id});
+        },
+        sendUpdates(){
+            var self = this;
+            this.updates.forEach(update => {
+                switch(update.type){
+                    case "domain":
+                        console.log(update);
+                        console.log(this.domainMap[update.id]);
+                        self.$http.updateDomain(update.id, this.domainMap[update.id]);
+                        break;
+                    case "goal":
+                        self.$http.updateGoal(update.id, this.goalMap[update.id]);
+                        break;
+                    case "criteria":
+                        self.$http.updateCriteria(update.id, this.criteriaMap[update.id]);
+                        break;
+                }
+            })
+            this.updates = [];
+        },
+        initializeDomainMap(){
+            this.domainMap = this.module.domains.filter(x => x.active === 1).reduce((agg, val) => {
+                return Object.assign(agg, { [val.id]: val.name })
+            }, {});
+        },
+        setAllGoalsAndCriteria(){
+            this.module.domains.forEach(element => {
+                element.goals.forEach(goal => {
+                    this.allGoals.push(goal);
+                    goal.criteria.forEach(criteria => {
+                        this.allCriteria.push(criteria);
+                    })
+                })
+            });
+            this.initializeGoalMap();
+            this.initializeCriteriaMap();
+        },
+        initializeGoalMap(){
+            this.goalMap = this.allGoals.filter(goal => goal.active === 1).reduce((agg, val) => {
+                return Object.assign(agg, { [val.id]: val.name })
+            }, {});
+        },
+        initializeCriteriaMap(){
+            this.criteriaMap = this.allCriteria.filter(criterion => criterion.active === 1).reduce((agg, val) => {
+                return Object.assign(agg, { [val.id]: val.name })
+            }, {});
         }
-    }
+    },
+    async created() {
+        this.initializeDomainMap();
+        this.setAllGoalsAndCriteria();
+  }
 }
 </script>
+
+<style scoped>
+    .categorieTitle{
+        width: 75%;
+         margin-top: 3%;
+    }
+</style>
+

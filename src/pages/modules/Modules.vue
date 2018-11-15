@@ -1,7 +1,7 @@
 <template>
 <main v-if="module">
     <v-container v-if="editMode">
-        <editablemodule v-bind:module="module" v-bind:edit.sync="editMode"> </editablemodule>
+        <editablemodule v-bind:module="module" v-bind:edit.sync="editMode" v-on:confirm="refreshModule"> </editablemodule>
     </v-container>
     <v-container v-else>
         <v-layout row class="ml-5 mb-4">

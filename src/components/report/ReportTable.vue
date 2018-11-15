@@ -19,7 +19,7 @@
           <td>{{getScore(props.item.id, "OV")}}</td>
           <td>{{getScore(props.item.id, "RO")}}</td>
           <td>
-            <v-textarea v-model="goalComments[props.item.id]"></v-textarea>
+            <v-textarea placeholder="Geen commentaar" :readonly="readonly" v-model="goalComments[props.item.id]"></v-textarea>
           </td>
         </tr>
       </template>
@@ -33,7 +33,7 @@ import * as grades from "../../constants/grades";
 
 export default {
   name: "ReportTable",
-  props: ["report"],
+  props: ["report", "goalComments", "readonly"],
   data() {
     return {
       headers: [{
@@ -70,12 +70,6 @@ export default {
         [val.goalid]: val.grade
       }), {})
     },
-    goalComments() {
-      return this.report.goalComments.reduce((agg, val) => ({
-        ...agg,
-        [val.goalid]: val.comment
-      }), {})
-    }
   },
   methods: {
     getScore(goalid, key) {
