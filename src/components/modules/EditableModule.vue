@@ -26,7 +26,7 @@
                                 <v-flex d-flex>
                                     <v-layout row wrap>
                                         <v-flex  v-for="(criteria) in props.item.criteria" v-bind:key="criteria.name" d-flex xs12 >
-                                            <div v-if="criteria.active" style="width:100%;"><td class="text-xs-left" style="width:35%;"><v-text-field name="criterianaam" label="Naam criteria" @change="addUpdateAddition('criteria',criteria.id)" v-model="criteriaMap[criteria.id]" single-line></v-text-field></td></div>
+                                            <div v-if="criteria.active" class="fullWidth"><td class="text-xs-left oneThirdWidth"><v-text-field name="criterianaam" label="Naam criteria" @change="addUpdateAddition('criteria',criteria.id)" v-model="criteriaMap[criteria.id]" single-line></v-text-field></td></div>
                                             <v-divider></v-divider>
                                         </v-flex>
                                     </v-layout>
@@ -122,6 +122,12 @@ export default {
     .categorieTitle{
         width: 75%;
          margin-top: 3%;
+    }
+    .fullWidth{
+        width: 100%;
+    }
+    .oneThirdWidth{
+        width: 35%;
     }
 </style>
 
