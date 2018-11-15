@@ -14,7 +14,7 @@
                                     <v-divider></v-divider>
                                 </v-flex>
                             </v-layout>
-                            <template v-if="evaluating">
+                            <template>
 
                                 <v-spacer></v-spacer>
 

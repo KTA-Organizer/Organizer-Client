@@ -97,12 +97,13 @@ export const saveEvaluation = evaluationsObj =>
 //     processReq("/updateEvaluatie", evalJson, "post"); // NOT THERE YET
 
 export const getEvaluationSheetsForStudentInModule = (studentid, moduleid) =>
-  processReq(`/evaluations`, {studentid, moduleid}); // NOT THERE YET
+  processReq(`/evaluations`, { studentid, moduleid }); // NOT THERE YET
 
-export const getEvaluationSheetById = evalId => processReq(`/evaluations/${evalId}`);
+export const getEvaluationSheetById = evalId =>
+  processReq(`/evaluations/${evalId}`);
 
-// export const getAllEvalsByStudent = studId =>
-//     processReq("/studentAllEvaluationsFull", { studId }, "get"); // NOT THERE YET
+export const endEvaluation = evalId =>
+  processReq(`/evaluations/${evalId}`, {}, "delete");
 
 // export const deleteEval = id =>
 //     processReq("/deleteEvaluatie", { id }, "delete"); // NOT THERE YET

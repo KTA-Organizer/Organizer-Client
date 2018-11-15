@@ -5,25 +5,36 @@
         <v-select label="Opleiding" v-model="discipline" :items="disciplineNames" v-on:input="filterStudents" :rules="defaultRule" required></v-select>
         <v-select label="Module" v-model="module" :items="moduleNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
         <v-select v-on:input="fetchEvaluations" v-if="forUser" label="Student" v-model="student" :items="filteredStudentNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
-        <v-btn @click="newEvaluationDialog" color="primary">Maak nieuwe evaluatie</v-btn>
     </v-form>
-    <v-layout v-if="student">
-        <v-flex v-for="evaluation in evaluations" v-bind:key="evaluation.id">
-            <v-card>
-                <v-card-title>
-                    <h2>Student: {{student}}</h2>
-                </v-card-title>
-                <v-card-text>
-                    <p class="text-xs-left">Startdatum: {{formatDate(evaluation.startdate)}}</p>
-                    <p class="text-xs-left">Einddatum: {{formatDate(evaluation.enddate)}}</p>
-                </v-card-text>
-                <v-card-actions>
-                    <v-btn color="primary" @click="updateEvaluation(evaluation.id)">
-                        <v-icon>edit</v-icon>Vul aan
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-flex>
+    <v-layout v-if="student" column>
+        <v-layout wrap>
+            <v-flex v-for="evaluation in evaluations" v-bind:key="evaluation.id">
+                <v-card>
+                    <v-card-title>
+                        <h2>Student: {{student}}</h2>
+                    </v-card-title>
+                    <v-card-text>
+                        <p class="text-xs-left">Startdatum: {{formatDate(evaluation.startdate)}}</p>
+                        <p class="text-xs-left">Einddatum: {{formatDate(evaluation.enddate)}}</p>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn v-if="!evaluation.enddate" color="primary" @click="updateEvaluation(evaluation.id)">
+                            <v-icon>edit</v-icon> Vul aan
+                        </v-btn>
+                        <v-btn v-else color="primary" @click="updateEvaluation(evaluation.id)">
+                            <v-icon>remove-red-eye</v-icon> Bekijk
+                        </v-btn>
+                        <!-- <v-btn v-if="!evaluation.enddate" color="error" @click="endEvaluation(evaluation.id)"> -->
+                        <v-btn v-if="!evaluation.enddate" color="error" @click="showEndEvaluation = true; evaluationToEnd = evaluation.id;">
+                            <v-icon>clear</v-icon> Sluit af
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-flex>
+        </v-layout>
+        <v-layout class="mt-4" justify-center>
+            <v-btn xs12 @click="newEvaluationDialog" color="primary">Maak nieuwe evaluatie</v-btn>
+        </v-layout>
     </v-layout>
 
     <v-dialog width="500" v-model="newEvaluation">
@@ -41,6 +52,8 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
+    <confirmdialog v-bind:model.sync="showEndEvaluation" v-on:confirm="endEvaluation" :name="'deze evaluatie'" :action="'beëindigen (permanent)'">
+    </confirmdialog>
 
 </v-container>
 </template>
@@ -72,6 +85,8 @@ export default {
             newEvaluation: false,
             newEvaluationDate: new Date().toISOString().substr(0, 10),
             evaluations: [],
+            showEndEvaluation: false,
+            evaluationToEnd: undefined,
         };
     },
     methods: {
@@ -130,6 +145,12 @@ export default {
             console.log(selectedStudent.id, selectedModule.id);
             this.evaluations = await this.$http.getEvaluationSheetsForStudentInModule(selectedStudent.id, selectedModule.id);
             console.log(this.evaluations);
+        },
+        async endEvaluation(id) {
+            await this.$http.endEvaluation(this.evaluationToEnd);
+            this.evaluationToEnd = undefined;
+            this.showEndEvaluation = false;
+            this.fetchEvaluations();
         }
     },
     async created() {

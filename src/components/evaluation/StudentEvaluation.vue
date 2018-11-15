@@ -3,7 +3,10 @@
     <v-layout align-center>
         <img class="" src="../../assets/Logos_CLW_KTA_ZWAAN.png" height="100%" >
         <v-spacer></v-spacer>
-        <h1>Evaluatiefiche opleiding {{discipline.name}}</h1>
+        <v-layout column>
+            <h1 class="text-xs-right">Evaluatiefiche opleiding {{discipline.name}}</h1>
+            <h1 class="text-xs-right">Module: {{module.name}}</h1>
+        </v-layout>
     </v-layout>
     <v-layout row>
         <table id="headerTable" cellspacing="0">
@@ -28,13 +31,13 @@
             </tr>
         </table>
     </v-layout>
-    <v-form ref="form" lazy-validation>
+    <v-form class="mt-3" ref="form" lazy-validation v-if="isEditable">
         <v-text-field v-model="assignmentName" label="Naam van de opdracht" required :rules="nameRules"></v-text-field>
     </v-form>
     <v-layout row>
-        <modulelist :module="module" :evaluating="true" :evaluations="evaluationsPerAssignment" :newEvaluation="newEvaluation" v-on:graded="graded"></modulelist>
+        <modulelist :module="module" :evaluating="isEditable" :evaluations="evaluationsPerAssignment" :newEvaluation="newEvaluation" v-on:graded="graded"></modulelist>
     </v-layout>
-    <v-btn color="primary" @click="saveEvaluation">
+    <v-btn v-if="isEditable" color="primary" @click="saveEvaluation">
         <v-icon>save</v-icon> Opslaan
     </v-btn>
 </v-container>
@@ -126,7 +129,13 @@ export default {
         }, new Map());
         console.log(this.evaluationsPerAssignment);
     },
-    computed: mapGetters(["currentUser"])
+    computed: {
+        ...mapGetters(["currentUser"]),
+        isEditable() {
+            return !this.evaluationsheet.enddate;
+        }
+    }
+
 };
 </script>
 
