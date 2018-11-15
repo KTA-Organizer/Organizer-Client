@@ -25,8 +25,8 @@
                             <v-layout row wrap>
                                 <v-flex d-flex>
                                     <v-layout row wrap>
-                                        <v-flex  v-for="(criteria) in props.item.criteria" v-bind:key="criteria.name" d-flex xs12>
-                                            <div v-if="criteria.active"><td class="text-xs-left"><v-text-field name="criterianaam" label="Naam criteria" @change="addUpdateAddition('criteria',criteria.id)" v-model="criteriaMap[criteria.id]" single-line></v-text-field></td></div>
+                                        <v-flex  v-for="(criteria) in props.item.criteria" v-bind:key="criteria.name" d-flex xs12 >
+                                            <div v-if="criteria.active" style="width:100%;"><td class="text-xs-left" style="width:35%;"><v-text-field name="criterianaam" label="Naam criteria" @change="addUpdateAddition('criteria',criteria.id)" v-model="criteriaMap[criteria.id]" single-line></v-text-field></td></div>
                                             <v-divider></v-divider>
                                         </v-flex>
                                     </v-layout>
