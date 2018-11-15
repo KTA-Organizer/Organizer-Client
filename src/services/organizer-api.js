@@ -157,14 +157,14 @@ export const updateModule = (moduleId, name) =>
     );
 
 
-// export const updateDoelstellingscategorie = (doelstellingscategorieId, name) =>
-//   processReq(
-//     "/doelstellingsCategorie/" + doelstellingscategorieId,
-//     {
-//       name
-//     },
-//     "put"
-//   );  // NOT THERE YET
+export const updateDomain = (domainId, name) =>
+   processReq(
+     "/domains/" + domainId,
+     {
+       name
+     },
+     "put"
+);  
 
  export const createGoal = (name, domainid) =>
    processReq(
@@ -176,14 +176,14 @@ export const updateModule = (moduleId, name) =>
      "post"
    );
 
-// export const updateDoelstelling = (doelstellingId, name) =>
-//   processReq(
-//     "/doelstellingen/" + doelstellingId,
-//     {
-//       name
-//     },
-//     "put"
-//   ); // NOT THERE YET
+ export const updateGoal = (goalId, name) =>
+   processReq(
+     "/goals/" + goalId,
+     {
+       name
+     },
+     "put"
+   ); 
 
  export const createCriteria = (name, goalid) =>
    processReq(
