@@ -6,11 +6,11 @@
             <v-data-table hide-headers :items="categorie.goals" hide-actions class="elevation-1 criteriaTable mb-5">
                 <template slot="items" slot-scope="props">
                     <tr v-if="props.item.active">
-                        <th>{{ props.item.name }}</th>
+                        <th class="oneThirdWidth">{{ props.item.name }}</th>
                         <v-layout class="py-2 mt-2" v-for="(criteria) in props.item.criteria" v-bind:key="criteria.name" row>
                             <v-layout :class="getClass" v-if="criteria.active">
                                 <v-flex>
-                                    <td d-block class="text-xs-left pl-0 xs-5">{{ criteria.name }}</td>
+                                    <td d-block class="text-xs-left pl-0 xs-5 oneThirdWidth">{{ criteria.name }}</td>
                                     <v-divider></v-divider>
                                 </v-flex>
                             </v-layout>
@@ -156,6 +156,10 @@ div.menu__content--autocomplete {
 .score {
     padding: 1em;
     border: 1px black solid;
+}
+
+.oneThirdWidth{
+    width: 30%;
 }
 
 </style>
