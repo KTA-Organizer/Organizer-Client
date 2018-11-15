@@ -51,13 +51,13 @@ export default {
       }
     },
     async deactivateOpleiding() {
-      await this.$http.setOpleidingInactive(this.selectedOpleiding.id);
+      await this.$http.setDisciplineInactive(this.selectedOpleiding.id);
       this.deactivateOpleidingStatus = false;
       this.selectedOpleiding = {};
       this.getDisciplines();
     },
     async activateOpleiding() {
-      await this.$http.setOpleidingActive(this.selectedOpleiding.id);
+      await this.$http.setDisciplineActive(this.selectedOpleiding.id);
       this.activateOpleidingStatus = false;
       this.selectedOpleiding = {};
       this.getDisciplines();
