@@ -5,15 +5,18 @@
         <v-select label="Opleiding" v-model="discipline" :items="disciplineNames" v-on:input="filterStudents" :rules="defaultRule" required></v-select>
         <v-select label="Module" v-model="module" :items="moduleNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
         <v-select v-on:input="fetchEvaluations" v-if="forUser" label="Student" v-model="student" :items="filteredStudentNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
-        <!-- <v-btn @click="createEvaluation" color="primary">Vul evaluatie aan</v-btn> -->
         <v-btn @click="newEvaluationDialog" color="primary">Maak nieuwe evaluatie</v-btn>
     </v-form>
     <v-layout v-if="student">
         <v-flex v-for="evaluation in evaluations" v-bind:key="evaluation.id">
             <v-card>
                 <v-card-title>
-                    <h2>{{student}}: {{formatDate(evaluation.creation)}}</h2>
+                    <h2>Student: {{student}}</h2>
                 </v-card-title>
+                <v-card-text>
+                    <p class="text-xs-left">Startdatum: {{formatDate(evaluation.startdate)}}</p>
+                    <p class="text-xs-left">Einddatum: {{formatDate(evaluation.enddate)}}</p>
+                </v-card-text>
                 <v-card-actions>
                     <v-btn color="primary" @click="updateEvaluation(evaluation.id)">
                         <v-icon>edit</v-icon>Vul aan
@@ -73,6 +76,9 @@ export default {
     },
     methods: {
         formatDate(date) {
+            if (!date) {
+                return "Nog te bepalen";
+            }
             return moment(date).format('LL');
         },
         async filterStudents() {
@@ -117,7 +123,13 @@ export default {
             console.log(new Date(this.newEvaluationDate));
         },
         async fetchEvaluations() {
-            this.evaluations = await this.$http.getEvaluationSheetsForStudentInModule(this.student.id, this.module.id);
+            const selectedStudent = this.students.find(
+                x => `${x.firstname} ${x.lastname}` === this.student
+            );
+            const selectedModule = this.modules.find(x => x.name === this.module);
+            console.log(selectedStudent.id, selectedModule.id);
+            this.evaluations = await this.$http.getEvaluationSheetsForStudentInModule(selectedStudent.id, selectedModule.id);
+            console.log(this.evaluations);
         }
     },
     async created() {

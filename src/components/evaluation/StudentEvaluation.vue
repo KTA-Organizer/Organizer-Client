@@ -124,7 +124,7 @@ export default {
             }
             return acc;
         }, new Map());
-        console.log(this.evaluationsPerAssignment)
+        console.log(this.evaluationsPerAssignment);
     },
     computed: mapGetters(["currentUser"])
 };
