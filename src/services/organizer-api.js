@@ -105,6 +105,9 @@ export const getEvaluationSheetById = evalId =>
 export const endEvaluation = evalId =>
   processReq(`/evaluations/${evalId}`, {}, "delete");
 
+export const createNewEvaluation = (studentid, moduleid, startdate) =>
+  processReq(`/evaluations`, { studentid, moduleid, startdate }, "post");
+
 // export const deleteEval = id =>
 //     processReq("/deleteEvaluatie", { id }, "delete"); // NOT THERE YET
 

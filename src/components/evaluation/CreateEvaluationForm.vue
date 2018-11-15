@@ -48,7 +48,7 @@
                 </v-date-picker>
             </v-card-text>
             <v-card-actions>
-                <v-btn color="primary" @click="createNewEvaluation">Maak aan</v-btn>
+                <v-btn color="primary" @click="createNewEvaluation()">Maak aan</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -111,19 +111,6 @@ export default {
             this.disciplineChosen = true;
         },
         updateEvaluation(evaluationid) {
-            // const selectedModule = this.modules.find(x => x.name === this.module);
-            // const selectedStudent = this.students.find(
-            //     x => `${x.firstname} ${x.lastname}` === this.student
-            // );
-            // if (this.$refs.form.validate()) {
-            //     let route = `/${this.$route.name}`;
-            //     if (this.forUser) {
-            //         route += `/${selectedStudent.id}`;
-            //     }
-            //     route += `/${selectedModule.id}`
-            //     console.log("route: ", route)
-            //     this.$router.push(route);
-            // }
             if (this.$refs.form.validate()) {
                 this.$router.push(`/Evaluatie/${evaluationid}`);
             }
@@ -136,6 +123,15 @@ export default {
         async createNewEvaluation() {
             console.log("Hello new eval");
             console.log(new Date(this.newEvaluationDate));
+            // console.log(this.selectedStudent)
+            const selectedStudent = this.students.find(
+                x => `${x.firstname} ${x.lastname}` === this.student
+            );
+            const selectedModule = this.modules.find(x => x.name === this.module);
+            const date = new Date(this.newEvaluationDate);
+            console.log(selectedStudent.id, module.id, date);
+            const newEvaluationId = await this.$http.createNewEvaluation(selectedStudent.id, selectedModule.id, date);
+            this.$router.push(`/Evaluatie/${newEvaluationId.evaluationsheetid}`);
         },
         async fetchEvaluations() {
             const selectedStudent = this.students.find(
@@ -167,7 +163,11 @@ export default {
         this.disciplineNames = this.disciplines.map(x => x.name);
     },
     computed: {
-
+        selectedStudent: () => {
+            return this.students.find(
+                x => `${x.firstname} ${x.lastname}` === this.student
+            );
+        }
     }
 };
 String.prototype.capitalize = function () {
