@@ -1,10 +1,6 @@
 <template>
   <v-container>
-    <main>
-      <v-content class="pt-1">
-          <router-view />
-      </v-content>
-    </main>
+    <router-view />
   </v-container>
 </template>
 

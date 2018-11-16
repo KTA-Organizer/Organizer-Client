@@ -71,6 +71,8 @@ export const getDisciplines = () => processReq("/disciplines", {}, "get"); // OK
 export const getDisciplineForStudent = id =>
   processReq(`/disciplines/student/${id}`, {}, "get"); // OK
 
+  export const getReportPDF = id => processReq(`/reports/print/${id}`);
+
 export const getReports = () => processReq(`/reports`);
 
 export const getReport = id => processReq(`/reports/${id}`);
@@ -96,9 +98,6 @@ export const getModule = moduleId => processReq(`/modules/${moduleId}`); // OK
 export const saveEvaluation = evaluationsObj =>
   processReq("/evaluations", evaluationsObj, "post"); // NOT THERE YET
 
-// export const updateEval = evalJson =>
-//     processReq("/updateEvaluatie", evalJson, "post"); // NOT THERE YET
-
 export const getEvaluationSheetsForStudentInModule = (studentid, moduleid) =>
   processReq(`/evaluations`, { studentid, moduleid }); // NOT THERE YET
 
@@ -110,9 +109,6 @@ export const endEvaluation = evalId =>
 
 export const createNewEvaluation = (studentid, moduleid, startdate) =>
   processReq(`/evaluations`, { studentid, moduleid, startdate }, "post");
-
-// export const deleteEval = id =>
-//     processReq("/deleteEvaluatie", { id }, "delete"); // NOT THERE YET
 
 export const createDiscipline = ( name) =>
     processReq("/disciplines", { name }, "post"); // OK
@@ -204,28 +200,6 @@ export const createCriteria = (name, goalid) =>
      "put"
    ); 
 
-// export const createAspect = (name, evaluatiecriteriumId, creatorId) =>
-//   processReq(
-//     "/aspecten",
-//     {
-//       name,
-//       evaluatiecriteriumId,
-//       inGebruik: 1,
-//       gewicht: 1,
-//       creatorId
-//     },
-//     "post"
-//   );
-
-// export const updateAspect = (aspectId, name) =>
-//   processReq(
-//     "/aspecten/" + aspectId,
-//     {
-//       name
-//     },
-//     "put"
-//   );
-
 export const setDisciplineInactive = (opleidingId) =>
     processReq(
         `/disciplines/${opleidingId}/status`,
@@ -244,19 +218,7 @@ export const setDisciplineActive = (opleidingId) =>
         "put"
     ); // OK
 
-// export const deleteCategorie = id =>
-//     processReq("/doelstellingsCategorie/" + id, {}, "delete");
-
 export const deleteModule = id => processReq(`/modules/${id}`, {}, "delete"); // OK
-
-// export const deleteDoelstelling = id =>
-//     processReq("/doelstellingen/" + id, {}, "delete");
-
-// export const deleteCriteria = id =>
-//     processReq("/evaluatieCriteria/" + id, {}, "delete");
-
-// export const deleteAspect = id =>
-//     processReq("/aspecten/" + id, {}, "delete");
 
 export const getMeldingen = () => processReq("/meldingen"); // OK
 
