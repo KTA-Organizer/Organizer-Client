@@ -14,10 +14,9 @@
                                     <v-divider></v-divider>
                                 </v-flex>
                             </v-layout>
-                            <template>
+                            <template v-if="criteria.active">
 
                                 <v-spacer></v-spacer>
-
                                 <v-btn v-if="evaluating" class="primary" @click="createScoreDialog(evaluations, criteria.id)">
                                     <v-icon>remove_red_eye</v-icon> Bekijk vorige scores
                                 </v-btn>

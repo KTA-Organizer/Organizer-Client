@@ -95,8 +95,8 @@ export const getModulesForStudent = studId =>
 
 export const getModule = moduleId => processReq(`/modules/${moduleId}`); // OK
 
-export const saveEvaluation = evaluationsObj =>
-  processReq("/evaluations", evaluationsObj, "post"); // NOT THERE YET
+export const saveEvaluation = (id, scores) =>
+  processReq(`/evaluations/${id}`, {scores: scores.evaluations}, "put"); // NOT THERE YET
 
 export const getEvaluationSheetsForStudentInModule = (studentid, moduleid) =>
   processReq(`/evaluations`, { studentid, moduleid }); // NOT THERE YET

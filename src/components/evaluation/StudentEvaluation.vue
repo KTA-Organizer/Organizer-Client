@@ -70,6 +70,7 @@ export default {
             gradeKeys: gradeKeys,
             newEvaluation: {},
             evaluationsheet: {},
+            evaluationid: -1,
         };
     },
     methods: {
@@ -97,28 +98,34 @@ export default {
             const newEvaluationObj = {
                 evaluations: []
             }
+            for (const score of this.evaluationsheet.scores) {
+                newEvaluationObj.evaluations.push({
+                    name: score.name,
+                    grade: score.grade,
+                    criteriaid: score.criteriaid,
+                    creation: moment(score.creation).format("YYYY-MM-DD HH-mm-ss")
+                })
+            }
             for (const criteriaid in this.newEvaluation) {
                 const grade = this.newEvaluation[criteriaid];
                 const score = {
                     name: this.assignmentName,
                     grade,
                     criteriaid: +criteriaid,
-                    studentid: this.student.id,
-                    creatorId: this.currentUser.id
                 }
                 newEvaluationObj.evaluations.push(score);
             }
             console.log(newEvaluationObj);
-            await this.$http.saveEvaluation(newEvaluationObj);
+            await this.$http.saveEvaluation(this.evaluationid, newEvaluationObj);
         }
     },
     async created() {
-        const evaluationid = this.$route.params.evaluationid;
-        this.evaluationsheet = await this.$http.getEvaluationSheetById(evaluationid);
+        this.evaluationid = this.$route.params.evaluationid;
+        this.evaluationsheet = await this.$http.getEvaluationSheetById(this.evaluationid);
         console.log(this.evaluationsheet);
         this.student = this.evaluationsheet.student;
         this.module = await this.evaluationsheet.module;
-        // this.discipline = await this.$http.getDisciplineForStudent(studentId);
+        this.discipline = await this.evaluationsheet.discipline;
         this.evaluationsPerAssignment = this.evaluationsheet.scores.reduce((acc, evaluation, index) => {
             if (acc.get(evaluation.name)) {
                 acc.get(evaluation.name).push(evaluation);
