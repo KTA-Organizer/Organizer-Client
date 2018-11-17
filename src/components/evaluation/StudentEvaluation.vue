@@ -31,9 +31,12 @@
             </tr>
         </table>
     </v-layout>
-    <v-form class="mt-3" ref="form" lazy-validation v-if="isEditable">
-        <v-text-field v-model="assignmentName" label="Naam van de opdracht" required :rules="nameRules"></v-text-field>
-    </v-form>
+    <v-layout class="mt-3 xs-12">
+        <v-form class="xs-6" ref="form" lazy-validation v-if="isEditable">
+            <v-text-field v-model="assignmentName" label="Naam van de opdracht" required :rules="nameRules"></v-text-field>
+        </v-form>
+        <v-btn class="xs-6" color="primary" @click="createReport">Maak een rapport voor deze evaluatie</v-btn>
+    </v-layout>
     <v-layout row>
         <modulelist :module="module" :evaluating="isEditable" :evaluations="evaluationsPerAssignment" :newEvaluation="newEvaluation" v-on:graded="graded"></modulelist>
     </v-layout>
@@ -55,6 +58,7 @@ import {
 import {
     gradeKeys
 } from "../../constants/grades";
+import pdfMake from "pdfmake/build/pdfmake.min.js";
 
 export default {
     name: "StudentEvaluation",
@@ -117,6 +121,11 @@ export default {
             }
             console.log(newEvaluationObj);
             await this.$http.saveEvaluation(this.evaluationid, newEvaluationObj);
+        },
+        async createReport() {
+            const reportid = await this.$http.createReport(this.evaluationid);
+            const reportPDF = await this.$http.getReportPDF(reportid.reportid);
+            pdfMake.createPdf(reportPDF).open();
         }
     },
     async created() {

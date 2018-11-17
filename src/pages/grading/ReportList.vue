@@ -37,7 +37,6 @@
 import {
     mapGetters
 } from 'vuex';
-import pdfMake from "pdfmake/build/pdfmake.min.js";
 
 export default {
     name: "DisciplinesList",
@@ -78,11 +77,8 @@ export default {
         }
     },
     async created() {
-        // await this.getReports();
+        await this.getReports();
         const reportid = 1;
-        const pdfData = await this.$http.getReportPDF(reportid);
-        // pdfMake.createPdf(pdfData).open();
-        pdfMake.createPdf(pdfData).open();
     }
 };
 </script>

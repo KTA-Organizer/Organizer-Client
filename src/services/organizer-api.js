@@ -71,21 +71,26 @@ export const getDisciplines = () => processReq("/disciplines", {}, "get"); // OK
 export const getDisciplineForStudent = id =>
   processReq(`/disciplines/student/${id}`, {}, "get"); // OK
 
-  export const getReportPDF = id => processReq(`/reports/print/${id}`);
+export const getReportPDF = reportid =>
+  processReq(`/reports/pdf/${reportid}`);
 
 export const getReports = () => processReq(`/reports`);
 
 export const getReport = id => processReq(`/reports/${id}`);
 
 export const saveReportComments = (id, { generalComment, goalComments }) =>
-    processReq(`/reports/${id}`, {generalComment, goalComments}, "PUT");
+  processReq(`/reports/${id}`, { generalComment, goalComments }, "PUT");
+
+export const createReport = evaluationsheetid =>
+  processReq(`/reports`, { evaluationsheetid }, "post");
 
 export const getDiscipline = id => processReq(`/disciplines/${id}`); // OK
 
 export const getModulesForDiscipline = id =>
   processReq(`/modules`, { disciplineid: id }); // OK
 
-export const getStudentsForDiscipline = (disciplineid) => processReq('/users/', { role: "STUDENT", disciplineid }, "get"); // OK
+export const getStudentsForDiscipline = disciplineid =>
+  processReq("/users/", { role: "STUDENT", disciplineid }, "get"); // OK
 
 export const getEvalsForStudentInModule = (studentid, moduleid) =>
   processReq(`/evaluations/student/${studentid}/module/${moduleid}`, {}, "get"); // OK
@@ -96,7 +101,7 @@ export const getModulesForStudent = studId =>
 export const getModule = moduleId => processReq(`/modules/${moduleId}`); // OK
 
 export const saveEvaluation = (id, scores) =>
-  processReq(`/evaluations/${id}`, {scores: scores.evaluations}, "put"); // NOT THERE YET
+  processReq(`/evaluations/${id}`, { scores: scores.evaluations }, "put"); // NOT THERE YET
 
 export const getEvaluationSheetsForStudentInModule = (studentid, moduleid) =>
   processReq(`/evaluations`, { studentid, moduleid }); // NOT THERE YET
@@ -110,8 +115,8 @@ export const endEvaluation = evalId =>
 export const createNewEvaluation = (studentid, moduleid, startdate) =>
   processReq(`/evaluations`, { studentid, moduleid, startdate }, "post");
 
-export const createDiscipline = ( name) =>
-    processReq("/disciplines", { name }, "post"); // OK
+export const createDiscipline = name =>
+  processReq("/disciplines", { name }, "post"); // OK
 
 export const updateDiscipline = (opleidingId, name) =>
   processReq(`/disciplines/${opleidingId}`, { name }, "put"); // OK
@@ -153,13 +158,13 @@ export const setCriteriaInactive = criteriaid =>
   );
 
 export const updateDomain = (domainId, name) =>
-   processReq(
-     "/domains/" + domainId,
-     {
-       name
-     },
-     "put"
-);  
+  processReq(
+    "/domains/" + domainId,
+    {
+      name
+    },
+    "put"
+  );
 
 export const createGoal = (name, domainid) =>
   processReq(
@@ -171,14 +176,14 @@ export const createGoal = (name, domainid) =>
     "post"
   );
 
- export const updateGoal = (goalId, name) =>
-   processReq(
-     "/goals/" + goalId,
-     {
-       name
-     },
-     "put"
-   ); 
+export const updateGoal = (goalId, name) =>
+  processReq(
+    "/goals/" + goalId,
+    {
+      name
+    },
+    "put"
+  );
 
 export const createCriteria = (name, goalid) =>
   processReq(
@@ -191,32 +196,32 @@ export const createCriteria = (name, goalid) =>
     "post"
   );
 
- export const updateCriteria = (criteriaId, name) =>
-   processReq(
-     "/criteria/" + criteriaId,
-     {
-       name
-     },
-     "put"
-   ); 
+export const updateCriteria = (criteriaId, name) =>
+  processReq(
+    "/criteria/" + criteriaId,
+    {
+      name
+    },
+    "put"
+  );
 
-export const setDisciplineInactive = (opleidingId) =>
-    processReq(
-        `/disciplines/${opleidingId}/status`,
-        {
-            active: 0
-        },
-        "put"
-    ); // OK
+export const setDisciplineInactive = opleidingId =>
+  processReq(
+    `/disciplines/${opleidingId}/status`,
+    {
+      active: 0
+    },
+    "put"
+  ); // OK
 
-export const setDisciplineActive = (opleidingId) =>
-    processReq(
-        "/disciplines/" + opleidingId + "/status",
-        {
-            active: 1
-        },
-        "put"
-    ); // OK
+export const setDisciplineActive = opleidingId =>
+  processReq(
+    "/disciplines/" + opleidingId + "/status",
+    {
+      active: 1
+    },
+    "put"
+  ); // OK
 
 export const deleteModule = id => processReq(`/modules/${id}`, {}, "delete"); // OK
 
