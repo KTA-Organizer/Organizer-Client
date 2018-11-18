@@ -1,23 +1,24 @@
 <template>
-<v-container v-if="report.creation">
+<v-container v-if="loaded">
   <v-layout class="mb-4" row>
     <v-flex xs12 md4>
       <img class="" src="../../assets/Logos_CLW_KTA_ZWAAN.png">
       <table id="headerTable" cellspacing="0">
         <th>Info</th>
         <tr>
-          <td>Naam: <strong>{{report.student.lastname}}</strong></td>
+          <td>Naam: <strong>{{evaluationSheet.student.lastname}}</strong></td>
           <td>Periode: <strong>{{termStart}}</strong> - <strong>{{termEnd}}</strong></td>
         </tr>
         <tr>
-          <td>Voornaam: <strong>{{report.student.firstname}}</strong></td>
-          <td>Leerkracht: <strong>{{report.teacher.firstname}} {{report.teacher.firstname}}</strong></td>
+          <td>Voornaam: <strong>{{evaluationSheet.student.firstname}}</strong></td>
+          <td>Leerkracht: <strong>{{evaluationSheet.teacher.firstname}} {{evaluationSheet.teacher.firstname}}</strong></td>
         </tr>
       </table>
     </v-flex>
     <v-flex xs12 md6 fill-height>
       <v-layout column align-content-space-between justify-space-between>
-      <h1>Rapport module {{report.module.name}}</h1>
+      <h1>Rapport module: {{evaluationSheet.module.name}}</h1>
+      <h2>Opleiding: {{evaluationSheet.discipline.name}}</h2>
       <v-btn class="primary" v-if="!editMode" v-on:click="editComments">
         <v-icon>edit</v-icon> Opmerkingen Aanpassen
       </v-btn>
@@ -39,7 +40,7 @@
     </v-card-title>
     <v-card-text>
       <v-form>
-        <v-textarea placeholder="bv. Goed gewerkt" :readonly="!editMode" v-model="generalComment"></v-textarea>
+        <v-textarea placeholder="Nog geen commentaar gegeven." :readonly="!editMode" v-model="generalComment"></v-textarea>
       </v-form>
     </v-card-text>
   </v-card>
@@ -66,15 +67,19 @@ export default {
     generalComment: "",
     goalCommentsMap: {},
     report: {},
+    loaded: false,
     editMode: false
   }),
   computed: {
     ...mapGetters(["currentUser"]),
+    evaluationSheet() {
+      return this.report.evaluationSheet;
+    },
     termStart() {
-      return formatDate(this.report.termStart)
+      return formatDate(this.evaluationSheet.startdate);
     },
     termEnd() {
-      return formatDate(this.report.termEnd)
+      return formatDate(this.evaluationSheet.enddate);
     },
   },
   methods: {
@@ -85,6 +90,7 @@ export default {
       this.goalCommentsMap = this.report.goalComments.reduce((agg, val) => {
         return Object.assign(agg, { [val.goalid]: val.comment })
       }, {});
+      this.loaded = true;
     },
     editComments() {
       this.editMode = true;

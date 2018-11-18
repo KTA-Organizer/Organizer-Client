@@ -1,7 +1,6 @@
 <template>
 <v-layout column>
-  <!-- <h1 class="categorieTitle mb-4 text-xs-left">{{discipline}}</h1> -->
-  <v-flex class="mt-5" v-for="(domain) in report.module.domains" :value="domain.active" v-bind:key="domain.id">
+  <v-flex class="mt-5" v-for="(domain) in evaluationSheet.module.domains" :value="domain.active" v-bind:key="domain.id">
     <h3 class="text-xs-left mb-2">Domein: {{domain.name}}</h3>
     <v-data-table no-data-text="Geen doelstellingen beschikbaar" :headers="headers" hide-actions :items="domain.goals" class="elevation-1 mb-5">
       <template slot="headers" slot-scope="props">
@@ -64,6 +63,9 @@ export default {
     }
   },
   computed: {
+    evaluationSheet() {
+      return this.report.evaluationSheet;
+    },
     goalScores() {
       return this.report.goalAggregateScores.reduce((agg, val) => ({
         ...agg,
