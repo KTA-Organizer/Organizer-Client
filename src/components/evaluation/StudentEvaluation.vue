@@ -1,18 +1,28 @@
 <template>
 <v-container v-if="loaded">
   <evaluation-header :evaluationSheet="evaluationsheet">
-    <h1 class="text-xs-right">Evaluatiefiche opleiding {{discipline.name}}</h1>
-    <h1 class="text-xs-right">Module: {{module.name}}</h1>
+    <h1>Evaluatiefiche Module: {{module.name}}</h1>
+    <h2>Opleiding: {{discipline.name}}</h2>
   </evaluation-header>
-  <v-form class="mt-3" ref="form" lazy-validation v-if="isEditable">
-    <v-text-field v-model="assignmentName" label="Naam van de opdracht" required :rules="nameRules"></v-text-field>
-  </v-form>
-  <v-layout row>
-    <modulelist :module="module" :evaluating="isEditable" :evaluations="evaluationsPerAssignment" :newEvaluation="newEvaluation" v-on:graded="graded"></modulelist>
-  </v-layout>
-  <v-btn v-if="isEditable" color="primary" @click="saveEvaluation">
-    <v-icon>save</v-icon> Opslaan
-  </v-btn>
+
+  <v-card class="mb-4" v-if="isEditable">
+    <v-card-title>
+      <h2>Nieuwe opdracht toevoegen</h2>
+    </v-card-title>
+    <v-card-text>
+      <v-form class="mt-3" ref="form" lazy-validation>
+        <v-text-field v-model="assignmentName" label="Naam van de opdracht" required :rules="nameRules"></v-text-field>
+      </v-form>
+      <p>Voeg de punten per criteria hieronder in.</p>
+    </v-card-text>
+    <v-card-actions>
+      <v-btn v-if="isEditable" color="primary" @click="saveEvaluation">
+        <v-icon>save</v-icon> Opslaan
+      </v-btn>
+    </v-card-actions>
+  </v-card>
+
+  <modulelist :module="module" :evaluating="isEditable" :evaluations="evaluationsPerAssignment" :newEvaluation="newEvaluation" v-on:graded="graded"></modulelist>
 </v-container>
 </template>
 

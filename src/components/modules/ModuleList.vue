@@ -1,5 +1,5 @@
 <template>
-<v-container>
+<v-layout column>
   <v-card class="mb-4" v-for="(categorie) in module.domains" :value="categorie.active" v-bind:key="categorie.name">
     <v-card-title primary-title v-if="categorie.active">
       <h3 class="headline">{{ categorie.name }}</h3>
@@ -21,8 +21,12 @@
 
                   <!-- <v-spacer></v-spacer> -->
 
-                  <v-btn class="primary" v-if="evaluations" @click="createScoreDialog(evaluations, criteria.id)">
-                    <v-icon>remove_red_eye</v-icon> Bekijk scores
+                  <v-btn round class="primary" v-if="evaluations" @click="createScoreDialog(criteria.id)">
+                    <v-badge left color="green">
+                      <span slot="badge">{{evaluations.size}}</span>
+                      <span>scores</span>
+                    </v-badge>
+
                   </v-btn>
 
                   <!-- <v-spacer></v-spacer> -->
@@ -43,17 +47,20 @@
       <v-card-title>
         <h3>Scores</h3>
       </v-card-title>
-      <v-card-text>
+      <v-card-text v-if="!isEmptyEvalObj(selectedCriteriaScores)">
         <table class="scores">
           <tr>
             <th>Opdracht</th>
             <th>Score</th>
           </tr>
-          <tr v-for="(score, key) in scoreObject" v-bind:key="key">
+          <tr v-for="(score, key) in selectedCriteriaScores" v-bind:key="key">
             <td class="score"><strong>{{key}}</strong>:</td>
             <td class="score">{{score}}</td>
           </tr>
         </table>
+      </v-card-text>
+      <v-card-text v-else>
+        <p>Er zijn nog geen evaluaties toegevoegd.</p>
       </v-card-text>
       <v-card-actions>
         <v-btn color="primary" @click="showScores = false">
@@ -62,22 +69,26 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-</v-container>
+</v-layout>
 </template>
 
 <script>
 import * as grades from "../../constants/grades";
+import _ from "lodash";
 
 export default {
   name: "moduleList",
   props: ["module", "evaluating", "evaluations", "newEvaluation"],
   data() {
     return {
-      showScores: false,
-      scoreObject: {},
+      selectedCriteria: null,
+      showScores: false
     };
   },
   methods: {
+    isEmptyEvalObj(obj) {
+      return _.isEmpty(obj);
+    },
     getEvalForCriteria(assignment, id) {
       let score = "NI";
       const grade = assignment.find(x => x.criteriaid === id);
@@ -94,22 +105,20 @@ export default {
       console.log(this.newEvaluation);
       this.$emit("graded");
     },
-    createScoreDialog(evaluations, criteriaid) {
-      this.scoreObject = {};
-      evaluations.forEach((value, key) => {
-        let score = this.getEvalForCriteria(value, criteriaid);
-        this.scoreObject[key] = score;
-      })
-      console.log(this.scoreObject)
+    createScoreDialog(criteriaid) {
+      this.selectedCriteria = criteriaid;
       this.showScores = true;
-      // for (assignmentName in  Array.from(evaluations)) {
-      //     console.log(assignmentName, assignments);
-      //     // let x = this.getEvalForCriteria(assignments, criteriaid);
-      //     // console.log(x);
-      // }
     }
   },
   computed: {
+    selectedCriteriaScores() {
+      const scoreObject = {};
+      this.evaluations.forEach((value, key) => {
+        let score = this.getEvalForCriteria(value, this.selectedCriteria);
+        scoreObject[key] = score;
+      })
+      return scoreObject;
+    },
     getClass() {
       return this.evaluating ? "criteriaTextSm" : "criteriaText";
     }
