@@ -7,9 +7,9 @@
       </v-card-title>
       <v-card-text>
         <v-form ref="form" lazy-validation>
-          <v-select no-data-text="Geen data beschikbaar" label="Opleiding" v-model="discipline" :items="disciplineNames" v-on:input="filterStudents" :rules="defaultRule" required></v-select>
-          <v-select no-data-text="Geen data beschikbaar" label="Module" v-model="module" :items="moduleNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
-          <v-select no-data-text="Geen data beschikbaar" v-on:input="fetchEvaluations" v-if="forUser" label="Student" v-model="student" :items="filteredStudentNames" :disabled="!disciplineChosen" :rules="defaultRule" required></v-select>
+        <v-select no-data-text="Geen data beschikbaar" label="Opleiding" v-model="disciplineName" v-on:input="handleDisciplineChange" :items="disciplineNames" :rules="defaultRule" required></v-select>
+        <v-select no-data-text="Geen data beschikbaar" label="Module" :disabled="modules.length < 1" v-model="moduleName" :items="moduleNames" :rules="defaultRule" required></v-select>
+        <v-select no-data-text="Geen data beschikbaar" label="Student" v-on:input="fetchEvaluations" :disabled="students.length < 1" v-model="studentName" :items="studentNames" :rules="defaultRule" required></v-select>
         </v-form>
       </v-card-text>
     </v-card>
@@ -18,7 +18,7 @@
       <v-flex v-for="evaluation in evaluations" v-bind:key="evaluation.id">
         <v-card class="mt-2">
           <v-card-title>
-            <h3 class="headline">Student: {{student}}</h3>
+            <h3 class="headline">Student: {{studentName}}</h3>
           </v-card-title>
           <v-card-text>
             <p class="text-xs-left">Startdatum: {{formatDate(evaluation.startdate)}}</p>
@@ -78,20 +78,13 @@ export default {
   name: "EvaluationForm",
   data() {
     return {
-      module: undefined,
-      discipline: undefined,
+      moduleName: undefined,
+      disciplineName: undefined,
+      studentName: undefined,
       disciplines: [],
-      disciplineNames: [],
-      module: undefined,
       modules: [],
-      moduleNames: [],
-      student: undefined,
       students: [],
-      studentNames: [],
-      filteredStudentNames: [],
-      disciplineChosen: false,
       defaultRule: defaultRule,
-      forUser: true,
       newEvaluation: false,
       newEvaluationDate: new Date().toISOString().substr(0, 10),
       evaluations: [],
@@ -106,19 +99,13 @@ export default {
       }
       return moment(date).format('LL');
     },
-    async filterStudents() {
-      const selectedDiscipline = this.disciplines.find(
-        x => x.name === this.discipline
-      );
-      this.filteredStudentNames = this.students
-        .filter(x => {
-          return x.discipline.id === selectedDiscipline.id;
-        })
-        .map(x => `${x.firstname} ${x.lastname}`);
-      const modules = await this.$http.getModulesForDiscipline(selectedDiscipline.id);
-      this.modules = modules;
-      this.moduleNames = this.modules.map(x => x.name);
-      this.disciplineChosen = true;
+    async handleDisciplineChange() {
+      if (!this.discipline) {
+        return;
+      }
+      this.modules = await this.$http.getModulesForDiscipline(this.discipline.id);
+      const result = await this.$http.getStudentsForDiscipline(this.discipline.id);
+      this.students = result.items;
     },
     updateEvaluation(evaluationid) {
       if (this.$refs.form.validate()) {
@@ -131,52 +118,52 @@ export default {
       }
     },
     async createNewEvaluation() {
-      console.log("Hello new eval");
-      console.log(new Date(this.newEvaluationDate));
-      // console.log(this.selectedStudent)
-      const selectedStudent = this.students.find(
-        x => `${x.firstname} ${x.lastname}` === this.student
-      );
-      const selectedModule = this.modules.find(x => x.name === this.module);
       const date = new Date(this.newEvaluationDate);
-      console.log(selectedStudent.id, module.id, date);
-      const newEvaluationId = await this.$http.createNewEvaluation(selectedStudent.id, selectedModule.id, date);
+      console.log(this.student.id, this.module.id, date);
+      const newEvaluationId = await this.$http.createNewEvaluation(this.student.id, this.module.id, date);
+      console.log(newEvaluationId)
       this.$router.push(`/Evaluatie/${newEvaluationId.evaluationsheetid}`);
     },
     async fetchEvaluations() {
-      const selectedStudent = this.students.find(
-        x => `${x.firstname} ${x.lastname}` === this.student
-      );
-      const selectedModule = this.modules.find(x => x.name === this.module);
-      console.log(selectedStudent.id, selectedModule.id);
-      this.evaluations = await this.$http.getEvaluationSheetsForStudentInModule(selectedStudent.id, selectedModule.id);
-      console.log(this.evaluations);
+      this.evaluations = await this.$http.getEvaluationSheetsForStudentInModule(this.student.id, this.module.id);
     },
     async endEvaluation(id) {
       await this.$http.endEvaluation(this.evaluationToEnd);
       this.evaluationToEnd = undefined;
       this.showEndEvaluation = false;
       this.fetchEvaluations();
+    },
+    async fetchData() {
+      this.disciplines = await this.$http.getDisciplines();
     }
   },
   async created() {
-    const students = await this.$http.getStudents();
-    this.students = students.items;
-    this.students.map(async x => {
-      x.discipline = await this.$http.getDisciplineForStudent(x.id);
-    });
-    this.studentNames = this.students.map(x => `${x.firstname} ${x.lastname}`);
-    this.filteredStudentNames = this.studentNames;
-
-    const disciplines = await this.$http.getDisciplines();
-    this.disciplines = disciplines;
-    this.disciplineNames = this.disciplines.map(x => x.name);
+    await this.fetchData();
   },
   computed: {
-    selectedStudent: () => {
-      return this.students.find(
-        x => `${x.firstname} ${x.lastname}` === this.student
-      );
+    disciplineNames() {
+      return this.disciplines.map(x => x.name);
+    },
+    moduleNames() {
+      return this.modules.map(x => x.name);
+    },
+    filteredStudentNames() {
+      return this.studentNames.filter(x => x.discipline.id === selectedDiscipline.id);
+    },
+    studentNames() {
+      return this.students.map(x => `${x.firstname} ${x.lastname}`);
+    },
+    discipline() {
+      const index = this.disciplineNames.indexOf(this.disciplineName);
+      return this.disciplines[index];
+    },
+    module() {
+      const index = this.moduleNames.indexOf(this.moduleName);
+      return this.modules[index];
+    },
+    student() {
+      const index = this.studentNames.indexOf(this.studentName);
+      return this.students[index];
     }
   }
 };
