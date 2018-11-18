@@ -21,7 +21,7 @@
 
                   <!-- <v-spacer></v-spacer> -->
 
-                  <v-btn class="primary" @click="createScoreDialog(evaluations, criteria.id)">
+                  <v-btn class="primary" v-if="evaluations" @click="createScoreDialog(evaluations, criteria.id)">
                     <v-icon>remove_red_eye</v-icon> Bekijk scores
                   </v-btn>
 
