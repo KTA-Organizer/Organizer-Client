@@ -5,7 +5,7 @@
     </v-container>
     <v-container v-else>
         <v-layout row class="ml-5 mb-4">
-            <h1 class="text-xs-left">{{ module.name }}</h1>
+            <h1 class="text-xs-left">Module: {{ module.name }}</h1>
             <v-flex xs5 v-if="isAdmin">
                 <v-btn color="primary" @click="editMode = !editMode">
                     <v-icon dark>edit</v-icon>Edit

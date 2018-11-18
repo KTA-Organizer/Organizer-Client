@@ -4,11 +4,11 @@
     <v-flex xs4 offset-xs1>
     </v-flex>
     <v-flex xs1 offset-xs4 class="mr-5">
-      <router-link :to="{ name: 'Rapport Aanmaken' }">
+      <!-- <router-link :to="{ name: 'Rapport Aanmaken' }">
         <v-btn class="primary">
           <v-icon>add</v-icon> Rapport Aanmaken
         </v-btn>
-      </router-link>
+      </router-link> -->
     </v-flex>
   </v-layout>
   <v-layout row-wrap>

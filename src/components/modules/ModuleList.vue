@@ -1,9 +1,11 @@
 <template>
 <v-container>
-    <v-layout wrap class="" dark v-for="(categorie) in module.domains" :value="categorie.active" v-bind:key="categorie.name">
-        <h2 class="categorieTitle mb-4 text-xs-left" v-if="categorie.active">{{ categorie.name }}</h2>
-        <v-layout row class="abc" v-if="categorie.active">
-            <v-data-table hide-headers :items="categorie.goals" hide-actions class="elevation-1 criteriaTable mb-5">
+    <v-card class="mb-4" v-for="(categorie) in module.domains" :value="categorie.active" v-bind:key="categorie.name">
+        <v-card-title primary-title v-if="categorie.active">
+            <h3 class="headline">{{ categorie.name }}</h3>
+        </v-card-title>
+        <v-card-text v-if="categorie.active">
+            <v-data-table hide-headers :items="categorie.goals" hide-actions class="criteriaTable">
                 <template slot="items" slot-scope="props">
                     <tr v-if="props.item.active">
                         <th class="oneThirdWidth">{{ props.item.name }}</th>
@@ -16,13 +18,13 @@
                             </v-layout>
                             <template>
 
-                                <v-spacer></v-spacer>
+                                <!-- <v-spacer></v-spacer> -->
 
-                                <v-btn v-if="evaluating" class="primary" @click="createScoreDialog(evaluations, criteria.id)">
-                                    <v-icon>remove_red_eye</v-icon> Bekijk vorige scores
+                                <v-btn class="primary" @click="createScoreDialog(evaluations, criteria.id)">
+                                    <v-icon>remove_red_eye</v-icon> Bekijk scores
                                 </v-btn>
 
-                                <v-spacer></v-spacer>
+                                <!-- <v-spacer></v-spacer> -->
 
                                 <td v-if="evaluating" class="gradeBox">
                                     <gradeboxes :criteriaid="criteria.id" :newEvaluation="newEvaluation" v-on:graded="graded"></gradeboxes>
@@ -32,8 +34,8 @@
                     </tr>
                 </template>
             </v-data-table>
-        </v-layout>
-    </v-layout>
+        </v-card-text>
+    </v-card>
     <v-dialog width="500" v-model="showScores">
         <v-card>
             <v-card-title>
@@ -114,7 +116,7 @@ export default {
 </script>
 
 <style scoped>
-.abc {
+/* .abc {
     width: 100%;
 }
 
@@ -138,9 +140,11 @@ div.menu__content--autocomplete {
 .criteriaText {
     width: 80%;
 }
+*/
 
 .gradeBox {
-    max-width: 15%;
+    width: 15%;
+    min-width: 110px;
 }
 
 .scores.th {
@@ -149,7 +153,6 @@ div.menu__content--autocomplete {
 }
 
 .scores {
-    /* border: 1px solid black; */
     border-spacing: 0;
 }
 
