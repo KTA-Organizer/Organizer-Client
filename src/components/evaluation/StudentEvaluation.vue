@@ -49,7 +49,6 @@ export default {
     return {
       assignmentName: "",
       nameRules: nameRules,
-      evaluations: [],
       evaluationsPerAssignment: new Map(),
       gradeKeys: gradeKeys,
       newEvaluation: {},
@@ -59,7 +58,6 @@ export default {
   },
   methods: {
     graded() {
-      console.log("in evaluation", this.newEvaluation);
     },
     async saveEvaluation() {
       if (!this.$refs.form.validate()) {
@@ -71,36 +69,35 @@ export default {
         window.scrollTo(0, 0);
         return;
       }
-      const newEvaluationObj = {
-        evaluations: []
-      }
+      const newScores = this.evaluationsheet.scores.concat([]);
       for (const criteriaid in this.newEvaluation) {
         const grade = this.newEvaluation[criteriaid];
-        const score = {
+        newScores.push({
           name: this.assignmentName,
           grade,
           criteriaid: +criteriaid,
-          studentid: this.student.id,
-          creatorId: this.currentUser.id
-        }
-        newEvaluationObj.evaluations.push(score);
+        });
       }
-      console.log(newEvaluationObj);
-      await this.$http.saveEvaluation(newEvaluationObj);
+      await this.$http.saveEvaluation(this.evaluationsheet.id, newScores);
+      await this.fetchData();
+    },
+    async fetchData() {
+      this.loaded = false;
+      const evaluationid = this.$route.params.evaluationid;
+      this.evaluationsheet = await this.$http.getEvaluationSheetById(evaluationid);
+      this.evaluationsPerAssignment = this.evaluationsheet.scores.reduce((acc, evaluation, index) => {
+        if (acc.get(evaluation.name)) {
+          acc.get(evaluation.name).push(evaluation);
+        } else {
+          acc.set(evaluation.name, [evaluation]);
+        }
+        return acc;
+      }, new Map());
+      this.loaded = true;
     }
   },
   async created() {
-    const evaluationid = this.$route.params.evaluationid;
-    this.evaluationsheet = await this.$http.getEvaluationSheetById(evaluationid);
-    this.evaluationsPerAssignment = this.evaluationsheet.scores.reduce((acc, evaluation, index) => {
-      if (acc.get(evaluation.name)) {
-        acc.get(evaluation.name).push(evaluation);
-      } else {
-        acc.set(evaluation.name, [evaluation]);
-      }
-      return acc;
-    }, new Map());
-    this.loaded = true;
+    await this.fetchData();
   },
   computed: {
     ...mapGetters(["currentUser"]),
