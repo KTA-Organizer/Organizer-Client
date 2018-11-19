@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     isEmptyEvalObj(obj) {
-      return _.isEmpty(obj);
+      return !obj || _.isEmpty(obj);
     },
     getEvalForCriteria(assignment, id) {
       let score = "NI";
@@ -113,6 +113,9 @@ export default {
   computed: {
     selectedCriteriaScores() {
       const scoreObject = {};
+      if (!this.evaluations) {
+        return;
+      }
       this.evaluations.forEach((value, key) => {
         let score = this.getEvalForCriteria(value, this.selectedCriteria);
         scoreObject[key] = score;
