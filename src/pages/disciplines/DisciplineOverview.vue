@@ -2,37 +2,50 @@
 <main>
   <v-layout column class="ml-5 mb-3">
     <h1 class="text-xs-left">{{ discipline.name }}</h1>
-    <v-layout row v-if="isAdmin">
-      <v-text-field :name="discipline.name" label="Naam van de opleiding" v-model="discipline.name" single-line></v-text-field>
-      <v-flex>
-        <v-btn color="success" :loading="loading" @click.native="saveOpleiding" :disabled="loading">
-          Opslaan
-          <span slot="loader" class="custom-loader">
-                    <v-icon light>cached</v-icon>
-                    </span>
-        </v-btn>
-        <v-btn class="primary" @click="newModule=true">+ Nieuwe Module</v-btn>
-
-      </v-flex>
-    </v-layout>
   </v-layout>
-  <v-data-table v-bind:headers="headers" :items="modules" hide-actions class="elevation-1">
-    <template slot="items" slot-scope="props">
-      <tr v-if="props.item.active">
-        <td class="text-xs-left">{{ props.item.name }}</td>
-        <td class="text-xs-right">
-          <router-link :to="{ name: 'Module', params: { moduleid: props.item.id }}" style="text-decoration: none">
-            <v-btn color="primary" class="ma-1" dark>
-              <v-icon dark>remove_red_eye</v-icon>
-            </v-btn>
-          </router-link>
-          <v-btn color="error" class="ma-1" dark @click="removeModule(modules, props.item)" v-if="isAdmin">
-            <v-icon dark>delete</v-icon>
-          </v-btn>
-        </td>
-      </tr>
-    </template>
-  </v-data-table>
+  <v-card v-if="isAdmin" class="mb-3">
+    <v-card-title>
+      <h3 class="headline">Naam opleiding wijzigen</h3>
+    </v-card-title>
+    <v-card-text>
+      <v-text-field :name="discipline.name" label="Naam van de opleiding" v-model="discipline.name" single-line></v-text-field>
+      <v-btn color="success" :loading="loading" @click.native="saveOpleiding" :disabled="loading">
+        <v-icon>
+          save
+        </v-icon>
+        Opslaan
+      </v-btn>
+      <v-btn class="primary" @click="newModule=true">
+        <v-icon>
+          add
+        </v-icon>
+        Nieuwe Module
+      </v-btn>
+    </v-card-text>
+  </v-card>
+  <v-layout row wrap>
+    <v-flex>
+      <v-data-table v-bind:headers="headers" :items="modules" hide-actions class="elevation-1">
+        <template slot="items" slot-scope="props">
+          <tr v-if="props.item.active">
+            <td class="text-xs-left">{{ props.item.name }}</td>
+            <td class="text-xs-right">
+              <router-link :to="{ name: 'Module', params: { moduleid: props.item.id }}" style="text-decoration: none">
+                <v-btn round color="primary" class="ma-1" dark>
+                  <v-icon dark>remove_red_eye</v-icon>
+                  bekijken
+                </v-btn>
+              </router-link>
+              <v-btn round color="error" class="ma-1" dark @click="removeModule(modules, props.item)" v-if="isAdmin">
+                <v-icon dark>delete</v-icon>
+                verwijderen
+              </v-btn>
+            </td>
+          </tr>
+        </template>
+      </v-data-table>
+    </v-flex>
+  </v-layout>
   <newmoduledialog v-bind:model.sync="newModule" :disciplineId="discipline.id" v-on:confirm="getModules"></newmoduledialog>
 </main>
 </template>
@@ -48,11 +61,48 @@ export default {
       headers: [{
           text: "Module",
           align: "left",
-          value: "module"
+          value: "module",
+          sortable: false
         },
         {
           text: "",
-          value: "actionbtns"
+          value: "actionbtns",
+          sortable: false
+        }
+      ],
+      studentHeaders: [{
+          text: "Naam",
+          align: "left",
+          value: "naam",
+          sortable: true
+        },
+        {
+          text: "Rol",
+          align: "left",
+          value: "role",
+          sortable: true
+        },
+        {
+          text: "Email",
+          align: "left",
+          value: "email",
+          sortable: true
+        },
+        {
+          text: "Geslacht",
+          align: "left",
+          value: "gender",
+          sortable: true
+        },
+        {
+          text: "Status",
+          align: "left",
+          value: "status",
+          sortable: true
+        },
+        {
+          text: "Datum aangemaakt",
+          value: "accountCreatedTimestamp"
         }
       ],
       snackbar: false,
@@ -88,8 +138,13 @@ export default {
   methods: {
     async getModules() {
       const disciplineId = this.$route.params.disciplineid;
-      this.discipline = await this.$http.getDiscipline(disciplineId);
-      const modules = await this.$http.getModulesForDiscipline(disciplineId);
+
+      const [discipline, modules] = await Promise.all([
+        this.$http.getDiscipline(disciplineId),
+        this.$http.getModulesForDiscipline(disciplineId),
+      ]);
+
+      this.discipline = discipline;
       modules.forEach(function (module, i) {
         module["indexes"] = [i + 1];
       });
