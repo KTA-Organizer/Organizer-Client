@@ -3,7 +3,7 @@
     <v-card-title>
         <v-layout align-center justify-space-between row>
             <h1>{{user.firstname}} {{user.lastname}}</h1>
-            <div>
+            <div v-if="isAdmin">
                 <v-btn v-if="user.status === 'ACTIVE'" color="error" class="ma-1" dark @click="$emit('update:delete', true)">
                     <v-icon dark>delete</v-icon>
                     Deactiveer
@@ -45,10 +45,12 @@
 <script>
 import * as constants from "../../constants/user";
 import * as rules from "../../constants/rules";
+import { mapGetters } from 'vuex';
 
 export default {
     name: "UserDetailCard",
     props: ["user", "delete", "edit", "activate", "userFields"],
+    computed: mapGetters(["isAdmin"]),
     data() {
         return {
             firstnameRules: rules.firstname,

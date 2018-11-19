@@ -3,7 +3,7 @@
     <v-card-title>
         <v-layout align-center justify-space-between row>
             <h2>Opleiding</h2>
-            <v-btn color="primary" class="ma-1" dark @click="$emit('update:model', !model)">
+            <v-btn v-if="isAdmin" color="primary" class="ma-1" dark @click="$emit('update:model', !model)">
                 <v-icon dark>edit</v-icon>
                 {{!model ? "Aanpassen" : "stop aanpassen"}}
             </v-btn>
@@ -20,6 +20,7 @@
 
 <script>
 import * as rules from "../../constants/rules";
+import { mapGetters } from 'vuex';
 
 export default {
     name: "ChooseDiscipline",
@@ -30,6 +31,7 @@ export default {
             selected: undefined
         };
     },
+    computed: mapGetters(["isAdmin"]),
     methods: {
         updateDiscipline() {
             this.$emit('update:discipline', this.selected);
