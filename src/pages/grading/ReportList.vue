@@ -12,8 +12,8 @@
     </v-flex>
   </v-layout>
   <v-layout row-wrap>
-    <v-flex class="mt-5">
-      <v-data-table v-bind:headers="headers" :items="reports" hide-actions class="elevation-1">
+    <v-flex class="mt-3">
+      <v-data-table disable-initial-sort v-bind:headers="headers" :items="reports" :pagination.sync="pagination" :total-items="totalReports" :loading="loading" class="elevation-1">
         <template slot="items" slot-scope="props">
           <tr>
             <td class="text-xs-left">{{ props.item.student.firstname + " " + props.item.student.lastname }}</td>
@@ -21,7 +21,7 @@
             <td class="text-xs-left">{{ props.item.discipline.name }}</td>
             <td class="text-xs-left">{{ props.item.module.name }}</td>
             <td class="text-xs-right">
-              <v-btn color="primary" class="ma-1 right" dark :to="{ name: 'Rapport', params: { reportid: props.item.id }}">
+              <v-btn round color="primary" class="ma-1 right" dark :to="{ name: 'Rapport', params: { reportid: props.item.id }}">
                 <v-icon dark>remove_red_eye</v-icon> Bekijken
               </v-btn>
             </td>
@@ -35,57 +35,78 @@
 
 <script>
 import {
-    mapGetters
+  mapGetters
 } from 'vuex';
 
 export default {
-    name: "DisciplinesList",
-    data() {
-        return {
-            headers: [{
-                    text: "Student",
-                    align: "left",
-                    value: "student"
-                },
-                {
-                    text: "Leerkracht",
-                    align: "left",
-                    value: "teacher"
-                },
-                {
-                    text: "Opleiding",
-                    align: "left",
-                    value: "discipline"
-                },
-                {
-                    text: "Module",
-                    align: "left",
-                    value: "module"
-                },
-                {
-                    text: "",
-                    value: "actionbtns"
-                }
-            ],
-            reports: [],
-        };
-    },
-    computed: mapGetters(["isAdmin"]),
-    methods: {
-        async getReports() {
-            this.reports = await this.$http.getReports();
+  name: "DisciplinesList",
+  data() {
+    return {
+      headers: [{
+          text: "Student",
+          align: "left",
+          value: "student",
+          sortable: false
+        },
+        {
+          text: "Leerkracht",
+          align: "left",
+          value: "teacher",
+          sortable: false
+        },
+        {
+          text: "Opleiding",
+          align: "left",
+          value: "discipline",
+          sortable: false
+        },
+        {
+          text: "Module",
+          align: "left",
+          value: "module",
+          sortable: false
+        },
+        {
+          text: "",
+          value: "actionbtns",
+          sortable: false
         }
-    },
-    async created() {
-        await this.getReports();
-        const reportid = 1;
+      ],
+      reports: [],
+      totalReports: 0,
+      loading: true,
+      pagination: {},
+    };
+  },
+  watch: {
+    pagination: {
+      async handler() {
+        await this.paginateReports();
+      },
+      deep: true
     }
+  },
+  async mounted() {
+    await this.paginateReports();
+  },
+  computed: mapGetters(["isAdmin"]),
+  methods: {
+    async paginateReports() {
+      this.loading = true;
+      const { sortBy, descending, page, rowsPerPage } = this.pagination;
+      const result = await this.$http.paginateReports(page, rowsPerPage, {});
+      this.reports = result.items
+      this.totalReports = result.total
+      this.loading = false;
+    }
+  },
+  async created() {}
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
 div.menu__content--autocomplete {
-    top: 165px !important;
+  top: 165px !important;
 }
 </style>

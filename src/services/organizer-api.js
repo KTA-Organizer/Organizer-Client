@@ -74,7 +74,7 @@ export const getDisciplineForStudent = id =>
 export const getReportPDF = reportid =>
   processReq(`/reports/pdf/${reportid}`);
 
-export const getReports = () => processReq(`/reports`);
+export const paginateReports = (page, perPage, filters = {}) => processReq(`/reports`, { page, perPage, ...filters });
 
 export const getReport = id => processReq(`/reports/${id}`);
 
