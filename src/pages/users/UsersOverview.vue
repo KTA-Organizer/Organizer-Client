@@ -12,7 +12,8 @@
             </router-link>
         </v-flex>
     </v-layout>
-    <v-layout row wrap>
+    <v-card>
+        <v-card-text>
         <v-layout row wrap>
             <v-flex xs12 sm6 md3>
                 <v-layout>
@@ -47,9 +48,8 @@
                 </v-layout>
             </v-flex>
         </v-layout>
-        <v-flex xs1 offset-xs4 class="mr-5">
-        </v-flex>
-    </v-layout>
+        </v-card-text>
+    </v-card>
     <v-layout row wrap>
 
         <userdetail :headers="headers" :users="filteredGebruikers"></userdetail>
