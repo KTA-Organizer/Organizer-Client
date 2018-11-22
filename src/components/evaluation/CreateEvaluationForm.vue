@@ -126,12 +126,13 @@ export default {
     },
     async fetchEvaluations() {
       this.evaluations = await this.$http.getEvaluationSheetsForStudentInModule(this.student.id, this.module.id);
+      console.log(this.evaluations);
     },
     async endEvaluation(id) {
       await this.$http.endEvaluation(this.evaluationToEnd);
       this.evaluationToEnd = undefined;
       this.showEndEvaluation = false;
-      this.fetchEvaluations();
+      await this.fetchEvaluations();
     },
     async fetchData() {
       this.disciplines = await this.$http.getDisciplines();
@@ -148,7 +149,8 @@ export default {
       return this.modules.map(x => x.name);
     },
     filteredStudentNames() {
-      return this.studentNames.filter(x => x.discipline.id === selectedDiscipline.id);
+      console.log(this.studentNames);
+      return this.studentNames.filter(x => x.discipline.id === this.selectedDiscipline.id);
     },
     studentNames() {
       return this.students.map(x => `${x.firstname} ${x.lastname}`);

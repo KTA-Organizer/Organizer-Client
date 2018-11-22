@@ -132,7 +132,7 @@ const router = new Router({
                     component: Dashboard
                 },
                 {
-                    path: "/rapport",
+                    path: "/Rapport",
                     component: Reports,
                     props: true,
                     children: [
