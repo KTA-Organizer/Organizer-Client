@@ -38,7 +38,7 @@ export default {
             await this.$http.createDomain(this.nameNewDomain, this.moduleId);
             this.nameNewDomain= "";
             this.$emit('confirm');
-            this.$emit('update:model', !this.model);
+            this.$emit('update:model', false);
         }
     },
     props: ["new", "confirm", "model", "moduleId"]

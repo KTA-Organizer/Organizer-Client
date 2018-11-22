@@ -38,7 +38,7 @@ export default {
             await this.$http.createModule(this.nameNewModule, this.disciplineId);
             this.nameNewModule= "";
             this.$emit('confirm');
-            this.$emit('update:model', !this.model);
+            this.$emit('update:model', false);
         }
     },
     props: ["new", "confirm", "model", "disciplineId"]

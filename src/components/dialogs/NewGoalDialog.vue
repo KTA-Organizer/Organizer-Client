@@ -48,7 +48,7 @@ export default {
             await this.$http.createGoal(this.nameNewGoal, selectedDomainId);
             this.nameNewGoal = "";
             this.$emit('confirm');
-            this.$emit('update:model', !this.model);
+            this.$emit('update:model', false);
         },
         refreshDomains(){
             var self = this;
