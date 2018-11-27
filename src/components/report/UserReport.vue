@@ -12,8 +12,8 @@
         <v-btn class="primary" v-if="editMode" v-on:click="saveComments">
             <v-icon>save</v-icon> Opmerkingen Opslaan
         </v-btn>
-        <v-btn class="secondary" v-on:click="savePDF">
-            <v-icon>save</v-icon> Rapport opslaan als pdf
+        <v-btn class="secondary" v-on:click="openPDF">
+            <v-icon>print</v-icon> Rapport afprinten / opslaan
         </v-btn>
     </evaluation-header>
     <v-card>
@@ -91,16 +91,12 @@ export default {
         goalComments
       });
     },
-    async savePDF() {
-      console.log(this.reportid);
+    async openPDF() {
+      const win = window.open('', '_blank');
       const pdfData = await this.$http.getReportPDF(this.reportid);
       pdfMake
         .createPdf(pdfData)
-        .download(
-          `report_${this.report.evaluationSheet.student.firstname}-${
-            this.report.evaluationSheet.student.lastname
-          }_${moment(new Date()).format("DD-MM-YYYY")}`
-        );
+        .open({}, win);
     }
   },
   async created() {
