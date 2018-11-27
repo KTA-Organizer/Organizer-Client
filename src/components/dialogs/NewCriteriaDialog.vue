@@ -55,14 +55,11 @@ export default {
             await this.$http.createCriteria(this.nameNewCriteria, selectedGoalId);
             this.nameNewCriteria = "";
             this.$emit('confirm');
-            this.$emit('update:model', !this.model);
+            this.$emit('update:model', false);
         },
         changedDomain(){
-            console.log("halloooo");
-            console.log(this.selectedDomain);
             this.goals = [];
             const domain = this.domains.filter(x => x.name === this.selectedDomain)[0];
-            console.log(domain);
             domain.goals.forEach(goal => {
                 this.goals.push(goal);
             })

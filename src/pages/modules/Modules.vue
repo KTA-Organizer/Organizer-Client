@@ -52,7 +52,7 @@ export default {
             module: null,
             currentUserId: this.$store.getters.currentUser.id,
             editMode: false,
-            insertPossibilities: ["Categorie", "Doelstelling", "Criteria"],
+            insertPossibilities: ["Domein", "Doelstelling", "Criteria"],
             addingDomain: false,
             addingGoal: false,
             addingCriteria: false,
@@ -76,7 +76,7 @@ export default {
         },
         showCorrectAddDialog(choice){
             switch(choice){
-                case "Categorie":
+                case "Domein":
                     this.addingDomain = true;
                     break;
                 case "Doelstelling":

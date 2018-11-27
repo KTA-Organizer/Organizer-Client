@@ -36,7 +36,7 @@ export default {
             await this.$http.createDiscipline(this.nameNewDiscipline);
             this.nameNewDiscipline= "";
             this.$emit('confirm');
-            this.$emit('update:model', !this.model);
+            this.$emit('update:model', false);
         }
     },
     props: ["new", "confirm", "model"]
