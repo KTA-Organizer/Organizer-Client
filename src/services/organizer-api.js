@@ -71,10 +71,10 @@ export const getDisciplines = () => processReq("/disciplines", {}, "get"); // OK
 export const getDisciplineForStudent = id =>
   processReq(`/disciplines/student/${id}`, {}, "get"); // OK
 
-export const getReportPDF = reportid =>
-  processReq(`/reports/pdf/${reportid}`);
+export const getReportPDF = reportid => processReq(`/reports/pdf/${reportid}`);
 
-export const paginateReports = (page, perPage, filters = {}) => processReq(`/reports`, { page, perPage, ...filters });
+export const paginateReports = (page, perPage, filters = {}) =>
+  processReq(`/reports`, { page, perPage, ...filters });
 
 export const getReport = id => processReq(`/reports/${id}`);
 
@@ -92,9 +92,6 @@ export const getModulesForDiscipline = id =>
 export const getStudentsForDiscipline = disciplineid =>
   processReq("/users/", { role: "STUDENT", disciplineid }, "get"); // OK
 
-export const getEvalsForStudentInModule = (studentid, moduleid) =>
-  processReq(`/evaluations/student/${studentid}/module/${moduleid}`, {}, "get"); // OK
-
 export const getModulesForStudent = studId =>
   processReq(`/modules/${studId}/student`); // ??
 
@@ -104,7 +101,7 @@ export const saveEvaluation = (id, scores) =>
   processReq(`/evaluations/${id}`, { scores }, "put"); // NOT THERE YET
 
 export const getEvaluationSheetsForStudentInModule = (studentid, moduleid) =>
-  processReq(`/evaluations`, { studentid, moduleid }); // NOT THERE YET
+  processReq(`/evaluations`, { studentid, moduleid }); // OK
 
 export const getEvaluationSheetById = evalId =>
   processReq(`/evaluations/${evalId}`);

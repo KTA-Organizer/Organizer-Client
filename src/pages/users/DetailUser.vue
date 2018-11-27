@@ -5,6 +5,11 @@
     </v-flex>
     <v-flex xs12 md6 v-if="user.roles && user.roles.indexOf('STUDENT') > -1">
         <choosediscipline v-on:confirm="updateDiscipline" v-bind:model.sync="editOpleidingMode" v-bind:discipline.sync="opleiding" :items="opleidingnames"></choosediscipline>
+    </v-flex>
+    <v-flex xs12 md6>
+        <list-user-evaluation class="mt-4" :userid="user.id"></list-user-evaluation>
+    </v-flex>
+    <v-flex xs12 md6>
         <list-user-evaluation class="mt-4" :userid="user.id"></list-user-evaluation>
     </v-flex>
     <confirmdialog v-bind:model.sync="deleteDialog" :name="user.firstname + ' ' + user.lastname" :action="'verwijderen'" v-on:confirm="deleteUser(user.id)"></confirmdialog>
