@@ -21,7 +21,10 @@
             <td class="text-xs-left">{{ props.item.discipline.name }}</td>
             <td class="text-xs-left">{{ props.item.module.name }}</td>
             <td class="text-xs-right">
-              <v-btn round color="primary" class="ma-1 right" dark :to="{ name: 'Rapport', params: { reportid: props.item.id }}">
+              <v-btn round color="green" class="ma-1" dark v-on:click="openPDF(props.item.id)">
+                <v-icon dark>print</v-icon> print
+              </v-btn>
+              <v-btn round color="primary" class="ma-1" dark :to="{ name: 'Rapport', params: { reportid: props.item.id }}">
                 <v-icon dark>remove_red_eye</v-icon> Bekijken
               </v-btn>
             </td>
@@ -37,6 +40,7 @@
 import {
   mapGetters
 } from 'vuex';
+import pdfMake from "pdfmake/build/pdfmake.min.js";
 
 export default {
   name: "DisciplinesList",
@@ -98,6 +102,13 @@ export default {
       this.reports = result.items
       this.totalReports = result.total
       this.loading = false;
+    },
+    async openPDF(reportid) {
+      const win = window.open('', '_blank');
+      const pdfData = await this.$http.getReportPDF(reportid);
+      pdfMake
+        .createPdf(pdfData)
+        .open({}, win);
     }
   },
   async created() {}
