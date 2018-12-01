@@ -97,6 +97,7 @@ export default {
             if (!selectedOpleiding) {
                 throw new Error("Deze opleiding bestaat niet.");
             }
+            this.editOpleidingMode = false;
             await this.$http.assignDisciplineToUser(
                 selectedOpleiding.id,
                 this.user.id

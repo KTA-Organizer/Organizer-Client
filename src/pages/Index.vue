@@ -1,6 +1,6 @@
 <template>
 <v-app>
-  <v-navigation-drawer persistent v-model="drawer" app v-if="isLoggedIn" :permanent="true" :disable-resize-watcher="true">
+  <v-navigation-drawer persistent v-model="drawer" app v-if="isLoggedIn && !isStudent" :permanent="true" :disable-resize-watcher="true">
     <v-toolbar flat center height="150vh">
       <img class="" src="../assets/CLW_Logo.png" height="100%" >
     </v-toolbar>
@@ -59,13 +59,13 @@ export default {
   name: "Index",
   data: () => ({
     drawer: false,
-    navigation: ["Dashboard", "Evaluatie", "Rapport", "Opleidingen", "Afdrukken"],
+    navigation: ["Dashboard", "Evaluatie", "Rapport", "Opleidingen"],
     fav: true,
     menu: false,
     message: false,
     hints: true
   }),
-  computed: mapGetters(["isLoggedIn", "currentUser"]),
+  computed: mapGetters(["isLoggedIn", "currentUser", "isStudent"]),
   methods: {
     route(path) {
       this.$router.push(`/${path}`);

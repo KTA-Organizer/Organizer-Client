@@ -3,6 +3,9 @@
   <evaluation-header :evaluationSheet="evaluationsheet">
     <h1>Evaluatiefiche Module: {{module.name}}</h1>
     <h2>Opleiding: {{discipline.name}}</h2>
+    <v-btn class="success" v-on:click="createReport">
+      <v-icon>assignment</v-icon> Rapport genereren
+    </v-btn>
   </evaluation-header>
 
   <v-card class="mb-4" v-if="isEditable">
@@ -57,8 +60,7 @@ export default {
     };
   },
   methods: {
-    graded() {
-    },
+    graded() {},
     async saveEvaluation() {
       if (!this.$refs.form.validate()) {
         window.scrollTo(0, 0);
@@ -94,6 +96,12 @@ export default {
         return acc;
       }, new Map());
       this.loaded = true;
+    },
+    async createReport() {
+      const {
+        reportid
+      } = await this.$http.createReport(this.evaluationsheet.id);
+      this.$router.push(`/rapport/${reportid}`);
     }
   },
   async created() {

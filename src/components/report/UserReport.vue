@@ -3,6 +3,8 @@
     <evaluation-header :evaluationSheet="evaluationSheet">
         <h1>Rapport module: {{evaluationSheet.module.name}}</h1>
         <h2>Opleiding: {{evaluationSheet.discipline.name}}</h2>
+
+        <div v-if="!isStudent">
         <v-btn class="primary" v-if="!editMode" v-on:click="editComments">
             <v-icon>edit</v-icon> Opmerkingen Aanpassen
         </v-btn>
@@ -12,12 +14,13 @@
         <v-btn class="primary" v-if="editMode" v-on:click="saveComments">
             <v-icon>save</v-icon> Opmerkingen Opslaan
         </v-btn>
-        <v-btn class="success" :disabled="report.open" v-on:click="openReport">
+        <v-btn class="success" :disabled="!!report.open" v-on:click="openReport">
             <v-icon>face</v-icon> Openstellen voor student
         </v-btn>
         <v-btn class="secondary" v-on:click="openPDF">
             <v-icon>print</v-icon> Rapport afprinten
         </v-btn>
+        </div>
     </evaluation-header>
     <v-card>
         <v-card-title>
@@ -56,7 +59,7 @@ export default {
     reportid: -1
   }),
   computed: {
-    ...mapGetters(["currentUser"]),
+    ...mapGetters(["currentUser", "isStudent"]),
     evaluationSheet() {
       return this.report.evaluationSheet;
     }
@@ -102,8 +105,8 @@ export default {
         .open({}, win);
     },
     async openReport() {
-      await this.$http.openReport(this.reportid);
       this.report.open = true;
+      await this.$http.openReport(this.reportid);
     }
   },
   async created() {
