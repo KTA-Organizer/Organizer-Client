@@ -81,6 +81,9 @@ export const getReport = id => processReq(`/reports/${id}`);
 export const saveReportComments = (id, { generalComment, goalComments }) =>
   processReq(`/reports/${id}`, { generalComment, goalComments }, "PUT");
 
+export const openReport = (id) =>
+  processReq(`/reports/${id}/open`, { }, "POST");
+
 export const createReport = evaluationsheetid =>
   processReq(`/reports`, { evaluationsheetid }, "post");
 

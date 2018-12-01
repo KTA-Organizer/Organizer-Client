@@ -12,8 +12,11 @@
         <v-btn class="primary" v-if="editMode" v-on:click="saveComments">
             <v-icon>save</v-icon> Opmerkingen Opslaan
         </v-btn>
+        <v-btn class="success" :disabled="report.open" v-on:click="openReport">
+            <v-icon>face</v-icon> Openstellen voor student
+        </v-btn>
         <v-btn class="secondary" v-on:click="openPDF">
-            <v-icon>print</v-icon> Rapport afprinten / opslaan
+            <v-icon>print</v-icon> Rapport afprinten
         </v-btn>
     </evaluation-header>
     <v-card>
@@ -97,6 +100,10 @@ export default {
       pdfMake
         .createPdf(pdfData)
         .open({}, win);
+    },
+    async openReport() {
+      await this.$http.openReport(this.reportid);
+      this.report.open = true;
     }
   },
   async created() {

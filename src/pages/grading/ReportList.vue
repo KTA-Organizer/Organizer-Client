@@ -20,6 +20,7 @@
             <td class="text-xs-left">{{ props.item.teacher.firstname + " " + props.item.teacher.lastname }}</td>
             <td class="text-xs-left">{{ props.item.discipline.name }}</td>
             <td class="text-xs-left">{{ props.item.module.name }}</td>
+            <td class="text-xs-left">{{ props.item.open ? "Open" : "Gesloten" }}</td>
             <td class="text-xs-right">
               <v-btn round color="green" class="ma-1" dark v-on:click="openPDF(props.item.id)">
                 <v-icon dark>print</v-icon> print
@@ -68,6 +69,12 @@ export default {
           text: "Module",
           align: "left",
           value: "module",
+          sortable: false
+        },
+        {
+          text: "Status",
+          align: "left",
+          value: "open",
           sortable: false
         },
         {
