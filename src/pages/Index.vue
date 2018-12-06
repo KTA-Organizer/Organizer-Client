@@ -14,12 +14,12 @@
       </v-list>
   </v-navigation-drawer>
   <v-toolbar color="indigo" dark fixed app v-if="isLoggedIn">
-    <!-- <v-icon large color="white" @click.stop="drawer = !drawer">{{ drawer? 'close':'menu' }}</v-icon> -->
+    <!-- <v-icon large color="white" @click.stop="drawer = !drawer">{{ drawer? 'close':'menu' }}</v-icon>&nbsp; -->
     <v-toolbar-title>{{$route.name}}</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-menu :close-on-content-click="false" v-model="menu">
       <v-btn color="white" flat slot="activator">
-        <v-icon>account_circle</v-icon>
+        <v-icon>account_circle</v-icon>&nbsp;
         mijn gebruiker
       </v-btn>
       <v-card>

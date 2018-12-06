@@ -23,7 +23,7 @@
             <v-card>
                 <v-layout reverse row>
                     <v-btn v-if="isAdmin" to="/melding/toevoegen" dark hover color="primary">
-                        <v-icon>add</v-icon>
+                        <v-icon>add</v-icon>&nbsp;
                         melding maken
                     </v-btn>
                 </v-layout>

@@ -7,7 +7,7 @@
         <v-flex :align-end="true">
             <router-link to="Gebruikers/Toevoegen" style="text-decoration: none">
                 <v-btn fab dark color="red">
-                    <v-icon>person_add</v-icon>
+                    <v-icon>person_add</v-icon>&nbsp;
                 </v-btn>
             </router-link>
         </v-flex>
@@ -16,35 +16,23 @@
         <v-card-text>
         <v-layout row wrap>
             <v-flex xs12 sm6 md3>
-                <v-layout>
-                    <v-text-field autofocus="autofocus" type="text" placeholder="Filter op naam" v-model="nameFilter" v-on:input="applyFilters()"></v-text-field>
-                    <v-btn flat icon v-on:click="clearNameFilter">
-                        <v-icon>clear</v-icon>
-                    </v-btn>
+                <v-layout mr-2>
+                    <v-text-field clearable :clear-icon-cb="clearNameFilter" autofocus="autofocus" type="text" placeholder="Filter op naam" v-model="nameFilter" v-on:input="applyFilters()"></v-text-field>
                 </v-layout>
             </v-flex>
             <v-flex xs12 sm6 md3>
-                <v-layout>
-                    <v-select no-data-text="Geen data beschikbaar" :items="roles" v-model="roleFilter" label="Filter op rol" v-on:input="applyFilters()"></v-select>
-                    <v-btn flat icon v-on:click="clearRoleFilter">
-                        <v-icon>clear</v-icon>
-                    </v-btn>
+                <v-layout mr-2>
+                    <v-select clearable :clear-icon-cb="clearRoleFilter" no-data-text="Geen data beschikbaar" :items="roles" v-model="roleFilter" label="Filter op rol" v-on:input="applyFilters()"></v-select>
                 </v-layout>
             </v-flex>
             <v-flex xs12 sm6 md3>
-                <v-layout>
-                    <v-select no-data-text="Geen data beschikbaar" :items="genders" v-model="genderFilter" label="Filter op geslacht" v-on:input="applyFilters()"></v-select>
-                    <v-btn flat icon v-on:click="clearGenderFilter">
-                        <v-icon>clear</v-icon>
-                    </v-btn>
+                <v-layout mr-2>
+                    <v-select clearable :clear-icon-cb="clearGenderFilter" no-data-text="Geen data beschikbaar" :items="genders" v-model="genderFilter" label="Filter op geslacht" v-on:input="applyFilters()"></v-select>
                 </v-layout>
             </v-flex>
             <v-flex xs12 sm6 md3>
-                <v-layout>
-                    <v-select no-data-text="Geen data beschikbaar" v-model="statusFilter" label="Filter op status" :items="statusses" v-on:input="applyFilters()"></v-select>
-                    <v-btn flat icon v-on:click="clearStatusFilter">
-                        <v-icon>clear</v-icon>
-                    </v-btn>
+                <v-layout mr-2>
+                    <v-select clearable :clear-icon-cb="clearStatusFilter" no-data-text="Geen data beschikbaar" v-model="statusFilter" label="Filter op status" :items="statusses" v-on:input="applyFilters()"></v-select>
                 </v-layout>
             </v-flex>
         </v-layout>

@@ -8,11 +8,11 @@
             <h1 class="text-xs-left">Module: {{ module.name }}</h1>
             <v-flex xs5 v-if="isAdmin">
                 <v-btn color="primary" @click="editMode = !editMode">
-                    <v-icon dark>edit</v-icon>Aanpassen
+                    <v-icon dark>edit</v-icon>&nbsp;Aanpassen
                 </v-btn>
                 <v-menu offset-y>
                     <v-btn slot="activator" color="success" dark>
-                        <v-icon light>control_point</v-icon>
+                        <v-icon light>control_point</v-icon>&nbsp;
                     </v-btn>
                     <v-list>
                         <v-list-tile v-for="(item) in insertPossibilities" :key="item" @click="showCorrectAddDialog(item)">
@@ -22,7 +22,7 @@
                 </v-menu>
                 <v-menu offset-y>
                     <v-btn slot="activator" color="error" dark>
-                        <v-icon light>remove_circle_outline</v-icon>
+                        <v-icon light>remove_circle_outline</v-icon>&nbsp;
                     </v-btn>
                     <v-list>
                         <v-list-tile v-for="(item) in insertPossibilities" :key="item" @click="showCorrectRemoveDialog(item)">

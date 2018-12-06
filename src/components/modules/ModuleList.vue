@@ -69,7 +69,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-btn color="primary" @click="showScores = false">
-                    <v-icon>clear</v-icon>Sluit
+                    <v-icon>clear</v-icon>&nbsp;Sluit
                 </v-btn>
             </v-card-actions>
         </v-card>

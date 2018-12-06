@@ -9,8 +9,8 @@
     <datatableselects :filters="filters"></datatableselects>
   </v-flex>
   <v-flex xs2>
-    <v-btn color="primary" class="ma-1 left" dark><v-icon dark>print</v-icon></v-btn>
-    <v-btn color="primary" class="ma-1 left" dark><v-icon dark>get_app</v-icon></v-btn>
+    <v-btn color="primary" class="ma-1 left" dark><v-icon dark>print</v-icon>&nbsp;</v-btn>
+    <v-btn color="primary" class="ma-1 left" dark><v-icon dark>get_app</v-icon>&nbsp;</v-btn>
   </v-flex>
     </v-layout>
 </main>

@@ -4,7 +4,7 @@
         <v-layout align-center justify-space-between row>
             <h2>Opleiding</h2>
             <v-btn v-if="isAdmin" color="primary" class="ma-1" dark @click="$emit('update:model', !model)">
-                <v-icon dark>edit</v-icon>
+                <v-icon dark>edit</v-icon>&nbsp;
                 {{!model ? "Aanpassen" : "stop aanpassen"}}
             </v-btn>
         </v-layout>

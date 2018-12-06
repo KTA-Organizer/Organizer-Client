@@ -29,10 +29,10 @@
               <v-icon>edit</v-icon> aanvullen
             </v-btn>
             <v-btn v-else color="primary" @click="updateEvaluation(evaluation.id)">
-              <v-icon>remove_red_eye</v-icon> Bekijk
+              <v-icon>remove_red_eye</v-icon>&nbsp; Bekijk
             </v-btn>
             <v-btn v-if="!evaluation.enddate" color="error" @click="showEndEvaluation = true; evaluationToEnd = evaluation.id;">
-              <v-icon>clear</v-icon> afsluiten
+              <v-icon>clear</v-icon>&nbsp; afsluiten
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -40,7 +40,7 @@
     </v-layout>
     <v-layout v-if="student" class="mt-4" justify-center>
       <v-btn xs12 @click="newEvaluationDialog" color="primary">
-          <v-icon>add</v-icon>
+          <v-icon>add</v-icon>&nbsp;
           Maak nieuwe evaluatie
           </v-btn>
     </v-layout>

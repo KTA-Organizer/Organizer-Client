@@ -6,7 +6,7 @@
     <v-flex xs1 offset-xs4 class="mr-5">
       <!-- <router-link :to="{ name: 'Rapport Aanmaken' }">
         <v-btn class="primary">
-          <v-icon>add</v-icon> Rapport Aanmaken
+          <v-icon>add</v-icon>&nbsp; Rapport Aanmaken
         </v-btn>
       </router-link> -->
     </v-flex>
@@ -23,10 +23,10 @@
             <td class="text-xs-left">{{ props.item.open ? "Open" : "Gesloten" }}</td>
             <td class="text-xs-right">
               <v-btn round color="green" class="ma-1" dark v-on:click="openPDF(props.item.id)">
-                <v-icon dark>print</v-icon> print
+                <v-icon dark>print</v-icon>&nbsp; print
               </v-btn>
               <v-btn round color="primary" class="ma-1" dark :to="{ name: 'Rapport', params: { reportid: props.item.id }}">
-                <v-icon dark>remove_red_eye</v-icon> Bekijken
+                <v-icon dark>remove_red_eye</v-icon>&nbsp; Bekijken
               </v-btn>
             </td>
           </tr>

@@ -6,7 +6,7 @@
     </v-flex>
     <v-flex xs1 offset-xs4 class="mr-5">
       <v-btn v-if="isAdmin" class="primary" @click="addDiscipline=true">
-        <v-icon>add</v-icon> Opleiding Aanmaken
+        <v-icon>add</v-icon>&nbsp; Opleiding Aanmaken
       </v-btn>
     </v-flex>
   </v-layout>

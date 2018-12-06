@@ -17,7 +17,7 @@
             <v-card-actions>
                 <router-link :to="'/Evaluatie/' + evaluation.id">
                     <v-btn class="primary">
-                        <v-icon>remove_red_eye</v-icon>Bekijken
+                        <v-icon>remove_red_eye</v-icon>&nbsp;Bekijken
                     </v-btn>
                 </router-link>
             </v-card-actions>

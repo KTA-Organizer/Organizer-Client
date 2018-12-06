@@ -5,12 +5,12 @@
             <h1>{{user.firstname}} {{user.lastname}}</h1>
             <div v-if="isAdmin">
                 <v-btn v-if="user.status === 'ACTIVE'" color="error" class="ma-1" dark @click="$emit('update:delete', true)">
-                    <v-icon dark>delete</v-icon>
+                    <v-icon dark>delete</v-icon>&nbsp;
                     Deactiveer
                 </v-btn>
                 <v-btn v-else class="ma-1 light-green accent-4" dark @click="$emit('update:activate', true)">Activeer</v-btn>
                 <v-btn :disabled="user.status === 'WAIT_ACTIVATION'" color="primary" class="ma-1" dark @click="$emit('update:edit', !edit)">
-                    <v-icon dark>edit</v-icon>
+                    <v-icon dark>edit</v-icon>&nbsp;
                     {{!edit ? "Aanpassen" : "stop aanpassen"}}
                 </v-btn>
             </div>
@@ -35,7 +35,7 @@
                 <v-select no-data-text="Geen data beschikbaar" label="Rollen" v-model="userFields.roles" :rules="selectRoleRules" :multiple="true" required :readonly="!edit" :items="constants.roles"></v-select>
             </v-layout>
             <v-btn @click="$emit('update')" color="primary" v-if="edit">
-                <v-icon>save</v-icon>
+                <v-icon>save</v-icon>&nbsp;
                 Opslaan
             </v-btn>
         </v-form>

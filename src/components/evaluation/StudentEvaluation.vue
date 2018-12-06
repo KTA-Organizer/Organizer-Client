@@ -4,10 +4,10 @@
         <h1>Evaluatiefiche Module: {{module.name}}</h1>
         <h2>Opleiding: {{discipline.name}}</h2>
         <v-btn class="success" v-on:click="showGenerateReport = true;">
-            <v-icon>assignment</v-icon> Rapport genereren
+            <v-icon>assignment</v-icon>&nbsp; Rapport genereren
         </v-btn>
         <v-btn v-if="!evaluationsheet.enddate" color="error" @click="showEndEvaluation = true; evaluationToEnd = evaluationsheet.id;">
-            <v-icon>clear</v-icon> afsluiten
+            <v-icon>clear</v-icon>&nbsp; afsluiten
         </v-btn>
     </evaluation-header>
 
@@ -23,7 +23,7 @@
         </v-card-text>
         <v-card-actions>
             <v-btn v-if="isEditable" color="primary" @click="saveEvaluation">
-                <v-icon>save</v-icon> Opslaan
+                <v-icon>save</v-icon>&nbsp; Opslaan
             </v-btn>
         </v-card-actions>
     </v-card>

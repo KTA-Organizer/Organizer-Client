@@ -12,13 +12,13 @@
       <v-btn color="success" :loading="loading" @click.native="saveOpleiding" :disabled="loading">
         <v-icon>
           save
-        </v-icon>
+        </v-icon>&nbsp;
         Opslaan
       </v-btn>
       <v-btn class="primary" @click="newModule=true">
         <v-icon>
           add
-        </v-icon>
+        </v-icon>&nbsp;
         Nieuwe Module
       </v-btn>
     </v-card-text>
@@ -32,12 +32,12 @@
             <td class="text-xs-right">
               <router-link :to="{ name: 'Module', params: { moduleid: props.item.id }}" style="text-decoration: none">
                 <v-btn round color="primary" class="ma-1" dark>
-                  <v-icon dark>remove_red_eye</v-icon>
+                  <v-icon dark>remove_red_eye</v-icon>&nbsp;
                   bekijken
                 </v-btn>
               </router-link>
               <v-btn round color="error" class="ma-1" dark @click="removeModule(modules, props.item)" v-if="isAdmin">
-                <v-icon dark>delete</v-icon>
+                <v-icon dark>delete</v-icon>&nbsp;
                 verwijderen
               </v-btn>
             </td>

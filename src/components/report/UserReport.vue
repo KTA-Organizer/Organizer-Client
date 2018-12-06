@@ -6,24 +6,24 @@
 
         <div v-if="!isStudent">
             <v-btn class="primary" v-if="!editMode" v-on:click="editComments">
-                <v-icon>edit</v-icon> Opmerkingen Aanpassen
+                <v-icon>edit</v-icon>&nbsp; Opmerkingen Aanpassen
             </v-btn>
             <v-btn class="primary" v-if="editMode" v-on:click="cancelEdit">
-                <v-icon>cancel</v-icon> Aanpassingen annuleren
+                <v-icon>cancel</v-icon>&nbsp; Aanpassingen annuleren
             </v-btn>
             <v-btn class="primary" v-if="editMode" v-on:click="saveComments">
-                <v-icon>save</v-icon> Opmerkingen Opslaan
+                <v-icon>save</v-icon>&nbsp; Opmerkingen Opslaan
             </v-btn>
             <v-btn class="success" :disabled="!!report.open" v-on:click="openReport">
-                <v-icon>face</v-icon> Openstellen voor student
+                <v-icon>face</v-icon>&nbsp; Openstellen voor student
             </v-btn>
         </div>
         <v-flex>
             <v-btn class="secondary" v-on:click="openPDF">
-                <v-icon>print</v-icon> Rapport afprinten
+                <v-icon>print</v-icon>&nbsp; Rapport afprinten
             </v-btn>
             <v-btn class="secondary" v-on:click="savePDF">
-                <v-icon>cloud_download</v-icon> Rapport downloaden
+                <v-icon>cloud_download</v-icon>&nbsp; Rapport downloaden
             </v-btn>
         </v-flex>
     </evaluation-header>

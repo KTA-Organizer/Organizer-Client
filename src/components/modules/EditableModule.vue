@@ -8,7 +8,7 @@
             <v-btn color="success" @click="saveModule">
                 Opslagen
                 <span slot="loader" class="custom-loader">
-                    <v-icon light>cached</v-icon>
+                    <v-icon light>cached</v-icon>&nbsp;
                     </span>
             </v-btn>
             <v-btn color="primary" @click="$emit('confirm'), $emit('update:edit', !edit)">Annuleren</v-btn>
