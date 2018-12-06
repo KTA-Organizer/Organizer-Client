@@ -10,7 +10,7 @@
         </v-card-text>
 
         <v-card-text>
-            <v-text-field label="Gewicht" v-model="weightNewCriteria" mask="###"></v-text-field>
+            <v-text-field label="Gewicht" v-model="weightNewCriteria" :rules="weightRules" mask="###"></v-text-field>
         </v-card-text>
 
         <v-card-text>
@@ -28,7 +28,7 @@
             <v-btn color="primary" flat v-on:click="$emit('update:model', !model), nameNewCriteria=''">
                 Annuleer
             </v-btn>
-            <v-btn color="error" flat v-on:click="createNewCriteria" :disabled="!nameNewCriteria.length || !selectedGoal">
+            <v-btn color="error" flat v-on:click="createNewCriteria" :disabled="!nameNewCriteria.length || !selectedGoal || weightNewCriteria.length < 1">
                 Bevestig
             </v-btn>
         </v-card-actions>
@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import * as rules from "../../constants/rules";
+
 export default {
     name: "newGoalDialog",
     props: ["new", "confirm", "model", "moduleId", "module"],
@@ -49,7 +51,8 @@ export default {
             goals: [],
             goalNames: [],
             selectedDomain: null,
-            selectedGoal: null
+            selectedGoal: null,
+            weightRules: rules.weight
         };
     },
     methods: {
@@ -59,6 +62,7 @@ export default {
             const selectedGoalId = this.goals.filter(x => x.name === this.selectedGoal).map(x => x.id)[0];
             await this.$http.createCriteria(this.nameNewCriteria, this.weightNewCriteria, selectedGoalId);
             this.nameNewCriteria = "";
+            this.weightNewCriteria = 1;
             this.$emit('confirm');
         },
         changedDomain(){

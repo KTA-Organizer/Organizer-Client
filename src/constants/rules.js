@@ -25,3 +25,8 @@ export const rgn = [
 export const defaultRule = [
   v => !!v || "Vul dit veld in"
 ]
+export const weight = [
+  v =>
+    v.length > 0 ||
+    "Gewicht moet minstens 1 zijn."
+];
