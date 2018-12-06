@@ -265,8 +265,12 @@ export default {
         "id": module.id
       });
       const modulesObj = JSON.parse(JSON.stringify(modules)); // to avoid vue js observer object
-      const moduleId = modulesObj.indexOf(modulesObj.find(x => x.id == module.id));
-      modules.splice(moduleId, 1);
+      const moduleIndex = modulesObj.indexOf(modulesObj.find(x => x.id == module.id));7
+      const moduleId = modules[moduleIndex].id;
+      modules.splice(moduleIndex, 1);
+      console.log(moduleId);
+      console.log(modulesObj);
+      this.$http.deleteModule(moduleId);
     },
     removeCategorie(categories, categorie) {
       var self = this;
