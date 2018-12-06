@@ -3,7 +3,7 @@ export const name = [v => !!v || "Naam moet ingevuld worden"];
 export const email = [
   v => !!v || "E-mail moet ingevuld worden",
   v =>
-    /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,4})+$/.test(v) ||
+  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) ||
     "E-mail moet geldig zijn"
 ];
 export const role = [
