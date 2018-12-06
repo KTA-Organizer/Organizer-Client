@@ -20,7 +20,7 @@
             <v-btn color="primary" flat v-on:click="$emit('update:model', !model), nameNewGoal=''">
                 Annuleer
             </v-btn>
-            <v-btn color="error" flat v-on:click="createNewGoal">
+            <v-btn color="error" flat v-on:click="createNewGoal" :disabled="!nameNewGoal.length || !selectedDomain">
                 Bevestig
             </v-btn>
         </v-card-actions>

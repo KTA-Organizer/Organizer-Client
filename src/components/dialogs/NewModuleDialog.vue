@@ -16,7 +16,7 @@
                 <v-btn color="primary" flat v-on:click="$emit('update:model', !model), nameNewModule=''">
                     Annuleer
                 </v-btn>
-                <v-btn color="error" flat v-on:click="createNewModule">
+                <v-btn color="error" flat v-on:click="createNewModule" :disabled="!nameNewModule.length">
                     Bevestig
                 </v-btn>
             </v-card-actions>

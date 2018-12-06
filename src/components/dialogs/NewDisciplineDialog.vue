@@ -16,7 +16,7 @@
                 <v-btn color="primary" flat v-on:click="$emit('update:model', !model), nameNewDiscipline=''">
                     Annuleer
                 </v-btn>
-                <v-btn color="error" flat v-on:click="createNewDiscipline">
+                <v-btn color="error" flat v-on:click="createNewDiscipline" :disabled="!nameNewDiscipline.length">
                     Bevestig
                 </v-btn>
             </v-card-actions>
