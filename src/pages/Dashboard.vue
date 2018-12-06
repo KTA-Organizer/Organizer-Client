@@ -4,7 +4,10 @@
     <v-card>
       <v-card-text>
         <h1>Welkom {{currentUser.firstname}}</h1>
-        <p>Cras condimentum aliquam nibh, quis tincidunt felis feugiat at. Cras eget luctus est. Praesent bibendum enim ipsum, ac laoreet justo fringilla vitae. Mauris dignissim nulla turpis, a cursus metus rhoncus finibus. Donec eleifend feugiat ante, id pellentesque odio maximus ac. Donec sodales vulputate sapien, non tristique ligula mattis nec. Maecenas rutrum, felis ac venenatis efficitur, nulla ante hendrerit felis, ut ultrices lectus ipsum in eros. Curabitur eleifend tincidunt arcu quis congue. Etiam nisl mi, interdum a luctus nec, ornare non massa.</p>
+        <p v-if="isTeacher">Op dit platform kan je terecht voor meerdere zaken. De inhoud van alle actieve opleidingen kunnen volledig getoond worden. Daarnaast kunnen evaluaties gemaakt worden en ingevuld worden voor de studenten. Op basis van deze evaluaties kunnen de rapporten gegenereerd worden en vervolgens bekeken, geprint of gedownload worden.</p>
+        <p v-if="isStudent">Op dit platform kan je terecht voor het bekijken van je rapporten. Bij een nieuw rapport, zul je deze hier kunnen bekijken, printen of downloaden. Bij een nieuw rapport krijg je een e-mail.</p>
+        <p v-if="isAdmin">Als admin kan je alles beheren. De inhoud van alle actieve opleidingen kunnen volledig aangepast worden. Daarnaast kunnen evaluaties gemaakt worden en ingevuld worden voor de studenten. Op basis van deze evaluaties kunnen de rapporten gegenereerd worden en vervolgens bekeken, geprint of gedownload worden. Daarnaast kun je meldingen aanmaken voor de andere admins en leerkrachten. Ten slotte kunnen alle gebruikers beheerd worden.</p>
+        <p v-if="isTeacher || isStudent">Bij problemen, contacteer de hulpdesk.</p>
       </v-card-text>
     </v-card>
   </v-flex>
