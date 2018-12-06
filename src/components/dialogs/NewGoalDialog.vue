@@ -53,7 +53,7 @@ export default {
         refreshDomains(){
             var self = this;
             this.domains = this.module.domains;
-            this.domainNames = this.domains.map(x => x.name);
+            this.domainNames = this.domains.filter(x => x.active).map(x => x.name);
         }
     },
     async created() {
