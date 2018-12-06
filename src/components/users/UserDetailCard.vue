@@ -9,7 +9,7 @@
                     Deactiveer
                 </v-btn>
                 <v-btn v-else class="ma-1 light-green accent-4" dark @click="$emit('update:activate', true)">Activeer</v-btn>
-                <v-btn color="primary" class="ma-1" dark @click="$emit('update:edit', !edit)">
+                <v-btn :disabled="user.status === 'WAIT_ACTIVATION'" color="primary" class="ma-1" dark @click="$emit('update:edit', !edit)">
                     <v-icon dark>edit</v-icon>
                     {{!edit ? "Aanpassen" : "stop aanpassen"}}
                 </v-btn>
@@ -18,6 +18,7 @@
     </v-card-title>
     <v-card-text>
         <v-form ref="form" lazy-validation>
+            <p v-if="user.status === 'WAIT_ACTIVATION'">Waiting for user to accept invitation email.</p>
             <v-layout align-center justify-space-between row fill-height>
                 <v-text-field label="Voornaam" v-model="userFields.firstname" :rules="firstnameRules" required :readonly="!edit"></v-text-field>
                 <v-text-field label="Naam" v-model="userFields.lastname" :rules="nameRules" required :readonly="!edit"></v-text-field>
