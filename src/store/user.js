@@ -4,7 +4,8 @@ import * as api from "../services/organizer-api";
 export const LoginStatus = {
   none: 0,
   loggedIn: 1,
-  loggedOut: 2
+  loggedOut: 2,
+  failed: 3
 };
 
 export default {
@@ -15,6 +16,9 @@ export default {
   getters: {
     checkedAuthentication(state, getters) {
       return state.loginStatus !== LoginStatus.none;
+    },
+    hasFailedLogin(state, getters) {
+      return state.loginStatus === LoginStatus.failed;
     },
     isLoggedIn(state, getters) {
       return state.loginStatus === LoginStatus.loggedIn;
@@ -40,6 +44,10 @@ export default {
     USER_LOGGED_OUT(state) {
       state.loginStatus = LoginStatus.loggedOut;
       state.currentUser = {};
+    },
+    USER_LOGIN_FAIL(state) {
+      state.loginStatus = LoginStatus.failed;
+      state.currentUser = {};
     }
   },
   actions: {
@@ -58,7 +66,7 @@ export default {
         router.push("/dashboard");
       } catch (err) {
         console.log(err);
-        commit("USER_LOGGED_OUT");
+        commit("USER_LOGIN_FAIL");
       }
     },
     async logout({ commit, state }) {
