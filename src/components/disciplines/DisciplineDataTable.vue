@@ -5,15 +5,15 @@
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-right">
                 <div v-if="isAdmin">
-                    <v-btn color="error" v-if="props.item.active" class="ma-1 right" dark @click="$emit('dialogDeactivate', props, props.item)">
-                        <v-icon dark>delete</v-icon> Deactiveer
+                    <v-btn round color="error" v-if="props.item.active" class="ma-1 right fixWidth" dark @click="$emit('dialogDeactivate', props, props.item)">
+                        <v-icon dark>delete</v-icon>&nbsp; Deactiveer
                     </v-btn>
-                    <v-btn color="success" v-if="!props.item.active" class="ma-1 right" dark @click="$emit('dialogActivate', props, props.item)">
-                        <v-icon dark>build</v-icon> Activeer
+                    <v-btn round color="success" v-if="!props.item.active" class="ma-1 right fixWidth" dark @click="$emit('dialogActivate', props, props.item)">
+                        <v-icon dark>build</v-icon>&nbsp;&nbsp;&nbsp;&nbsp; Activeer
                     </v-btn>
                 </div>
-                <v-btn color="primary" class="ma-1 right" dark :to="{ name: 'Opleiding', params: { disciplineid: props.item.id }}">
-                    <v-icon dark>remove_red_eye</v-icon> Bekijken
+                <v-btn round color="primary" class="ma-1 right" dark :to="{ name: 'Opleiding', params: { disciplineid: props.item.id }}">
+                    <v-icon dark>remove_red_eye</v-icon>&nbsp; Bekijken
                 </v-btn>
             </td>
         </tr>
@@ -46,3 +46,9 @@ export default {
     }
 };
 </script>
+
+<style>
+.fixWidth {
+    width: 145px;
+}
+</style>
