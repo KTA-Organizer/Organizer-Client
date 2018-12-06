@@ -1,7 +1,7 @@
 <template>
 <v-data-table v-bind:headers="headers" :items="items" hide-actions class="elevation-1">
     <template slot="items" slot-scope="props">
-        <tr>
+        <tr v-if="(isTeacher && props.item.active) || isAdmin">
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-right">
                 <div v-if="isAdmin">
@@ -41,7 +41,7 @@ export default {
             ],
         };
     },
-    computed: mapGetters(["isAdmin"]),
+    computed: mapGetters(["isAdmin", "isTeacher"]),
     methods: {
     }
 };
