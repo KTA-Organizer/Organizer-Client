@@ -42,22 +42,18 @@ export default {
     },
     methods: {
         async createNewGoal() {
-            var self = this;
-
+            this.$emit('update:model', false);
             const selectedDomainId = this.domains.filter(x => x.name === this.selectedDomain).map(x => x.id)[0];
             await this.$http.createGoal(this.nameNewGoal, selectedDomainId);
             this.nameNewGoal = "";
             this.$emit('confirm');
-            this.$emit('update:model', false);
         },
         refreshDomains(){
-            var self = this;
             this.domains = this.module.domains;
             this.domainNames = this.domains.filter(x => x.active).map(x => x.name);
         }
     },
     async created() {
-        var self = this;
         this.refreshDomains();
     },
     watch: {

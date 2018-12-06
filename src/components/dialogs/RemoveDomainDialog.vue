@@ -35,16 +35,14 @@ export default {
     },
     methods: {
         async removeDomain(){
-            var self= this;
+            this.$emit('update:model', !this.model);
             const domainId = this.module.domains.filter(x => x.name === this.selectedDomain).map(x => x.id)[0];
             await this.$http.setDomainInactive(domainId, this.moduleId);
             this.nameDomain= "";
             this.$emit('confirm');
-            this.$emit('update:model', !this.model);
         }
     },
     async created() {
-        var self = this;
         this.domains = this.module.domains.map(x => x.name);
     }
 }

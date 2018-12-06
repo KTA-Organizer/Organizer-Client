@@ -33,10 +33,10 @@ export default {
     },
     methods: {
         async createNewDiscipline(){
+            this.$emit('update:model', false);
             await this.$http.createDiscipline(this.nameNewDiscipline);
             this.nameNewDiscipline= "";
             this.$emit('confirm');
-            this.$emit('update:model', false);
         }
     },
     props: ["new", "confirm", "model"]

@@ -33,12 +33,10 @@ export default {
     },
     methods: {
         async createNewDomain(){
-            var self= this;
-            console.log(this.nameNewDomain, this.moduleId);
+            this.$emit('update:model', false);
             await this.$http.createDomain(this.nameNewDomain, this.moduleId);
             this.nameNewDomain= "";
             this.$emit('confirm');
-            this.$emit('update:model', false);
         }
     },
     props: ["new", "confirm", "model", "moduleId"]
