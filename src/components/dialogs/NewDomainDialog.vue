@@ -16,7 +16,7 @@
                 <v-btn color="primary" flat v-on:click="$emit('update:model', !model), nameNewDomain=''">
                     Annuleer
                 </v-btn>
-                <v-btn color="error" flat v-on:click="createNewDomain">
+                <v-btn color="error" flat v-on:click="createNewDomain" :disabled="!nameNewDomain.length">
                     Bevestig
                 </v-btn>
             </v-card-actions>

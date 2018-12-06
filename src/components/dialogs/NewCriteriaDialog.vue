@@ -24,7 +24,7 @@
             <v-btn color="primary" flat v-on:click="$emit('update:model', !model), nameNewCriteria=''">
                 Annuleer
             </v-btn>
-            <v-btn color="error" flat v-on:click="createNewCriteria">
+            <v-btn color="error" flat v-on:click="createNewCriteria" :disabled="!nameNewCriteria.length || !selectedGoal">
                 Bevestig
             </v-btn>
         </v-card-actions>
