@@ -13,13 +13,18 @@
                             <v-layout v-if="criteria.active" class="py-2 mt-2" row>
                                 <v-layout :class="getClass">
                                     <v-flex>
-                                        <td d-block class="text-xs-left pl-0 xs-5 oneThirdWidth">{{ criteria.name }}</td>
+
+                                        <td d-block class="text-xs-left pl-0 xs-5 oneThirdWidth">
+                                            <v-layout row>
+                                                <p class="weight">Gewicht: {{criteria.weight}}</p>
+                                                <p> {{ criteria.name }}</p>
+                                            </v-layout>
+                                        </td>
+
                                         <v-divider></v-divider>
                                     </v-flex>
                                 </v-layout>
                                 <template>
-
-                                    <!-- <v-spacer></v-spacer> -->
 
                                     <v-btn round class="primary" v-if="evaluations" @click="createScoreDialog(criteria.id)">
                                         <v-badge left color="green">
@@ -177,5 +182,11 @@ div.menu__content--autocomplete {
 
 .oneThirdWidth {
     width: 30%;
+}
+
+.weight {
+    color: #aaa;
+    display: inline-block;
+    width: 80px;
 }
 </style>
