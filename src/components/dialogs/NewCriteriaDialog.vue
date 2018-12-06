@@ -63,12 +63,12 @@ export default {
             domain.goals.forEach(goal => {
                 this.goals.push(goal);
             })
-            this.goalNames = this.goals.map(x => x.name);
+            this.goalNames = this.goals.filter(x => x.active).map(x => x.name);
         },
         refreshDomains(){
             var self = this;
             this.domains = this.module.domains;
-            this.domainNames = this.domains.map(x => x.name);
+            this.domainNames = this.domains.filter(x => x.active).map(x => x.name);
         }
     },
     async created() {
