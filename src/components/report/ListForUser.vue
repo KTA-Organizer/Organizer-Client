@@ -1,20 +1,20 @@
 <template>
 <v-layout wrap>
-    <v-flex v-for="evaluation in evaluations" v-bind:key="evaluation.id">
+    <v-flex v-for="report in reports" v-bind:key="report.id">
         <v-card class="mt-2">
             <v-card-title>
-                <h2>Evaluatie</h2>
+                <h2>Rapport</h2>
             </v-card-title>
             <v-card-text>
                 <v-layout>
                     <v-flex>
-                        <p class="text-xs-left">Startdatum: {{formatDate(evaluation.startdate)}}</p>
-                        <p class="text-xs-left">Einddatum: {{formatDate(evaluation.enddate)}}</p>
+                        <p class="text-xs-left">Aanmaakdatum: {{formatDate(report.creation)}}</p>
+                        <p class="text-xs-left">Leerkracht: {{report.teacher.firstname}} {{report.teacher.lastname}}</p>
                     </v-flex>
                 </v-layout>
             </v-card-text>
             <v-card-actions>
-                <router-link :to="'/Evaluatie/' + evaluation.id">
+                <router-link :to="'/Rapport/' + report.id">
                     <v-btn class="primary">
                         <v-icon>remove_red_eye</v-icon>Bekijken
                     </v-btn>
@@ -33,7 +33,7 @@ export default {
     props: ["userid"],
     data() {
         return {
-            evaluations: []
+            reports: []
         };
     },
     methods: {
@@ -45,9 +45,13 @@ export default {
         }
     },
     async created() {
-        this.evaluations = await this.$http.getEvaluationSheetsForStudentInModule(
-            this.userid
+        const filters =  {
+                studentid: this.userid
+            }
+        const listreports = await this.$http.paginateReports(
+            undefined, undefined, filters
         );
+        this.reports = listreports.items;
     },
     computed: {}
 };

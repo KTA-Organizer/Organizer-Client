@@ -1,16 +1,18 @@
 <template>
 <v-layout row justify-center wrap>
-    <v-flex xs12 md6>
+    <v-flex xs12 md6 class="mb-4">
         <userdetailcard v-on:update="updateUser" v-bind:user.sync="user" v-bind:delete.sync="deleteDialog" v-bind:edit.sync="editUserMode" v-bind:activate.sync="activateDialog" v-bind:userFields.sync="userFields"></userdetailcard>
     </v-flex>
-    <v-flex xs12 md6 v-if="user.roles && user.roles.indexOf('STUDENT') > -1">
+    <v-flex xs12 md6 v-if="user.roles && user.roles.indexOf('STUDENT') > -1" class="mb-4">
         <choosediscipline v-on:confirm="updateDiscipline" v-bind:model.sync="editOpleidingMode" v-bind:discipline.sync="opleiding" :items="opleidingnames"></choosediscipline>
     </v-flex>
     <v-flex xs12 md6>
-        <list-user-evaluation class="mt-4" :userid="user.id"></list-user-evaluation>
+        <h3>Evaluaties</h3>
+        <list-user-evaluation v-if="user.id" class="mt-4" :userid="user.id"></list-user-evaluation>
     </v-flex>
     <v-flex xs12 md6>
-        <list-user-evaluation class="mt-4" :userid="user.id"></list-user-evaluation>
+        <h3>Rapporten</h3>
+        <list-user-report v-if="user.id" class="mt-4" :userid="user.id"></list-user-report>
     </v-flex>
     <confirmdialog v-bind:model.sync="deleteDialog" :name="user.firstname + ' ' + user.lastname" :action="'verwijderen'" v-on:confirm="deleteUser(user.id)"></confirmdialog>
     <succesdialog v-bind:model="confirmDeleteDialog" :name="user.firstname + ' ' + user.lastname" :action="'verwijderd'" :link="'/Gebruikers'"></succesdialog>

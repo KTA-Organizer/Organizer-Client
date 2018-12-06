@@ -74,15 +74,17 @@ export const getDisciplineForStudent = id =>
 export const getReportPDF = reportid => processReq(`/reports/pdf/${reportid}`);
 
 export const paginateReports = (page, perpage, filters = {}) =>
-  processReq(`/reports`, { page, perpage, ...filters });
+  {
+    console.log(page, perpage, filters)
+    return processReq(`/reports`, { page, perpage, ...filters });
+  }
 
 export const getReport = id => processReq(`/reports/${id}`);
 
 export const saveReportComments = (id, { generalComment, goalComments }) =>
   processReq(`/reports/${id}`, { generalComment, goalComments }, "PUT");
 
-export const openReport = (id) =>
-  processReq(`/reports/${id}/open`, { }, "POST");
+export const openReport = id => processReq(`/reports/${id}/open`, {}, "POST");
 
 export const createReport = evaluationsheetid =>
   processReq(`/reports`, { evaluationsheetid }, "POST");
@@ -104,7 +106,11 @@ export const saveEvaluation = (id, scores) =>
   processReq(`/evaluations/${id}`, { scores }, "put"); // NOT THERE YET
 
 export const getEvaluationSheetsForStudentInModule = (studentid, moduleid) =>
-  processReq(`/evaluations`, { studentid, moduleid }); // OK
+  processReq(
+    `/evaluations`,
+    { studentid: studentid, moduleid: moduleid },
+    "get"
+  ); // OK
 
 export const getEvaluationSheetById = evalId =>
   processReq(`/evaluations/${evalId}`);

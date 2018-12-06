@@ -53,7 +53,8 @@ import RemoveCriteriaDialog from "@/components/dialogs/RemoveCriteriaDialog";
 import UserReport from "@/components/report/UserReport";
 import ReportTable from "@/components/report/ReportTable";
 import NewDisciplineDialog from "@/components/dialogs/NewDisciplineDialog";
-import ListForUser from "@/components/evaluation/ListForUser";
+import ReportListForUser from "@/components/report/ListForUser";
+import EvaluationListForUser from "@/components/evaluation/ListForUser";
 /* import components */
 
 /* set components */
@@ -83,7 +84,8 @@ Vue.component("removegoaldialog", RemoveGoalDialog);
 Vue.component("removecriteriadialog", RemoveCriteriaDialog);
 Vue.component("table-report", ReportTable);
 Vue.component("newdisciplinedialog", NewDisciplineDialog);
-Vue.component("list-user-evaluation", ListForUser);
+Vue.component("list-user-evaluation", EvaluationListForUser);
+Vue.component("list-user-report", ReportListForUser);
 /* set components */
 
 Vue.use(Router);

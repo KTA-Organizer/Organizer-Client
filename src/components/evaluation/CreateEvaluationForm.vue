@@ -29,7 +29,7 @@
               <v-icon>edit</v-icon> aanvullen
             </v-btn>
             <v-btn v-else color="primary" @click="updateEvaluation(evaluation.id)">
-              <v-icon>remove-red-eye</v-icon> Bekijk
+              <v-icon>remove_red_eye</v-icon> Bekijk
             </v-btn>
             <v-btn v-if="!evaluation.enddate" color="error" @click="showEndEvaluation = true; evaluationToEnd = evaluation.id;">
               <v-icon>clear</v-icon> afsluiten
