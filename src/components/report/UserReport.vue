@@ -18,9 +18,14 @@
                 <v-icon>face</v-icon> Openstellen voor student
             </v-btn>
         </div>
-        <v-btn class="secondary" v-on:click="openPDF">
-            <v-icon>print</v-icon> Rapport afprinten
-        </v-btn>
+        <v-flex>
+            <v-btn class="secondary" v-on:click="openPDF">
+                <v-icon>print</v-icon> Rapport afprinten
+            </v-btn>
+            <v-btn class="secondary" v-on:click="savePDF">
+                <v-icon>cloud_download</v-icon> Rapport downloaden
+            </v-btn>
+        </v-flex>
     </evaluation-header>
     <v-card>
         <v-card-title>
@@ -108,6 +113,14 @@ export default {
             pdfMake
                 .createPdf(pdfData)
                 .open({}, win);
+        },
+        async savePDF() {
+            const pdfData = await this.$http.getReportPDF(this.reportid);
+            console.log(this.report.evaluationSheet.student)
+            const filename = `${this.report.evaluationSheet.student.firstname} ${this.report.evaluationSheet.student.lastname} ${moment().format("DD-MM-YYYY HH-mm")}`
+            pdfMake
+                .createPdf(pdfData)
+                .download(filename.split(" ").join("_"));
         },
         async openReport() {
             this.report.open = true;
