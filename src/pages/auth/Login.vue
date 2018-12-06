@@ -30,6 +30,7 @@
 
 <script>
 import * as rules from "../../constants/rules";
+
 export default {
   name: "Login",
   data: () => ({
@@ -38,12 +39,6 @@ export default {
     showPasswordReset: false
   }),
   methods: {
-    onLogin() {
-      this.$store.dispatch("login", {
-        email: this.email,
-        password: this.password
-      });
-    },
     forgotPassword() {
       this.showPasswordReset = !this.showPasswordReset;
     }

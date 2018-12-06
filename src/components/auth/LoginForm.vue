@@ -6,6 +6,7 @@
     </v-toolbar>
     <v-card-text>
         <v-form>
+            <p style="color: red" v-if="hasFailedLogin">Uw email of wachtwoord is niet correct!</p>
             <v-text-field name="email" label="Email" id="email" type="email" :rules="emailRules" v-model="email" autofocus="autofocus" required></v-text-field>
             <v-text-field name="paswoord" label="Paswoord" id="password" type="password" :rules="passwordRules" v-model="password" required></v-text-field>
             <v-flex class="text-xs-center" mt-3>
@@ -18,18 +19,19 @@
 
 <script>
 import * as rules from "../../constants/rules";
+import { mapGetters } from 'vuex';
 
 export default {
     name: "LoginForm",
     data() {
         return {
-            loginError: null,
             email: "teacher@test.test",
             password: "test",
             passwordRules: rules.password,
             emailRules: rules.email,
         };
     },
+    computed: mapGetters(["hasFailedLogin"]),
     methods: {
         onLogin() {
             this.$store.dispatch("login", {

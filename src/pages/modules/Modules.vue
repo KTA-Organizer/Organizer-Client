@@ -89,7 +89,7 @@ export default {
         },
         showCorrectRemoveDialog(choice){
             switch(choice){
-                case "Categorie":
+                case "Domein":
                     this.removingDomain = true;
                     break;
                 case "Doelstelling":
