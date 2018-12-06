@@ -2,10 +2,10 @@
 <v-layout class="mb-4" row>
     <v-flex xs12 md4>
         <img class="" src="../../assets/Logos_CLW_KTA_ZWAAN.png">
-        <v-layout justify-space-between row >
+        <v-layout justify-space-between xs12>
             <v-flex>
                 <table id="headerTable" cellspacing="0">
-                    <th>Info</th>
+                    <th class="text-sm-left">Info</th>
                     <tr>
                         <td>Naam: <strong>{{evaluationSheet.student.lastname}}</strong></td>
                         <td>Periode: <strong>{{termStart}}</strong> - <strong>{{termEnd}}</strong></td>
@@ -15,10 +15,8 @@
                         <td>Leerkracht: <strong>{{evaluationSheet.teacher.firstname}} {{evaluationSheet.teacher.lastname}}</strong></td>
                     </tr>
                 </table>
-            </v-flex>
-            <v-flex>
                 <table id="headerTable" cellspacing="0">
-                    <th>Legende</th>
+                    <th class="text-sm-left">Legende</th>
                     <tr>
                         <td v-for="key in Object.keys(gradeKeys)" v-bind:key="key">{{gradeKeys[key]}}</td>
                     </tr>
@@ -64,7 +62,8 @@ export default {
             return formatDate(this.evaluationSheet.startdate);
         },
         termEnd() {
-            return formatDate(this.evaluationSheet.enddate);
+
+            return this.evaluationSheet.enddate ? formatDate(this.evaluationSheet.enddate) : "Nog te bepalen";
         },
     }
 }
