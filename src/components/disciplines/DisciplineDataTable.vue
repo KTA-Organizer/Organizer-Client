@@ -8,7 +8,7 @@
                     <v-btn color="error" v-if="props.item.active" class="ma-1 right" dark @click="$emit('dialogDeactivate', props, props.item)">
                         <v-icon dark>delete</v-icon> Deactiveer
                     </v-btn>
-                    <v-btn color="error" v-if="!props.item.active" class="ma-1 right" dark @click="$emit('dialogActivate', props, props.item)">
+                    <v-btn color="success" v-if="!props.item.active" class="ma-1 right" dark @click="$emit('dialogActivate', props, props.item)">
                         <v-icon dark>build</v-icon> Activeer
                     </v-btn>
                 </div>
