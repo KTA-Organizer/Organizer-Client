@@ -51,12 +51,10 @@ export default {
     },
     methods: {
         async removeCriteria() {
-            var self = this;
-
+            this.$emit('update:model', !this.model);
             const selectedCriteriaId = this.criteria.filter(x => x.name === this.selectedCriteria).map(x => x.id)[0];
             await this.$http.setCriteriaInactive(selectedCriteriaId);
             this.$emit('confirm');
-            this.$emit('update:model', !this.model);
         },
         refreshDomains(){
             var self = this;
@@ -64,7 +62,6 @@ export default {
             this.domainNames = this.domains.map(x => x.name);
         },
         changedDomain(){
-            var self = this;
             this.goals = [];
             const domain = this.domains.filter(x => x.name === this.selectedDomain)[0];
             domain.goals.forEach(goal => {
@@ -73,7 +70,6 @@ export default {
             this.goalNames = this.goals.map(x => x.name);
         },
         changedGoal(){
-            var self = this;
             this.criteria = [];
             const goal = this.goals.filter(x => x.name === this.selectedGoal)[0];
             goal.criteria.forEach(criterion => {
@@ -83,7 +79,6 @@ export default {
         }
     },
     async created() {
-        var self = this;
         this.refreshDomains();
     },
     watch: {

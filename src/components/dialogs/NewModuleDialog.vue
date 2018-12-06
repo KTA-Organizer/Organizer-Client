@@ -33,12 +33,10 @@ export default {
     },
     methods: {
         async createNewModule(){
-            var self= this;
-            console.log(this.nameNewModule, this.disciplineId);
+            this.$emit('update:model', false);
             await this.$http.createModule(this.nameNewModule, this.disciplineId);
             this.nameNewModule= "";
             this.$emit('confirm');
-            this.$emit('update:model', false);
         }
     },
     props: ["new", "confirm", "model", "disciplineId"]

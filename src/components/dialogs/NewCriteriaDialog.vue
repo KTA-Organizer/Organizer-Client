@@ -49,13 +49,12 @@ export default {
     },
     methods: {
         async createNewCriteria() {
-            var self = this;
+            this.$emit('update:model', false);
 
             const selectedGoalId = this.goals.filter(x => x.name === this.selectedGoal).map(x => x.id)[0];
             await this.$http.createCriteria(this.nameNewCriteria, selectedGoalId);
             this.nameNewCriteria = "";
             this.$emit('confirm');
-            this.$emit('update:model', false);
         },
         changedDomain(){
             this.goals = [];
@@ -66,13 +65,11 @@ export default {
             this.goalNames = this.goals.filter(x => x.active).map(x => x.name);
         },
         refreshDomains(){
-            var self = this;
             this.domains = this.module.domains;
             this.domainNames = this.domains.filter(x => x.active).map(x => x.name);
         }
     },
     async created() {
-        var self = this;
         this.refreshDomains();
     },
     watch: {

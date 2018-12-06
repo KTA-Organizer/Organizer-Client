@@ -44,23 +44,18 @@ export default {
     },
     methods: {
         async removeGoal() {
-            var self = this;
-
+            this.$emit('update:model', !this.model);
             const selectedGoalId = this.goals.filter(x => x.name === this.selectedGoal).map(x => x.id)[0];
             await this.$http.setGoalInactive(selectedGoalId);
             this.$emit('confirm');
-            this.$emit('update:model', !this.model);
         },
         refreshDomains(){
-            var self = this;
             this.domains = this.module.domains;
             this.domainNames = this.domains.map(x => x.name);
         },
         changedDomain(){
-            var self = this;
             this.goals = [];
             const domain = this.domains.filter(x => x.name === this.selectedDomain)[0];
-            console.log(domain);
             domain.goals.forEach(goal => {
                 this.goals.push(goal);
             })
@@ -68,7 +63,6 @@ export default {
         }
     },
     async created() {
-        var self = this;
         this.refreshDomains();
     },
     watch: {
