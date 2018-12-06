@@ -3,14 +3,14 @@
     <v-flex xs12 md6 class="mb-4">
         <userdetailcard v-on:update="updateUser" v-bind:user.sync="user" v-bind:delete.sync="deleteDialog" v-bind:edit.sync="editUserMode" v-bind:activate.sync="activateDialog" v-bind:userFields.sync="userFields"></userdetailcard>
     </v-flex>
-    <v-flex xs12 md6 v-if="user.roles && user.roles.indexOf('STUDENT') > -1" class="mb-4">
+    <v-flex xs12 md6 v-if="isStudent" class="mb-4">
         <choosediscipline v-on:confirm="updateDiscipline" v-bind:model.sync="editOpleidingMode" v-bind:discipline.sync="opleiding" :items="opleidingnames"></choosediscipline>
     </v-flex>
-    <v-flex xs12 md6>
+    <v-flex xs12 md6 v-if="isStudent">
         <h3>Evaluaties</h3>
         <list-user-evaluation v-if="user.id" class="mt-4" :userid="user.id"></list-user-evaluation>
     </v-flex>
-    <v-flex xs12 md6>
+    <v-flex xs12 md6 v-if="isStudent">
         <h3>Rapporten</h3>
         <list-user-report v-if="user.id" class="mt-4" :userid="user.id"></list-user-report>
     </v-flex>
@@ -43,6 +43,11 @@ export default {
             confirmActivateDialog: false,
             activateDialog: false,
         };
+    },
+    computed: {
+        isStudent() {
+            return this.user && this.user.roles.indexOf('STUDENT') > -1;
+        }
     },
     methods: {
         async deleteUser(id) {

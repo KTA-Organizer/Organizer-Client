@@ -8,7 +8,7 @@
             <h1 class="text-xs-left">Module: {{ module.name }}</h1>
             <v-flex xs5 v-if="isAdmin">
                 <v-btn color="primary" @click="editMode = !editMode">
-                    <v-icon dark>edit</v-icon>Edit
+                    <v-icon dark>edit</v-icon>Aanpassen
                 </v-btn>
                 <v-menu offset-y>
                     <v-btn slot="activator" color="success" dark>

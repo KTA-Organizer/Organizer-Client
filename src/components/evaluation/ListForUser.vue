@@ -1,5 +1,6 @@
 <template>
 <v-layout wrap>
+    <p v-if="!evaluations.length">Er zijn nog geen evaluatiefiches voor deze student.</p>
     <v-flex v-for="evaluation in evaluations" v-bind:key="evaluation.id">
         <v-card class="mt-2">
             <v-card-title>

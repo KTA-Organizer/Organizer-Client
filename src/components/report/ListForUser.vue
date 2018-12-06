@@ -1,5 +1,6 @@
 <template>
 <v-layout wrap>
+    <p v-if="!reports.length">Er zijn nog geen rapporten voor deze student.</p>
     <v-flex v-for="report in reports" v-bind:key="report.id">
         <v-card class="mt-2">
             <v-card-title>

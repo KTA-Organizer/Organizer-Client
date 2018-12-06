@@ -6,12 +6,12 @@
         </v-flex>
         <v-flex xs5>
             <v-btn color="success" @click="saveModule">
-                Opslaan
+                Opslagen
                 <span slot="loader" class="custom-loader">
                     <v-icon light>cached</v-icon>
                     </span>
             </v-btn>
-            <v-btn color="primary" @click="$emit('confirm'), $emit('update:edit', !edit)">Return</v-btn>
+            <v-btn color="primary" @click="$emit('confirm'), $emit('update:edit', !edit)">Annuleren</v-btn>
         </v-flex>
 
     </v-layout>
