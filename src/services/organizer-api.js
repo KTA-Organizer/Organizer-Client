@@ -192,13 +192,13 @@ export const updateGoal = (goalId, name) =>
     "put"
   );
 
-export const createCriteria = (name, goalid) =>
+export const createCriteria = (name, weight, goalid) =>
   processReq(
     "/criteria",
     {
       name,
       goalid,
-      weight: 1
+      weight
     },
     "post"
   );
