@@ -23,3 +23,9 @@ export default {
     props: ["meldingen", "currentUserId"]
 }
 </script>
+
+<style scoped>
+>>>img{
+    max-width: 100%;
+}
+</style>
