@@ -7,7 +7,7 @@
         <p v-if="isTeacher">Op dit platform kan je terecht voor meerdere zaken. De inhoud van alle actieve opleidingen kunnen volledig getoond worden. Daarnaast kunnen evaluaties gemaakt worden en ingevuld worden voor de studenten. Op basis van deze evaluaties kunnen de rapporten gegenereerd worden en vervolgens bekeken, geprint of gedownload worden.</p>
         <p v-if="isStudent">Op dit platform kan je terecht voor het bekijken van je rapporten. Bij een nieuw rapport, zul je deze hier kunnen bekijken, printen of downloaden. Bij een nieuw rapport krijg je een e-mail.</p>
         <p v-if="isAdmin">Als admin kan je alles beheren. De inhoud van alle actieve opleidingen kunnen volledig aangepast worden. Daarnaast kunnen evaluaties gemaakt worden en ingevuld worden voor de studenten. Op basis van deze evaluaties kunnen de rapporten gegenereerd worden en vervolgens bekeken, geprint of gedownload worden. Daarnaast kun je meldingen aanmaken voor de andere admins en leerkrachten. Ten slotte kunnen alle gebruikers beheerd worden.</p>
-        <p v-if="isTeacher || isStudent">Bij problemen, contacteer de hulpdesk.</p>
+        <p v-if="isTeacher || isStudent">Bij problemen, contacteer de helpdesk.</p>
       </v-card-text>
     </v-card>
   </v-flex>
