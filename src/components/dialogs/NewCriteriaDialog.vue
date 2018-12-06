@@ -10,6 +10,10 @@
         </v-card-text>
 
         <v-card-text>
+            <v-text-field label="Gewicht" v-model="weightNewCriteria" mask="###"></v-text-field>
+        </v-card-text>
+
+        <v-card-text>
             <v-select no-data-text="Geen data beschikbaar" :items="domainNames" v-model="selectedDomain" v-on:change="changedDomain" menu-props="auto" label="Naam domein" hide-details single-line></v-select>
         </v-card-text>
  
@@ -39,6 +43,7 @@ export default {
     data() {
         return {
             nameNewCriteria: "",
+            weightNewCriteria: 1,
             domains: [],
             domainNames: null,
             goals: [],
@@ -52,7 +57,7 @@ export default {
             this.$emit('update:model', false);
 
             const selectedGoalId = this.goals.filter(x => x.name === this.selectedGoal).map(x => x.id)[0];
-            await this.$http.createCriteria(this.nameNewCriteria, selectedGoalId);
+            await this.$http.createCriteria(this.nameNewCriteria, this.weightNewCriteria, selectedGoalId);
             this.nameNewCriteria = "";
             this.$emit('confirm');
         },
