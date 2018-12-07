@@ -52,15 +52,20 @@
             <v-card-title>
                 <h3>Scores</h3>
             </v-card-title>
-            <v-card-text v-if="!isEmptyEvalObj(selectedCriteriaScores)">
+            <v-card-text v-if="!isEmptyEvalObj(scoreObject)">
                 <table class="scores">
                     <tr>
                         <th>Opdracht</th>
                         <th>Score</th>
                     </tr>
-                    <tr v-for="(score, key) in selectedCriteriaScores" v-bind:key="key">
+                    <tr v-for="(score, key) in scoreObject" v-bind:key="key">
                         <td class="score"><strong>{{key}}</strong>:</td>
-                        <td class="score">{{score}}</td>
+                        <td class="score">
+                            <span v-if="!editScore">
+                                {{score}}
+                                </span>
+                            <v-select v-else v-model="scoreObject[key]" :items="grades.grades"></v-select>
+                        </td>
                     </tr>
                 </table>
             </v-card-text>
@@ -71,6 +76,10 @@
                 <v-btn color="primary" @click="showScores = false">
                     <v-icon>clear</v-icon>&nbsp;Sluit
                 </v-btn>
+                <v-btn v-if="!editScore" v-on:click="editScore = true;">
+                    <v-icon>edit</v-icon> Pas scores aan
+                </v-btn>
+                <v-btn v-if="editScore" @click="saveNewScores"><v-icon>save</v-icon>&nbsp; Opslaan</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -87,7 +96,10 @@ export default {
     data() {
         return {
             selectedCriteria: null,
-            showScores: false
+            showScores: false,
+            editScore: false,
+            scoreObject: {},
+            grades: grades
         };
     },
     methods: {
@@ -112,12 +124,7 @@ export default {
         },
         createScoreDialog(criteriaid) {
             this.selectedCriteria = criteriaid;
-            this.showScores = true;
-        }
-    },
-    computed: {
-        selectedCriteriaScores() {
-            const scoreObject = {};
+            let scoreObject = {};
             if (!this.evaluations) {
                 return;
             }
@@ -125,8 +132,29 @@ export default {
                 let score = this.getEvalForCriteria(value, this.selectedCriteria);
                 scoreObject[key] = score;
             })
-            return scoreObject;
+            this.scoreObject = scoreObject;
+            this.editScores = false;
+            this.showScores = true;
         },
+        saveNewScores() {
+            console.log(this.evaluations);
+            console.log(this.scoreObject);
+            this.editScore = false;
+            const allScores = {...this.evaluations, ...this.scoreObject};
+            const newScoreObject = Object.keys(allScores).map(key => {
+                const score = this.scoreObject[key];
+                const name = key;
+                const criteriaid = this.selectedCriteria;
+                return {score, name, criteriaid};
+            });
+
+        }
+    },
+    computed: {
+        // selectedCriteriaScores() {
+
+        //     return scoreObject;
+        // },
         getClass() {
             return this.evaluating ? "criteriaTextSm" : "criteriaText";
         }
