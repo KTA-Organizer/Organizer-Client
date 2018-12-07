@@ -119,14 +119,11 @@ export default {
     },
     async createNewEvaluation() {
       const date = new Date(this.newEvaluationDate);
-      console.log(this.student.id, this.module.id, date);
       const newEvaluationId = await this.$http.createNewEvaluation(this.student.id, this.module.id, date);
-      console.log(newEvaluationId)
       this.$router.push(`/Evaluatie/${newEvaluationId.evaluationsheetid}`);
     },
     async fetchEvaluations() {
       this.evaluations = await this.$http.getEvaluationSheetsForStudentInModule(this.student.id, this.module.id);
-      console.log(this.evaluations);
     },
     async endEvaluation(id) {
       await this.$http.endEvaluation(this.evaluationToEnd);
@@ -149,7 +146,6 @@ export default {
       return this.modules.map(x => x.name);
     },
     filteredStudentNames() {
-      console.log(this.studentNames);
       return this.studentNames.filter(x => x.discipline.id === this.selectedDiscipline.id);
     },
     studentNames() {

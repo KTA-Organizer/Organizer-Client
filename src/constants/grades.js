@@ -14,6 +14,14 @@ export const gradeKeys = {
     "Niet ingevuld": "NI",
 }
 
+export const shortToValue = {
+    "G": 4,
+    "V": 3,
+    "OV": 2,
+    "RO": 1,
+    "NI": false
+}
+
 export const gradeValues = {
     "Goed": 4,
     "Voldoende": 3,

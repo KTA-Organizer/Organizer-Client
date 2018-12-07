@@ -28,7 +28,7 @@
         </v-card-actions>
     </v-card>
 
-    <modulelist :module="module" :evaluating="isEditable" :evaluations="evaluationsPerAssignment" :newEvaluation="newEvaluation" v-on:graded="graded"></modulelist>
+    <modulelist :evaluationId="evaluationsheet.id" :module="module" :evaluating="isEditable" :evaluations="evaluationsPerAssignment" :newEvaluation="newEvaluation" v-on:graded="graded"></modulelist>
     <confirmdialog v-bind:model.sync="showEndEvaluation" v-on:confirm="endEvaluation" :name="'deze evaluatie'" :action="'beëindigen (permanent)'"></confirmdialog>
     <confirmdialog v-bind:model.sync="showGenerateReport" v-on:confirm="createReport" :name="'deze evaluatie'" :action="'beëindigen (permanent (indien dit nog niet het geval is)) en het rapport te genereren'"></confirmdialog>
 </v-container>

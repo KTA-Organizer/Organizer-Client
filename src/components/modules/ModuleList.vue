@@ -13,11 +13,10 @@
                             <v-layout v-if="criteria.active" class="py-2 mt-2" row>
                                 <v-layout :class="getClass">
                                     <v-flex>
-
                                         <td d-block class="text-xs-left pl-0 xs-5 oneThirdWidth">
                                             <v-layout row>
                                                 <p class="weight">Gewicht: {{criteria.weight}}</p>
-                                                <p> {{ criteria.name }}</p>
+                                                <p>{{ criteria.name }}</p>
                                             </v-layout>
                                         </td>
 
@@ -25,17 +24,14 @@
                                     </v-flex>
                                 </v-layout>
                                 <template>
-
                                     <v-btn round class="primary" v-if="evaluations" @click="createScoreDialog(criteria.id)">
                                         <v-badge left color="green">
                                             <span slot="badge">{{evaluations.size}}</span>
                                             <span>scores</span>
                                         </v-badge>
-
                                     </v-btn>
 
                                     <!-- <v-spacer></v-spacer> -->
-
                                     <td v-if="evaluating" class="gradeBox">
                                         <gradeboxes :criteriaid="criteria.id" :newEvaluation="newEvaluation" v-on:graded="graded"></gradeboxes>
                                     </td>
@@ -59,11 +55,11 @@
                         <th>Score</th>
                     </tr>
                     <tr v-for="(score, key) in scoreObject" v-bind:key="key">
-                        <td class="score"><strong>{{key}}</strong>:</td>
                         <td class="score">
-                            <span v-if="!editScore">
-                                {{score}}
-                                </span>
+                            <strong>{{key}}</strong>:
+                        </td>
+                        <td class="score">
+                            <span v-if="!editScore">{{score}}</span>
                             <v-select v-else v-model="scoreObject[key]" :items="grades.grades"></v-select>
                         </td>
                     </tr>
@@ -77,9 +73,11 @@
                     <v-icon>clear</v-icon>&nbsp;Sluit
                 </v-btn>
                 <v-btn v-if="!editScore" v-on:click="editScore = true;">
-                    <v-icon>edit</v-icon> Pas scores aan
+                    <v-icon>edit</v-icon>Pas scores aan
                 </v-btn>
-                <v-btn v-if="editScore" @click="saveNewScores"><v-icon>save</v-icon>&nbsp; Opslaan</v-btn>
+                <v-btn v-if="editScore" @click="saveNewScores">
+                    <v-icon>save</v-icon>&nbsp; Opslaan
+                </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -92,7 +90,7 @@ import _ from "lodash";
 
 export default {
     name: "moduleList",
-    props: ["module", "evaluating", "evaluations", "newEvaluation"],
+    props: ["module", "evaluating", "evaluations", "newEvaluation", "evaluationId"],
     data() {
         return {
             selectedCriteria: null,
@@ -119,7 +117,6 @@ export default {
             return Object.keys(object).find(key => object[key] === value);
         },
         graded() {
-            console.log(this.newEvaluation);
             this.$emit("graded");
         },
         createScoreDialog(criteriaid) {
@@ -131,30 +128,37 @@ export default {
             this.evaluations.forEach((value, key) => {
                 let score = this.getEvalForCriteria(value, this.selectedCriteria);
                 scoreObject[key] = score;
-            })
+            });
             this.scoreObject = scoreObject;
             this.editScores = false;
             this.showScores = true;
         },
-        saveNewScores() {
-            console.log(this.evaluations);
-            console.log(this.scoreObject);
+        async saveNewScores() {
             this.editScore = false;
-            const allScores = {...this.evaluations, ...this.scoreObject};
-            const newScoreObject = Object.keys(allScores).map(key => {
-                const score = this.scoreObject[key];
-                const name = key;
-                const criteriaid = this.selectedCriteria;
-                return {score, name, criteriaid};
+            Object.keys(this.scoreObject).map(x => {
+                const arraytjeWithScores = this.evaluations.get(x);
+                arraytjeWithScores.map(gradeObject => {
+                    if (gradeObject.criteriaid === this.selectedCriteria) {
+                        gradeObject.grade = grades.shortToValue[this.scoreObject[x]];
+                    }
+                });
             });
-
+            this.evaluations.forEach((value, key) => {
+                this.evaluations.set(key, value.filter(x => x.grade));
+            });
+            const scores = [];
+            this.evaluations.forEach((value, key) => {
+                value.forEach(x => {
+                    scores.push(x);
+                })
+            });
+            await this.$http.saveEvaluation(this.evaluationId, scores);
         }
     },
+    created() {
+        console.log(this.evaluations);
+    },
     computed: {
-        // selectedCriteriaScores() {
-
-        //     return scoreObject;
-        // },
         getClass() {
             return this.evaluating ? "criteriaTextSm" : "criteriaText";
         }
