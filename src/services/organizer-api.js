@@ -119,8 +119,8 @@ export const getEvaluationSheetById = evalId =>
 export const endEvaluation = evalId =>
   processReq(`/evaluations/${evalId}`, {}, "delete");
 
-export const createNewEvaluation = (studentid, moduleid, startdate) =>
-  processReq(`/evaluations`, { studentid, moduleid, startdate }, "post");
+export const createNewEvaluation = (studentid, moduleid, startdate, periodname) =>
+  processReq(`/evaluations`, { studentid, moduleid, startdate, periodname }, "post");
 
 export const createDiscipline = name =>
   processReq("/disciplines", { name }, "post"); // OK

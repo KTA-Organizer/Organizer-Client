@@ -111,11 +111,10 @@ export default {
       this.loading = false;
     },
     async openPDF(reportid) {
-      const win = window.open('', '_blank');
       const pdfData = await this.$http.getReportPDF(reportid);
       pdfMake
         .createPdf(pdfData)
-        .open({}, win);
+        .print();
     }
   },
   async created() {}

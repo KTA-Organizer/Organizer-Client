@@ -14,7 +14,7 @@
         <th class="text-sm-left">Info</th>
         <tr>
           <td>Naam: <strong>{{evaluationSheet.student.lastname}}</strong></td>
-          <td>Periode: <strong>{{termStart}}</strong> - <strong>{{termEnd}}</strong></td>
+          <td>Periode: <strong>{{evaluationSheet.periodname}}</strong></td>
         </tr>
         <tr>
           <td>Voornaam: <strong>{{evaluationSheet.student.firstname}}</strong></td>
