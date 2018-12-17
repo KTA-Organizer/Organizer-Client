@@ -50,16 +50,16 @@ export default {
             this.$emit('confirm');
         },
         refreshDomains(){
-            this.domains = this.module.domains;
-            this.domainNames = this.domains.map(x => x.name);
+            this.domains = this.module.domains.filter(x => x.active);
+            this.domainNames = this.domains.filter(x => x.active).map(x => x.name);
         },
         changedDomain(){
             this.goals = [];
             const domain = this.domains.filter(x => x.name === this.selectedDomain)[0];
-            domain.goals.forEach(goal => {
+            domain.goals.filter(x => x.active).forEach(goal => {
                 this.goals.push(goal);
             })
-            this.goalNames = this.goals.map(x => x.name);
+            this.goalNames = this.goals.filter(x => x.active).map(x => x.name);
         }
     },
     async created() {
