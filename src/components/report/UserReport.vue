@@ -19,7 +19,7 @@
             </v-btn>
         </div>
         <v-flex>
-            <v-btn class="secondary" v-on:click="openPDF">
+            <v-btn class="secondary" v-on:click="printPDF">
                 <v-icon>print</v-icon>&nbsp; Rapport afprinten
             </v-btn>
             <v-btn class="secondary" v-on:click="savePDF">
@@ -49,7 +49,6 @@ import {
     mapGetters
 } from "vuex";
 import EvaluationHeader from "../evaluation/EvaluationHeader.vue";
-import pdfMake from "pdfmake/build/pdfmake.min.js";
 import moment from "moment";
 
 export default {
@@ -107,24 +106,22 @@ export default {
                 goalComments
             });
         },
-        async openPDF() {
-            const win = window.open('', '_blank');
+        async printPDF() {
             const pdfData = await this.$http.getReportPDF(this.reportid);
-            pdfMake
-                .createPdf(pdfData)
-                .open({}, win);
+            const filename = this.getPdfName();
+            this.$pdf.print(pdfData, filename);
         },
         async savePDF() {
             const pdfData = await this.$http.getReportPDF(this.reportid);
-            console.log(this.report.evaluationSheet.student)
-            const filename = `${this.report.evaluationSheet.student.firstname} ${this.report.evaluationSheet.student.lastname} ${moment().format("DD-MM-YYYY HH-mm")}`
-            pdfMake
-                .createPdf(pdfData)
-                .download(filename.split(" ").join("_"));
+            const filename = this.getPdfName();
+            this.$pdf.download(pdfData, filename);
         },
         async openReport() {
             this.report.open = true;
             await this.$http.openReport(this.reportid);
+        },
+        getPdfName() {
+            return `${this.report.evaluationSheet.student.firstname} ${this.report.evaluationSheet.student.lastname} ${moment().format("DD-MM-YYYY HH-mm")}`.split(" ").join("_");
         }
     },
     async created() {

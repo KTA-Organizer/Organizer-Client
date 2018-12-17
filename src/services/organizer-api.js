@@ -76,7 +76,6 @@ export const getReportPDF = reportid => processReq(`/reports/pdf/${reportid}`);
 
 export const paginateReports = (page, perpage, filters = {}) =>
   {
-    console.log(page, perpage, filters)
     return processReq(`/reports`, { page, perpage, ...filters });
   }
 
