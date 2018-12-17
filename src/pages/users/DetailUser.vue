@@ -46,7 +46,7 @@ export default {
     },
     computed: {
         isStudent() {
-            return this.user && this.user.roles.indexOf('STUDENT') > -1;
+            return this.user.roles && this.user.roles.indexOf('STUDENT') > -1;
         }
     },
     methods: {
@@ -61,6 +61,7 @@ export default {
         async updateUser() {
             const gender = constants.genderKeys[this.userFields.gender];
             const roles = this.userFields.roles.map(r => constants.roleKeys[r]);
+            console.log(roles);
             await this.$http.updateUser({ ...this.userFields,
                 gender,
                 roles

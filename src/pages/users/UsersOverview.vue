@@ -17,22 +17,22 @@
         <v-layout row wrap>
             <v-flex xs12 sm6 md3>
                 <v-layout mr-2>
-                    <v-text-field clearable :clear-icon-cb="clearNameFilter" autofocus="autofocus" type="text" placeholder="Filter op naam" v-model="nameFilter" v-on:input="applyFilters()"></v-text-field>
+                    <v-text-field clearable @click:clear="clearNameFilter" autofocus="autofocus" type="text" placeholder="Filter op naam" v-model="nameFilter" v-on:input="applyFilters()"></v-text-field>
                 </v-layout>
             </v-flex>
             <v-flex xs12 sm6 md3>
                 <v-layout mr-2>
-                    <v-select clearable :clear-icon-cb="clearRoleFilter" no-data-text="Geen data beschikbaar" :items="roles" v-model="roleFilter" label="Filter op rol" v-on:input="applyFilters()"></v-select>
+                    <v-select clearable @click:clear="clearRoleFilter" no-data-text="Geen data beschikbaar" :items="roles" v-model="roleFilter" label="Filter op rol" v-on:input="applyFilters()"></v-select>
                 </v-layout>
             </v-flex>
             <v-flex xs12 sm6 md3>
                 <v-layout mr-2>
-                    <v-select clearable :clear-icon-cb="clearGenderFilter" no-data-text="Geen data beschikbaar" :items="genders" v-model="genderFilter" label="Filter op geslacht" v-on:input="applyFilters()"></v-select>
+                    <v-select clearable @click:clear="clearGenderFilter" no-data-text="Geen data beschikbaar" :items="genders" v-model="genderFilter" label="Filter op geslacht" v-on:input="applyFilters()"></v-select>
                 </v-layout>
             </v-flex>
             <v-flex xs12 sm6 md3>
                 <v-layout mr-2>
-                    <v-select clearable :clear-icon-cb="clearStatusFilter" no-data-text="Geen data beschikbaar" v-model="statusFilter" label="Filter op status" :items="statusses" v-on:input="applyFilters()"></v-select>
+                    <v-select clearable @click:clear="clearStatusFilter" no-data-text="Geen data beschikbaar" v-model="statusFilter" label="Filter op status" :items="statusses" v-on:input="applyFilters()"></v-select>
                 </v-layout>
             </v-flex>
         </v-layout>
@@ -126,7 +126,7 @@ export default {
     },
     methods: {
         applyFilters() {
-            const naamFiltertje = this.nameFilter.toLowerCase();
+            const naamFiltertje = this.nameFilter ? this.nameFilter.toLowerCase() : false;
             const rolFiltertje = this.roleKeys[this.roleFilter] ?
                 this.roleKeys[this.roleFilter].toUpperCase() :
                 false;
@@ -173,6 +173,7 @@ export default {
             return Object.keys(object).find(key => object[key] === value);
         },
         clearNameFilter() {
+            console.log("CLEARED NAME")
             this.nameFilter = "";
             this.applyFilters();
         },
