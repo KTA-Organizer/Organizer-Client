@@ -173,7 +173,6 @@ export default {
             return Object.keys(object).find(key => object[key] === value);
         },
         clearNameFilter() {
-            console.log("CLEARED NAME")
             this.nameFilter = "";
             this.applyFilters();
         },

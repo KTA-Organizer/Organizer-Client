@@ -170,10 +170,9 @@ export default {
             const moduleFiltertje = this.moduleFilter ? this.moduleFilter.toLowerCase() : false;
             const disciplineFiltertje = this.disciplineFilter ? this.disciplineFilter.toLowerCase() : false;
             const statusFiltertje = this.statusKeys[this.statusFilter];
-            console.log(statusFiltertje);
             this.filteredReports = this.reports;
+            
             if (statusFiltertje == 1 || statusFiltertje == 0) {
-              console.log(this.filteredReports);
                 this.filteredReports = this.filteredReports.filter(
                     x => x.open == statusFiltertje
                 );
