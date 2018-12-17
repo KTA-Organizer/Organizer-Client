@@ -115,9 +115,6 @@ export default {
         this.pagination.sortBy = column;
         this.pagination.descending = false;
       }
-    },
-    emitStudents() {
-      console.log("lel");
     }
   },
   created() {

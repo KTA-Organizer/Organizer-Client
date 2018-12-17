@@ -9,7 +9,6 @@ const getPDF = pdfData => {
 export const download = (pdfData, filename) => getPDF(pdfData).download(filename);
 export const print = (pdfData, filename) => {
   const pdf = getPDF(pdfData);
-  console.log(pdf);
   if (window.navigator.userAgent.indexOf("Edge") > -1) {
     // check if edge
     pdf.download(filename);

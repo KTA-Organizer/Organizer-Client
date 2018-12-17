@@ -51,7 +51,6 @@ export default {
     },
     methods: {
         async deleteUser(id) {
-            console.log(`Gebruiker met id: ${id} wordt verwijderd`);
             await this.$http.deleteUser(id);
             this.deleteDialog = false;
             this.confirmDeleteDialog = true;
@@ -60,9 +59,7 @@ export default {
             return Object.keys(object).find(key => object[key] === value);
         },
         async updateUser() {
-            console.log("Updating")
             const gender = constants.genderKeys[this.userFields.gender];
-            console.log(this.userFields)
             const roles = this.userFields.roles.map(r => constants.roleKeys[r]);
             await this.$http.updateUser({ ...this.userFields,
                 gender,
@@ -84,7 +81,6 @@ export default {
             );
             if (this.user.roles.indexOf('STUDENT') > -1) {
                 this.opleidingen = await this.$http.getDisciplines();
-                console.log(this.opleidingen)
                 const userOpleiding = await this.$http.getDisciplineForStudent(userId);
                 if (userOpleiding) {
                     this.opleiding = userOpleiding.name;
@@ -98,7 +94,6 @@ export default {
             this.activateDialog = false;
         },
         async updateDiscipline() {
-            console.log("updating")
             const selectedOpleiding = this.opleidingen.find(
                 x => x.name === this.opleiding
             );
