@@ -58,24 +58,24 @@ export default {
         },
         refreshDomains(){
             var self = this;
-            this.domains = this.module.domains;
-            this.domainNames = this.domains.map(x => x.name);
+            this.domains = this.module.domains.filter(x => x.active);
+            this.domainNames = this.domains.filter(x => x.active).map(x => x.name);
         },
         changedDomain(){
             this.goals = [];
-            const domain = this.domains.filter(x => x.name === this.selectedDomain)[0];
-            domain.goals.forEach(goal => {
+            const domain = this.domains.filter(x => x.active).filter(x => x.name === this.selectedDomain)[0];
+            domain.goals.filter(x => x.active).forEach(goal => {
                 this.goals.push(goal);
             })
             this.goalNames = this.goals.map(x => x.name);
         },
         changedGoal(){
             this.criteria = [];
-            const goal = this.goals.filter(x => x.name === this.selectedGoal)[0];
-            goal.criteria.forEach(criterion => {
+            const goal = this.goals.filter(x => x.active).filter(x => x.name === this.selectedGoal)[0];
+            goal.criteria.filter(x => x.active).forEach(criterion => {
                 this.criteria.push(criterion);
             })
-            this.criteriaNames = this.criteria.map(x => x.name);
+            this.criteriaNames = this.criteria.filter(x => x.active).map(x => x.name);
         }
     },
     async created() {

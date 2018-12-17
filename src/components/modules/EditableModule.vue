@@ -19,13 +19,13 @@
         <h2 class="categorieTitle text-xs-left" v-if="categorie.active">
             <v-text-field name="categorienaam" label="Naam categorie" @change="addUpdateAddition('domain',categorie.id)" v-model="domainMap[categorie.id]" single-line></v-text-field>
         </h2>
-        <v-data-table hide-headers :items="categorie.goals" hide-actions class="elevation-1 criteriaTable">
+        <v-data-table hide-headers :items="categorie.goals" hide-actions class="elevation-1 criteriaTable" md48>
             <template slot="items" slot-scope="props" v-if="props.item.active">
                 <tr>
                     <th>
                         <v-text-field :multi-line="true" name="doelstellingnaam" label="Naam doelstelling" @change="addUpdateAddition('goal',props.item.id)" v-model="goalMap[props.item.id]" single-line></v-text-field>
                     </th>
-                    <v-flex d-flex xs48 sm24 md12>
+                    <v-flex d-flex>
                         <v-layout row wrap>
                             <v-flex d-flex>
                                 <v-layout row wrap>

@@ -43,7 +43,7 @@ export default {
         }
     },
     async created() {
-        this.domains = this.module.domains.map(x => x.name);
+        this.domains = this.module.domains.filter(x => x.active).map(x => x.name);
     }
 }
 </script>
