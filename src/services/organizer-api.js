@@ -74,9 +74,8 @@ export const getDisciplineForStudent = id =>
 
 export const getReportPDF = reportid => processReq(`/reports/pdf/${reportid}`);
 
-export const paginateReports = (page, perpage, filters = {}) => {
-  return processReq(`/reports`, { page, perpage, ...filters });
-};
+export const paginateReports = (page, perpage, filters = {}) =>
+  processReq(`/reports`, { page, perpage, ...filters });
 
 export const getReport = id => processReq(`/reports/${id}`);
 
@@ -265,11 +264,9 @@ async function processReq(url, dataObj = {}, method = "GET") {
   if (response.ok) {
     return body;
   } else {
-    console.log("statusje: ", response.status);
     if (response.status === 403) {
       window.location.href = "/#/403";
-    }
-    else throw new ResponseError(response.status, body);
+    } else throw new ResponseError(response.status, body);
     // throw new ResponseError(response.status, body);
   }
 }
@@ -281,10 +278,12 @@ function createUrl(method, conf, dataObj, url) {
       Accept: "application/json",
       "Content-Type": "application/json"
     };
-  }
-  else {
+  } else {
     const queryString = Object.keys(dataObj)
-      .filter(key => !!dataObj[key])
+      .filter(key => {
+        console.log(key, dataObj[key], Number.isInteger(dataObj[key]) || !!dataObj[key]);
+        return Number.isInteger(dataObj[key]) || !!dataObj[key]
+      })
       .map(key => `${key}=${dataObj[key]}`)
       .join("&");
     if (queryString.length > 1) {
@@ -293,4 +292,3 @@ function createUrl(method, conf, dataObj, url) {
   }
   return url;
 }
-

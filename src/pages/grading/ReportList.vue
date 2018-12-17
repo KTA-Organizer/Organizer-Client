@@ -16,27 +16,27 @@
         <v-layout row >
             <v-flex xs12 sm6 md3>
                 <v-layout mr-2>
-                    <v-text-field clearable @click:clear="clearNameFilter" autofocus="autofocus" type="text" placeholder="Filter op naam" v-model="nameFilter" v-on:input="applyFilters()"></v-text-field>
+                    <v-text-field clearable autofocus="autofocus" type="text" placeholder="Filter op naam" v-model="nameFilter" v-on:input="paginateReports()"></v-text-field>
                 </v-layout>
             </v-flex>
             <v-flex xs12 sm6 md3>
                 <v-layout mr-2>
-                    <v-text-field clearable @click:clear="clearTeacherFilter" autofocus="autofocus" type="text" placeholder="Filter op leerkracht" v-model="teacherFilter" v-on:input="applyFilters()"></v-text-field>
+                    <v-text-field clearable type="text" placeholder="Filter op leerkracht" v-model="teacherFilter" v-on:input="paginateReports()"></v-text-field>
                 </v-layout>
             </v-flex>
             <v-flex xs12 sm6 md3>
                 <v-layout mr-2>
-                    <v-text-field clearable @click:clear="clearDisciplineFilter" autofocus="autofocus" type="text" placeholder="Filter op opleiding" v-model="disciplineFilter" v-on:input="applyFilters()"></v-text-field>
+                    <v-text-field clearable type="text" placeholder="Filter op opleiding" v-model="disciplineFilter" v-on:input="paginateReports()"></v-text-field>
                 </v-layout>
             </v-flex>
             <v-flex xs12 sm6 md3>
                 <v-layout mr-2>
-                    <v-text-field clearable @click:clear="clearModuleFilter" autofocus="autofocus" type="text" placeholder="Filter op module" v-model="moduleFilter" v-on:input="applyFilters()"></v-text-field>
+                    <v-text-field clearable type="text" placeholder="Filter op module" v-model="moduleFilter" v-on:input="paginateReports()"></v-text-field>
                 </v-layout>
             </v-flex>
             <v-flex xs12 sm6 md3>
                 <v-layout mr-2>
-                    <v-select clearable @click:clear="clearStatusFilter" no-data-text="Geen data beschikbaar" v-model="statusFilter" label="Filter op status" :items="statusses" v-on:input="applyFilters()"></v-select>
+                    <v-select clearable @click:clear="clearStatusFilter" no-data-text="Geen data beschikbaar" v-model="statusFilter" label="Filter op status" :items="statusses" v-on:input="paginateReports()"></v-select>
                 </v-layout>
             </v-flex>
         </v-layout>
@@ -44,7 +44,7 @@
     </v-card>
   <v-layout row-wrap>
     <v-flex class="mt-3">
-      <v-data-table disable-initial-sort v-bind:headers="headers" :items="filteredReports" :pagination.sync="pagination" :total-items="totalReports" :loading="loading" class="elevation-1">
+      <v-data-table no-data-text="Geen rapporten gevonden" disable-initial-sort v-bind:headers="headers" :items="filteredReports" :pagination.sync="pagination" :total-items="totalReports" :loading="loading" class="elevation-1">
         <template slot="items" slot-scope="props">
           <tr>
             <td class="text-xs-left">{{ props.item.student.firstname + " " + props.item.student.lastname }}</td>
@@ -142,19 +142,6 @@ export default {
     },
     computed: mapGetters(["isAdmin"]),
     methods: {
-        async paginateReports() {
-            this.loading = true;
-            const {
-                sortBy,
-                descending,
-                page,
-                rowsPerPage
-            } = this.pagination;
-            const result = await this.$http.paginateReports(page, rowsPerPage, {});
-            this.reports = result.items
-            this.totalReports = result.total
-            this.loading = false;
-        },
         async printPDF(reportid, student) {
             const pdfData = await this.$http.getReportPDF(reportid);
             const filename = this.getPdfName(student);
@@ -163,47 +150,20 @@ export default {
         getPdfName(student) {
             return `${student.firstname} ${student.lastname} ${moment().format("DD-MM-YYYY HH-mm")}`.split(" ").join("_");
         },
-        applyFilters() {
-
-            const naamFiltertje = this.nameFilter ? this.nameFilter.toLowerCase() : false;
-            const teacherFiltertje = this.teacherFilter ? this.teacherFilter.toLowerCase() : false;
-            const moduleFiltertje = this.moduleFilter ? this.moduleFilter.toLowerCase() : false;
-            const disciplineFiltertje = this.disciplineFilter ? this.disciplineFilter.toLowerCase() : false;
-            const statusFiltertje = this.statusKeys[this.statusFilter];
-            this.filteredReports = this.reports;
-            
-            if (statusFiltertje == 1 || statusFiltertje == 0) {
-                this.filteredReports = this.filteredReports.filter(
-                    x => x.open == statusFiltertje
-                );
-            }
-
-            if (moduleFiltertje) {
-                this.filteredReports = this.filteredReports.filter(
-                    x => x.module.name.toLowerCase().includes(moduleFiltertje)
-                );
-            }
-            
-            if (disciplineFiltertje) {
-                this.filteredReports = this.filteredReports.filter(
-                    x => x.discipline.name.toLowerCase().includes(disciplineFiltertje)
-                );
-            }
-            if (teacherFiltertje) {
-                this.filteredReports = this.filteredReports.filter(x =>
-                    `${x.teacher.firstname} ${x.teacher.lastname}`.toLowerCase().includes(teacherFiltertje)
-                );
-            }
-            if (naamFiltertje) {
-                this.filteredReports = this.filteredReports.filter(x =>
-                    `${x.student.firstname} ${x.student.lastname}`.toLowerCase().includes(naamFiltertje)
-                );
-            }
+        getFilters() {
+            const studentname = this.nameFilter;
+            const teachername = this.teacherFilter;
+            const modulename = this.moduleFilter;
+            const disciplinename = this.disciplineFilter;
+            const open = this.statusKeys[this.statusFilter];
+            console.log(open);
+            return {studentname, teachername, modulename, disciplinename, open};
         },
         async paginateReports() {
           this.loading = true;
           const { sortBy, descending, page, rowsPerPage } = this.pagination;
-          const result = await this.$http.paginateReports(page, rowsPerPage, {});
+          const filters = this.getFilters();
+          const result = await this.$http.paginateReports(page, rowsPerPage, filters);
           this.reports = result.items;
           this.filteredReports = this.reports;
           this.totalReports = result.total;
@@ -217,23 +177,23 @@ export default {
         },
           clearNameFilter() {
               this.nameFilter = "";
-              this.applyFilters();
+              this.paginateReports();
           },
           clearTeacherFilter() {
               this.teacherFilter = "";
-              this.applyFilters();
+              this.paginateReports();
           },
           clearDisciplineFilter() {
               this.disciplineFilter = "";
-              this.applyFilters();
+              this.paginateReports();
           },
           clearModuleFilter() {
               this.moduleFilter = "";
-              this.applyFilters();
+              this.paginateReports();
           },
           clearStatusFilter() {
               this.statusFilter = "";
-              this.applyFilters();
+              this.paginateReports();
           }
   },
   async created() {}

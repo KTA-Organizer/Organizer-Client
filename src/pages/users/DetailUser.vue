@@ -61,7 +61,6 @@ export default {
         async updateUser() {
             const gender = constants.genderKeys[this.userFields.gender];
             const roles = this.userFields.roles.map(r => constants.roleKeys[r]);
-            console.log(roles);
             await this.$http.updateUser({ ...this.userFields,
                 gender,
                 roles
