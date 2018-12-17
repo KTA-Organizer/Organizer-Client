@@ -6,12 +6,12 @@
         </v-flex>
         <v-flex xs5>
             <v-btn color="success" @click="saveModule">
-                Opslagen
+                Opslaan
                 <span slot="loader" class="custom-loader">
                     <v-icon light>cached</v-icon>&nbsp;
                     </span>
             </v-btn>
-            <v-btn color="primary" @click="$emit('confirm'), $emit('update:edit', !edit)">Annuleren</v-btn>
+            <v-btn color="primary" @click="clearUpdates, $emit('update:edit', !edit)">Annuleren</v-btn>
         </v-flex>
 
     </v-layout>
@@ -94,6 +94,10 @@ export default {
                 }
             })
             this.updates = [];
+            setTimeout(() => {
+                self.$emit('confirm');
+                self.$emit('update:edit', !this.edit);
+            }, 500);
         },
         initializeDomainMap() {
             this.domainMap = this.module.domains.filter(x => x.active === 1).reduce((agg, val) => {
@@ -127,6 +131,9 @@ export default {
                     [val.id]: val.name
                 })
             }, {});
+        },
+        clearUpdates(){
+            this.updates = [];
         }
     },
     async created() {
