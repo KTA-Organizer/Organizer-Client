@@ -34,6 +34,11 @@
                     <v-text-field clearable @click:clear="clearModuleFilter" autofocus="autofocus" type="text" placeholder="Filter op module" v-model="moduleFilter" v-on:input="applyFilters()"></v-text-field>
                 </v-layout>
             </v-flex>
+            <v-flex xs12 sm6 md3>
+                <v-layout mr-2>
+                    <v-select clearable @click:clear="clearStatusFilter" no-data-text="Geen data beschikbaar" v-model="statusFilter" label="Filter op status" :items="statusses" v-on:input="applyFilters()"></v-select>
+                </v-layout>
+            </v-flex>
         </v-layout>
         </v-card-text>
     </v-card>
@@ -64,6 +69,7 @@
 </template>
 
 <script>
+import * as constants from "../../constants/report";
 import {
     mapGetters
 } from 'vuex';
@@ -118,7 +124,9 @@ export default {
             teacherFilter: "",
             disciplineFilter: "",
             moduleFilter: "",
-            statusFilter: ""
+            statusFilter: "",
+            statusses: constants.statusses,
+            statusKeys: constants.statusKeys
         };
     },
     watch: {
@@ -161,7 +169,15 @@ export default {
             const teacherFiltertje = this.teacherFilter ? this.teacherFilter.toLowerCase() : false;
             const moduleFiltertje = this.moduleFilter ? this.moduleFilter.toLowerCase() : false;
             const disciplineFiltertje = this.disciplineFilter ? this.disciplineFilter.toLowerCase() : false;
+            const statusFiltertje = this.statusKeys[this.statusFilter];
+            console.log(statusFiltertje);
             this.filteredReports = this.reports;
+            if (statusFiltertje == 1 || statusFiltertje == 0) {
+              console.log(this.filteredReports);
+                this.filteredReports = this.filteredReports.filter(
+                    x => x.open == statusFiltertje
+                );
+            }
 
             if (moduleFiltertje) {
                 this.filteredReports = this.filteredReports.filter(
@@ -214,6 +230,10 @@ export default {
           },
           clearModuleFilter() {
               this.moduleFilter = "";
+              this.applyFilters();
+          },
+          clearStatusFilter() {
+              this.statusFilter = "";
               this.applyFilters();
           }
   },
