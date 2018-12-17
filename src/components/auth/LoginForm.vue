@@ -25,8 +25,8 @@ export default {
     name: "LoginForm",
     data() {
         return {
-            email: "teacher@test.test",
-            password: "test",
+            email: "",
+            password: "",
             passwordRules: rules.password,
             emailRules: rules.email,
         };

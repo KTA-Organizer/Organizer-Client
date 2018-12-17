@@ -46,7 +46,6 @@ import {
 import {
     gradeKeys
 } from "../../constants/grades";
-import pdfMake from "pdfmake/build/pdfmake.min.js";
 
 export default {
     name: "StudentEvaluation",

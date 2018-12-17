@@ -66,7 +66,6 @@ export default {
     },
     async onGenerateClick() {
       const data = { moduleid: this.module.id, studendids: [this.student.id] }
-      console.log(data)
     },
     async fetchData() {
       this.disciplines = await this.$http.getDisciplines();

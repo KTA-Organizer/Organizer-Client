@@ -268,8 +268,6 @@ export default {
       const moduleIndex = modulesObj.indexOf(modulesObj.find(x => x.id == module.id));7
       const moduleId = modules[moduleIndex].id;
       modules.splice(moduleIndex, 1);
-      console.log(moduleId);
-      console.log(modulesObj);
       this.$http.deleteModule(moduleId);
     },
     removeCategorie(categories, categorie) {

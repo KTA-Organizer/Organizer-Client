@@ -1,10 +1,10 @@
 <template>
 <div>
-  <v-layout row-wrap>
-    <v-flex xs4 offset-xs1>
-    </v-flex>
-    <v-flex xs1 offset-xs4 class="mr-5">
-      <!-- <router-link :to="{ name: 'Rapport Aanmaken' }">
+    <v-layout row-wrap>
+        <v-flex xs4 offset-xs1>
+        </v-flex>
+        <v-flex xs1 offset-xs4 class="mr-5">
+            <!-- <router-link :to="{ name: 'Rapport Aanmaken' }">
         <v-btn class="primary">
           <v-icon>add</v-icon>&nbsp; Rapport Aanmaken
         </v-btn>
@@ -65,76 +65,97 @@
 
 <script>
 import {
-  mapGetters
+    mapGetters
 } from 'vuex';
-import pdfMake from "pdfmake/build/pdfmake.min.js";
+import moment from "moment";
 
 export default {
-  name: "DisciplinesList",
-  data() {
-    return {
-      headers: [{
-          text: "Student",
-          align: "left",
-          value: "student",
-          sortable: false
-        },
-        {
-          text: "Leerkracht",
-          align: "left",
-          value: "teacher",
-          sortable: false
-        },
-        {
-          text: "Opleiding",
-          align: "left",
-          value: "discipline",
-          sortable: false
-        },
-        {
-          text: "Module",
-          align: "left",
-          value: "module",
-          sortable: false
-        },
-        {
-          text: "Status",
-          align: "left",
-          value: "open",
-          sortable: false
-        },
-        {
-          text: "",
-          value: "actionbtns",
-          sortable: false
+    name: "DisciplinesList",
+    data() {
+        return {
+            headers: [{
+                    text: "Student",
+                    align: "left",
+                    value: "student",
+                    sortable: false
+                },
+                {
+                    text: "Leerkracht",
+                    align: "left",
+                    value: "teacher",
+                    sortable: false
+                },
+                {
+                    text: "Opleiding",
+                    align: "left",
+                    value: "discipline",
+                    sortable: false
+                },
+                {
+                    text: "Module",
+                    align: "left",
+                    value: "module",
+                    sortable: false
+                },
+                {
+                    text: "Status",
+                    align: "left",
+                    value: "open",
+                    sortable: false
+                },
+                {
+                    text: "",
+                    value: "actionbtns",
+                    sortable: false
+                }
+            ],
+            reports: [],
+            filteredReports: [],
+            totalReports: 0,
+            loading: true,
+            pagination: {},
+            nameFilter: "",
+            teacherFilter: "",
+            disciplineFilter: "",
+            moduleFilter: "",
+            statusFilter: ""
+        };
+    },
+    watch: {
+        pagination: {
+            async handler() {
+                await this.paginateReports();
+            },
+            deep: true
         }
-      ],
-      reports: [],
-      filteredReports: [],
-      totalReports: 0,
-      loading: true,
-      pagination: {},
-      nameFilter: "",
-      teacherFilter: "",
-      disciplineFilter: "",
-      moduleFilter: "",
-      statusFilter: ""
-    };
-  },
-  watch: {
-    pagination: {
-      async handler() {
+    },
+    async mounted() {
         await this.paginateReports();
-      },
-      deep: true
-    }
-  },
-  async mounted() {
-    await this.paginateReports();
-  },
-  computed: mapGetters(["isAdmin"]),
-  methods: {
-    applyFilters() {
+    },
+    computed: mapGetters(["isAdmin"]),
+    methods: {
+        async paginateReports() {
+            this.loading = true;
+            const {
+                sortBy,
+                descending,
+                page,
+                rowsPerPage
+            } = this.pagination;
+            const result = await this.$http.paginateReports(page, rowsPerPage, {});
+            this.reports = result.items
+            this.totalReports = result.total
+            this.loading = false;
+        },
+        async printPDF(reportid, student) {
+            const pdfData = await this.$http.getReportPDF(reportid);
+            const filename = this.getPdfName(student);
+            this.$pdf.print(pdfData, filename);
+        },
+        getPdfName(student) {
+            return `${student.firstname} ${student.lastname} ${moment().format("DD-MM-YYYY HH-mm")}`.split(" ").join("_");
+        },
+        applyFilters() {
 
             const naamFiltertje = this.nameFilter ? this.nameFilter.toLowerCase() : false;
             const teacherFiltertje = this.teacherFilter ? this.teacherFilter.toLowerCase() : false;
@@ -164,45 +185,45 @@ export default {
                 );
             }
         },
-    async paginateReports() {
-      this.loading = true;
-      const { sortBy, descending, page, rowsPerPage } = this.pagination;
-      const result = await this.$http.paginateReports(page, rowsPerPage, {});
-      this.reports = result.items;
-      this.filteredReports = this.reports;
-      this.totalReports = result.total;
-      this.loading = false;
-    },
-    async openPDF(reportid) {
-      const pdfData = await this.$http.getReportPDF(reportid);
-      pdfMake
-        .createPdf(pdfData)
-        .print();
-    },
-      clearNameFilter() {
-          this.nameFilter = "";
-          this.applyFilters();
-      },
-      clearTeacherFilter() {
-          this.teacherFilter = "";
-          this.applyFilters();
-      },
-      clearDisciplineFilter() {
-          this.disciplineFilter = "";
-          this.applyFilters();
-      },
-      clearModuleFilter() {
-          this.moduleFilter = "";
-          this.applyFilters();
-      }
+        async paginateReports() {
+          this.loading = true;
+          const { sortBy, descending, page, rowsPerPage } = this.pagination;
+          const result = await this.$http.paginateReports(page, rowsPerPage, {});
+          this.reports = result.items;
+          this.filteredReports = this.reports;
+          this.totalReports = result.total;
+          this.loading = false;
+        },
+        async openPDF(reportid) {
+          const pdfData = await this.$http.getReportPDF(reportid);
+          pdfMake
+            .createPdf(pdfData)
+            .print();
+        },
+          clearNameFilter() {
+              this.nameFilter = "";
+              this.applyFilters();
+          },
+          clearTeacherFilter() {
+              this.teacherFilter = "";
+              this.applyFilters();
+          },
+          clearDisciplineFilter() {
+              this.disciplineFilter = "";
+              this.applyFilters();
+          },
+          clearModuleFilter() {
+              this.moduleFilter = "";
+              this.applyFilters();
+          }
   },
   async created() {}
-};
+    }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
 div.menu__content--autocomplete {
-  top: 165px !important;
+    top: 165px !important;
 }
 </style>

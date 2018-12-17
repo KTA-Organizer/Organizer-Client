@@ -9,8 +9,8 @@ import Users from "@/pages/users/Users";
 import UsersOverview from "@/pages/users/UsersOverview";
 import DetailUser from "@/pages/users/DetailUser";
 import ChoosePassword from "@/pages/auth/ChoosePassword";
-import Print from "@/pages/utils/Print";
 import NotFound from "@/pages/utils/NotFound";
+import NotAuthorized from "@/pages/utils/NotAuthorized";
 import AddMelding from "@/pages/notifications/AddMelding";
 import Login from "@/pages/auth/Login";
 import Disciplines from "@/pages/disciplines/Disciplines";
@@ -156,11 +156,6 @@ const router = new Router({
                     ]
                 },
                 {
-                    name: "Afdrukken",
-                    path: "/afdrukken",
-                    component: Print
-                },
-                {
                     path: "/opleidingen",
                     component: Disciplines,
                     children: [
@@ -244,6 +239,7 @@ const router = new Router({
             beforeEnter: requireUnauth,
         },
         { path: '/404', component: NotFound , name: "Deze pagina werd niet gevonden"},
+        { path: '/403', component: NotAuthorized , name: "U heeft niet de juiste rechten"},
         { path: '*', redirect: '/404' },
     ]
 });

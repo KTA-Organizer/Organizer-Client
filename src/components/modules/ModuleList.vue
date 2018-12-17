@@ -155,9 +155,6 @@ export default {
             await this.$http.saveEvaluation(this.evaluationId, scores);
         }
     },
-    created() {
-        console.log(this.evaluations);
-    },
     computed: {
         getClass() {
             return this.evaluating ? "criteriaTextSm" : "criteriaText";

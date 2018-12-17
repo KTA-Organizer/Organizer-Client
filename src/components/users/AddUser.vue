@@ -68,7 +68,6 @@ export default {
                     roles: roles,
                     nationalRegisterNumber: this.rgn
                 };
-                console.log(newUser);
                 const userIdObj = await this.$http.createUser(newUser);
                 this.$router.push(`${userIdObj.id}`);
             }

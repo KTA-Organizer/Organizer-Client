@@ -74,11 +74,9 @@ export const getDisciplineForStudent = id =>
 
 export const getReportPDF = reportid => processReq(`/reports/pdf/${reportid}`);
 
-export const paginateReports = (page, perpage, filters = {}) =>
-  {
-    console.log(page, perpage, filters)
-    return processReq(`/reports`, { page, perpage, ...filters });
-  }
+export const paginateReports = (page, perpage, filters = {}) => {
+  return processReq(`/reports`, { page, perpage, ...filters });
+};
 
 export const getReport = id => processReq(`/reports/${id}`);
 
@@ -119,8 +117,17 @@ export const getEvaluationSheetById = evalId =>
 export const endEvaluation = evalId =>
   processReq(`/evaluations/${evalId}`, {}, "delete");
 
-export const createNewEvaluation = (studentid, moduleid, startdate, periodname) =>
-  processReq(`/evaluations`, { studentid, moduleid, startdate, periodname }, "post");
+export const createNewEvaluation = (
+  studentid,
+  moduleid,
+  startdate,
+  periodname
+) =>
+  processReq(
+    `/evaluations`,
+    { studentid, moduleid, startdate, periodname },
+    "post"
+  );
 
 export const createDiscipline = name =>
   processReq("/disciplines", { name }, "post"); // OK
@@ -246,13 +253,36 @@ async function processReq(url, dataObj = {}, method = "GET") {
     mode: "cors",
     cache: "no-cache"
   };
+  url = createUrl(method, conf, dataObj, url);
+
+  const response = await fetch(`${API_URL}${url}`, conf);
+  let body;
+  try {
+    body = await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+  if (response.ok) {
+    return body;
+  } else {
+    console.log("statusje: ", response.status);
+    if (response.status === 403) {
+      window.location.href = "/#/403";
+    }
+    else throw new ResponseError(response.status, body);
+    // throw new ResponseError(response.status, body);
+  }
+}
+
+function createUrl(method, conf, dataObj, url) {
   if (method.toUpperCase() !== "GET") {
     conf.body = JSON.stringify(dataObj);
     conf.headers = {
       Accept: "application/json",
       "Content-Type": "application/json"
     };
-  } else {
+  }
+  else {
     const queryString = Object.keys(dataObj)
       .filter(key => !!dataObj[key])
       .map(key => `${key}=${dataObj[key]}`)
@@ -261,15 +291,6 @@ async function processReq(url, dataObj = {}, method = "GET") {
       url += `?${queryString}`;
     }
   }
-
-  const response = await fetch(`${API_URL}${url}`, conf);
-  let body;
-  try {
-    body = await response.json();
-  } catch (error) {}
-  if (response.ok) {
-    return body;
-  } else {
-    throw new ResponseError(response.status, body);
-  }
+  return url;
 }
+

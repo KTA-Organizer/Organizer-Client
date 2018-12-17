@@ -34,8 +34,8 @@ import * as rules from "../../constants/rules";
 export default {
   name: "Login",
   data: () => ({
-    email: "admin@test.test",
-    password: "test",
+    email: "",
+    password: "",
     showPasswordReset: false
   }),
   methods: {
