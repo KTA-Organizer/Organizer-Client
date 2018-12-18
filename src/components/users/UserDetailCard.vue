@@ -8,7 +8,7 @@
                     <v-icon dark>delete</v-icon>&nbsp;
                     Deactiveer
                 </v-btn>
-                <v-btn v-else class="ma-1 light-green accent-4" dark @click="$emit('update:activate', true)">Activeer</v-btn>
+                <v-btn v-if="user.status === 'DISABLED'" class="ma-1 light-green accent-4" dark @click="$emit('update:activate', true)">Activeer</v-btn>
                 <v-btn :disabled="user.status === 'WAIT_ACTIVATION'" color="primary" class="ma-1" dark @click="$emit('update:edit', !edit)">
                     <v-icon dark>edit</v-icon>&nbsp;
                     {{!edit ? "Aanpassen" : "stop aanpassen"}}

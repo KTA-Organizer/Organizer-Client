@@ -15,7 +15,7 @@
     <v-card>
         <v-card-text>
             <v-layout row wrap>
-                <v-flex xs12 sm6 md2>
+                <v-flex xs12 sm6 md3>
                     <v-layout mr-2>
                         <v-text-field clearable autofocus="autofocus" type="text" placeholder="Filter op naam" v-model="nameFilter" v-on:input="doDelayedSearch()"></v-text-field>
                     </v-layout>
@@ -25,14 +25,9 @@
                         <v-select clearable no-data-text="Geen data beschikbaar" v-model="disciplineFilter" label="Filter op opleiding" :items="disciplineNames" v-on:input="paginateUsers()"></v-select>
                     </v-layout>
                 </v-flex>
-                <v-flex xs12 sm6 md2>
+                <v-flex xs12 sm6 md3>
                     <v-layout mr-2>
                         <v-select clearable no-data-text="Geen data beschikbaar" :items="roles" v-model="roleFilter" label="Filter op rol" v-on:input="paginateUsers()"></v-select>
-                    </v-layout>
-                </v-flex>
-                <v-flex xs12 sm6 md2>
-                    <v-layout mr-2>
-                        <v-select clearable no-data-text="Geen data beschikbaar" :items="genders" v-model="genderFilter" label="Filter op geslacht" v-on:input="paginateUsers()"></v-select>
                     </v-layout>
                 </v-flex>
                 <v-flex xs12 sm6 md3>
@@ -52,13 +47,15 @@
                         <td class="text-xs-left">{{ gebruiker.item.disciplinename }}</td>
                         <td class="text-xs-left">{{ getKeyByValue(constants.roleKeys, gebruiker.item.role) }}</td>
                         <td class="text-xs-left">{{ gebruiker.item.email }}</td>
-                        <td class="text-xs-left">{{ gebruiker.item.gender }}</td>
                         <td class="text-xs-left">{{ getKeyByValue(constants.statusKeys, gebruiker.item.status) }}</td>
                         <td class="text-xs-left">{{ readableDate(gebruiker.item.accountCreatedTimestamp) }}</td>
                         <td>
-                            <router-link :to="`/Gebruikers/${gebruiker.item.id}`">
+                            <v-layout row>
+                                <v-btn v-if="gebruiker.item.status === constants.statusKeys.Actief" @click="showDeleteDialog(gebruiker.item.id)" fab color="error" small><v-icon>close</v-icon></v-btn>
+                                <router-link :to="`/Gebruikers/${gebruiker.item.id}`">
                                 <v-btn color="primary"><i class="material-icons">remove_red_eye</i></v-btn>
                             </router-link>
+                            </v-layout>
                         </td>
                     </tr>
                 </template>
@@ -66,6 +63,8 @@
         </v-flex>
 
     </v-layout>
+    <confirmdialog v-bind:model.sync="showDeleteDialogBool" v-on:confirm="removeUser" :name="'deze gebruiker'" :action="'verwijderen'">
+    </confirmdialog>
 </div>
 </template>
 
@@ -91,6 +90,7 @@ export default {
     name: "Gebruikers",
     data() {
         return {
+            showDeleteDialogBool: false,
             constants: constants,
             receivedData: false,
             formData: [],
@@ -127,12 +127,6 @@ export default {
                     sortable: false
                 },
                 {
-                    text: "Geslacht",
-                    align: "left",
-                    value: "gender",
-                    sortable: false
-                },
-                {
                     text: "Status",
                     align: "left",
                     value: "status",
@@ -146,7 +140,6 @@ export default {
             ],
             nameFilter: "",
             roleFilter: "",
-            genderFilter: "",
             statusFilter: "Actief",
             disciplineFilter: undefined,
             roleKeys: constants.roleKeys,
@@ -158,7 +151,8 @@ export default {
             pagination: {},
             totalUsers: 0,
             loading: true,
-            disciplines: []
+            disciplines: [],
+            userToDelete: -1,
         };
     },
     watch: {
@@ -179,10 +173,9 @@ export default {
             const role = this.roleKeys[this.roleFilter] ?
                 this.roleKeys[this.roleFilter].toUpperCase() :
                 false;
-            const gender = this.genderKeys[this.genderFilter];
             const foundDiscipline = this.disciplines.find(discipline => discipline.name === this.disciplineFilter);
             const disciplineid = foundDiscipline ? foundDiscipline.id : undefined;
-            return {search, status, role, gender, disciplineid};
+            return {search, status, role, disciplineid};
         },
         readableDate(timeStamp) {
             return moment(timeStamp).format('L LT');
@@ -216,6 +209,16 @@ export default {
             this.timeout = setTimeout(x => {
                 this.paginateUsers();
             }, 500);
+        },
+        showDeleteDialog(userid) {
+            this.userToDelete = userid;
+            this.showDeleteDialogBool = true;
+        },
+        async removeUser() {
+            await this.$http.deleteUser(this.userToDelete);
+            this.userToDelete = -1;
+            this.paginateUsers();
+            this.showDeleteDialogBool = false;
         }
     },
     async created() {

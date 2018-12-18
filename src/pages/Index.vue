@@ -13,7 +13,7 @@
         </v-list-tile>
       </v-list>
   </v-navigation-drawer>
-  <v-toolbar color="indigo" dark fixed app v-if="isLoggedIn">
+  <v-toolbar color="primary" dark fixed app v-if="isLoggedIn">
     <!-- <v-icon large color="white" @click.stop="drawer = !drawer">{{ drawer? 'close':'menu' }}</v-icon>&nbsp; -->
     <v-toolbar-title>{{$route.name}}</v-toolbar-title>
     <v-spacer></v-spacer>
@@ -76,7 +76,7 @@ export default {
     }
   },
   mounted() {
-    if (this.currentUser.role === "ADMIN") {
+    if (this.currentUser && this.currentUser.role === "ADMIN") {
       this.navigation.push("Gebruikers");
     }
   }
