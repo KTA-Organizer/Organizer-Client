@@ -15,24 +15,29 @@
     <v-card>
         <v-card-text>
             <v-layout row wrap>
-                <v-flex xs12 sm6 md3>
+                <v-flex xs12 sm6 md2>
                     <v-layout mr-2>
                         <v-text-field clearable autofocus="autofocus" type="text" placeholder="Filter op naam" v-model="nameFilter" v-on:input="doDelayedSearch()"></v-text-field>
                     </v-layout>
                 </v-flex>
                 <v-flex xs12 sm6 md3>
                     <v-layout mr-2>
+                        <v-select clearable no-data-text="Geen data beschikbaar" v-model="statusFilter" label="Filter op opleiding" :items="statusses" v-on:input="paginateUsers()"></v-select>
+                    </v-layout>
+                </v-flex>
+                <v-flex xs12 sm6 md2>
+                    <v-layout mr-2>
                         <v-select clearable no-data-text="Geen data beschikbaar" :items="roles" v-model="roleFilter" label="Filter op rol" v-on:input="paginateUsers()"></v-select>
                     </v-layout>
                 </v-flex>
-                <v-flex xs12 sm6 md3>
+                <v-flex xs12 sm6 md2>
                     <v-layout mr-2>
                         <v-select clearable no-data-text="Geen data beschikbaar" :items="genders" v-model="genderFilter" label="Filter op geslacht" v-on:input="paginateUsers()"></v-select>
                     </v-layout>
                 </v-flex>
                 <v-flex xs12 sm6 md3>
                     <v-layout mr-2>
-                        <v-select clearable no-data-text="Geen data beschikbaar" v-model="statusFilter" label="Filter op status" :items="statusses" v-on:input="paginateUsers()"></v-select>
+                        <v-select no-data-text="Geen data beschikbaar" v-model="statusFilter" label="Filter op status" :items="statusses" v-on:input="paginateUsers()"></v-select>
                     </v-layout>
                 </v-flex>
             </v-layout>
@@ -158,39 +163,6 @@ export default {
         await this.paginateUsers();
     },
     methods: {
-        applyFilters() {
-            const naamFiltertje = this.nameFilter ? this.nameFilter.toLowerCase() : false;
-            const rolFiltertje = this.roleKeys[this.roleFilter] ?
-                this.roleKeys[this.roleFilter].toUpperCase() :
-                false;
-            const genderFiltertje = this.genderKeys[this.genderFilter];
-            const statusFiltertje = this.statusKeys[this.statusFilter];
-            this.filteredGebruikers = this.gebruikers;
-
-            if (statusFiltertje) {
-                this.filteredGebruikers = this.filteredGebruikers.filter(
-                    x => x.status === statusFiltertje
-                );
-            }
-            if (genderFiltertje) {
-                this.filteredGebruikers = this.filteredGebruikers.filter(
-                    x => x.gender === genderFiltertje
-                );
-            }
-            if (rolFiltertje) {
-                this.filteredGebruikers = this.filteredGebruikers.filter(
-                    x =>
-                    rolFiltertje === "#" ?
-                    x.roles.length === 0 :
-                    x.roles.indexOf(rolFiltertje) > -1
-                );
-            }
-            if (naamFiltertje) {
-                this.filteredGebruikers = this.filteredGebruikers.filter(x =>
-                    `${x.firstname} ${x.lastname}`.toLowerCase().includes(naamFiltertje)
-                );
-            }
-        },
         getFilters() {
             const search = this.nameFilter;
             const status = this.statusKeys[this.statusFilter];
@@ -236,6 +208,7 @@ export default {
                 rowsPerPage,
                 filters
             );
+            console.log(result);
             this.gebruikers = result.items;
             this.filteredGebruikers = this.gebruikers;
             this.totalUsers = result.total;
@@ -251,16 +224,6 @@ export default {
         }
     },
     async created() {
-        // const gebruikers = await this.$http.paginateUsers({
-        //     page: 1,
-        //     perPage: 10000
-        // });
-        // this.gebruikers = gebruikers.items;
-        // for (const gebruiker of this.gebruikers) {
-        //     gebruiker.naam = `${gebruiker.firstname} ${gebruiker.lastname}`;
-        // }
-        // this.filteredGebruikers = this.gebruikers;
-        // this.applyFilters();
     }
 };
 </script>
