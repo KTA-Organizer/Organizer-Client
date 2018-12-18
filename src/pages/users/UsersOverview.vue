@@ -22,7 +22,7 @@
                 </v-flex>
                 <v-flex xs12 sm6 md3>
                     <v-layout mr-2>
-                        <v-select clearable no-data-text="Geen data beschikbaar" v-model="statusFilter" label="Filter op opleiding" :items="statusses" v-on:input="paginateUsers()"></v-select>
+                        <v-select clearable no-data-text="Geen data beschikbaar" v-model="disciplineFilter" label="Filter op opleiding" :items="disciplineNames" v-on:input="paginateUsers()"></v-select>
                     </v-layout>
                 </v-flex>
                 <v-flex xs12 sm6 md2>
@@ -49,6 +49,7 @@
                 <template slot="items" slot-scope="gebruiker">
                     <tr>
                         <td class="text-xs-left">{{ gebruiker.item.firstname }} {{gebruiker.item.lastname}}</td>
+                        <td class="text-xs-left">{{ gebruiker.item.disciplinename }}</td>
                         <td class="text-xs-left">{{ getKeyByValue(constants.roleKeys, gebruiker.item.role) }}</td>
                         <td class="text-xs-left">{{ gebruiker.item.email }}</td>
                         <td class="text-xs-left">{{ gebruiker.item.gender }}</td>
@@ -105,41 +106,49 @@ export default {
                     text: "Naam",
                     align: "left",
                     value: "naam",
-                    sortable: true
+                    sortable: false
+                },
+                {
+                    text: "Opleiding",
+                    align: "left",
+                    value: "opleiding",
+                    sortable: false
                 },
                 {
                     text: "Rol",
                     align: "left",
                     value: "role",
-                    sortable: true
+                    sortable: false
                 },
                 {
                     text: "Email",
                     align: "left",
                     value: "email",
-                    sortable: true
+                    sortable: false
                 },
                 {
                     text: "Geslacht",
                     align: "left",
                     value: "gender",
-                    sortable: true
+                    sortable: false
                 },
                 {
                     text: "Status",
                     align: "left",
                     value: "status",
-                    sortable: true
+                    sortable: false
                 },
                 {
                     text: "Datum aangemaakt",
-                    value: "accountCreatedTimestamp"
+                    value: "accountCreatedTimestamp",
+                    sortable: false
                 }
             ],
             nameFilter: "",
             roleFilter: "",
             genderFilter: "",
             statusFilter: "Actief",
+            disciplineFilter: undefined,
             roleKeys: constants.roleKeys,
             roles: constants.roles,
             genders: constants.genders,
@@ -149,6 +158,7 @@ export default {
             pagination: {},
             totalUsers: 0,
             loading: true,
+            disciplines: []
         };
     },
     watch: {
@@ -170,29 +180,15 @@ export default {
                 this.roleKeys[this.roleFilter].toUpperCase() :
                 false;
             const gender = this.genderKeys[this.genderFilter];
-            return {search, status, role, gender};
+            const foundDiscipline = this.disciplines.find(discipline => discipline.name === this.disciplineFilter);
+            const disciplineid = foundDiscipline ? foundDiscipline.id : undefined;
+            return {search, status, role, gender, disciplineid};
         },
         readableDate(timeStamp) {
             return moment(timeStamp).format('L LT');
         },
         getKeyByValue(object, value) {
             return Object.keys(object).find(key => object[key] === value);
-        },
-        clearNameFilter() {
-            this.nameFilter = "";
-            this.paginateUsers();
-        },
-        clearGenderFilter() {
-            this.genderFilter = "";
-            this.paginateUsers();
-        },
-        clearRoleFilter() {
-            this.roleFilter = "";
-            this.paginateUsers();
-        },
-        clearStatusFilter() {
-            this.statusFilter = "";
-            this.paginateUsers();
         },
         async paginateUsers() {
             this.loading = true;
@@ -208,7 +204,6 @@ export default {
                 rowsPerPage,
                 filters
             );
-            console.log(result);
             this.gebruikers = result.items;
             this.filteredGebruikers = this.gebruikers;
             this.totalUsers = result.total;
@@ -224,6 +219,12 @@ export default {
         }
     },
     async created() {
+        this.disciplines = await this.$http.getDisciplines();
+    },
+    computed: {
+        disciplineNames() {
+            return this.disciplines.map(x => x.name);
+        }
     }
 };
 </script>
