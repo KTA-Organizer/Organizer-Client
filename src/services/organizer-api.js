@@ -240,7 +240,6 @@ async function processReq(url, dataObj = {}, method = "GET") {
   try {
     body = await response.json();
   } catch (error) {
-    console.error(error);
   }
   if (response.ok) {
     return body;

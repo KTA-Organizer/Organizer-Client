@@ -45,7 +45,7 @@
     </v-card>
     <v-layout row wrap>
         <v-flex class="mt-4">
-            <v-data-table no-data-text="Geen gebruikers gevonden" disable-initial-sort v-bind:headers="headers" :items="filteredGebruikers" :pagination.sync="pagination" :total-items="totalUsers" :loading="loading" class="elevation-1">
+            <v-data-table no-data-text="Geen gebruikers gevonden" disable-initial-sort v-bind:headers="headers" :items="filteredGebruikers" :rows-per-page-items="[25, 50, 100]" :pagination.sync="pagination" :total-items="totalUsers" :loading="loading" class="elevation-1">
                 <template slot="items" slot-scope="gebruiker">
                     <tr>
                         <td class="text-xs-left">{{ gebruiker.item.firstname }} {{gebruiker.item.lastname}}</td>
