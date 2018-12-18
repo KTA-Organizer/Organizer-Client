@@ -76,6 +76,7 @@ export default {
         refreshDomains(){
             this.domains = this.module.domains;
             this.domainNames = this.domains.filter(x => x.active).map(x => x.name);
+            this.changedDomain();
         }
     },
     async created() {
