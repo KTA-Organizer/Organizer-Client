@@ -281,7 +281,6 @@ function createUrl(method, conf, dataObj, url) {
   } else {
     const queryString = Object.keys(dataObj)
       .filter(key => {
-        console.log(key, dataObj[key], Number.isInteger(dataObj[key]) || !!dataObj[key]);
         return Number.isInteger(dataObj[key]) || !!dataObj[key]
       })
       .map(key => `${key}=${dataObj[key]}`)
