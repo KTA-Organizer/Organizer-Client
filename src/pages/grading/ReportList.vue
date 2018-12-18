@@ -43,7 +43,7 @@
     </v-card>
     <v-layout row-wrap>
         <v-flex class="mt-3">
-            <v-data-table no-data-text="Geen rapporten gevonden" disable-initial-sort v-bind:headers="headers" :items="filteredReports" :pagination.sync="pagination" :total-items="totalReports" :loading="loading" class="elevation-1">
+            <v-data-table no-data-text="Geen rapporten gevonden" :rows-per-page-items="[25, 50, 100]" disable-initial-sort v-bind:headers="headers" :items="filteredReports" :pagination.sync="pagination" :total-items="totalReports" :loading="loading" class="elevation-1">
                 <template slot="items" slot-scope="props">
                     <tr>
                         <td class="text-xs-left">{{ props.item.student.firstname + " " + props.item.student.lastname }}</td>
