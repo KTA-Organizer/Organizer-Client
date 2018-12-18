@@ -8,13 +8,13 @@
     <v-layout row wrap>
         <v-flex xs10 offset-xs1>
             <v-form v-model="valid" ref="form" lazy-validation>
-                <v-text-field label="Voornaam" v-model="firstname" :rules="firstnameRules" required :autofocus="true"></v-text-field>
-                <v-text-field label="Naam" v-model="name" :rules="nameRules" required></v-text-field>
-                <v-text-field label="E-mail" v-model="email" :rules="emailRules" required></v-text-field>
-                <v-text-field label="Rijksregisternummer" v-model="rgn" :rules='rgnRules' required mask="##.##.##-###.##">
+                <v-text-field label="Voornaam *" v-model="firstname" :rules="firstnameRules" required :autofocus="true"></v-text-field>
+                <v-text-field label="Naam *" v-model="name" :rules="nameRules" required></v-text-field>
+                <v-text-field label="E-mail" v-model="email"></v-text-field>
+                <v-text-field label="Rijksregisternummer" v-model="rgn" mask="##.##.##-###.##">
                 </v-text-field>
-                <v-select no-data-text="Geen data beschikbaar" label="Geslacht" v-model="gender" :rules="selectGenderRules" required :items="genders"></v-select>
-                <v-select no-data-text="Geen data beschikbaar" label="Rol" v-model="role" :rules="selectRoleRules" required :multiple="true" :items="roles"></v-select>
+                <v-select no-data-text="Geen data beschikbaar" label="Geslacht *" v-model="gender" :rules="selectGenderRules" required :items="genders"></v-select>
+                <v-select no-data-text="Geen data beschikbaar" label="Rol *" v-model="role" :rules="selectRoleRules" required :multiple="false" :items="roles"></v-select>
                 <router-link to="/Gebruikers">
                     <v-btn color="secondary">Terug naar overzicht</v-btn>
                 </router-link>
@@ -59,14 +59,14 @@ export default {
     methods: {
         async createUser() {
             if (this.$refs.form.validate()) {
-                const roles = this.role.map(x => this.roleKeys[x]);
+                const roles = [this.roleKeys[this.role]];
                 const newUser = {
                     firstname: this.firstname,
                     lastname: this.name,
-                    email: this.email,
+                    email: this.email || undefined,
                     gender: this.genderKeys[this.gender],
                     roles: roles,
-                    nationalRegisterNumber: this.rgn
+                    nationalRegisterNumber: this.rgn || undefined
                 };
                 const userIdObj = await this.$http.createUser(newUser);
                 this.$router.push(`${userIdObj.id}`);

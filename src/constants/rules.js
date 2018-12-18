@@ -8,8 +8,8 @@ export const email = [
 ];
 export const role = [
   v =>
-    (v.length > 0 && v.length < 3) ||
-    "Rol moet ingevuld worden en kan maximum 2 rollen bevatten"
+    !!v ||
+    "Rol moet ingevuld worden"
 ];
 export const gender = [v => !!v || "Geslacht moet ingevuld worden"];
 export const opleiding = [v => !!v || "Opleiding moet ingevuld worden!"];

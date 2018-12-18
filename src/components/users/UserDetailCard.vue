@@ -24,10 +24,10 @@
                 <v-text-field label="Naam" v-model="userFields.lastname" :rules="nameRules" required :readonly="!edit"></v-text-field>
             </v-layout>
             <v-layout align-center justify-space-between row fill-height>
-                <v-text-field label="E-mail" v-model="userFields.email" :rules="emailRules" required :readonly="!edit"></v-text-field>
+                <v-text-field label="E-mail" v-model="userFields.email" :readonly="!edit"></v-text-field>
             </v-layout>
             <v-layout align-center justify-space-between row fill-height>
-                <v-text-field label="Rijksregisternummer" v-model="userFields.nationalRegisterNumber" :rules='rgnRules' required mask="##.##.##-###.##" :readonly="!edit">
+                <v-text-field label="Rijksregisternummer" v-model="userFields.nationalRegisterNumber" mask="##.##.##-###.##" :readonly="!edit">
                 </v-text-field>
             </v-layout>
             <v-layout align-center justify-space-between row fill-height>
