@@ -21,26 +21,7 @@ export const getStudents = () =>
 
 export const getUser = id => processReq(`/users/${id}`); // OK
 
-export const paginateUsers = ({
-  page,
-  perPage,
-  role,
-  gender,
-  status,
-  search
-}) =>
-  processReq(
-    "/users",
-    {
-      page,
-      perpage: perPage,
-      role,
-      gender,
-      status,
-      search
-    },
-    "get"
-  ); // OK
+export const paginateUsers = (page, perpage, filters = {}) => processReq("/users", { page, perpage, ...filters }, "get"); // OK 
 
 export const createUser = newUser => processReq("/users", newUser, "post"); // OK
 
@@ -281,7 +262,7 @@ function createUrl(method, conf, dataObj, url) {
   } else {
     const queryString = Object.keys(dataObj)
       .filter(key => {
-        return Number.isInteger(dataObj[key]) || !!dataObj[key]
+        return Number.isInteger(dataObj[key]) || !!dataObj[key];
       })
       .map(key => `${key}=${dataObj[key]}`)
       .join("&");

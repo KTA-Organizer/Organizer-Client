@@ -14,33 +14,50 @@
     </v-layout>
     <v-card>
         <v-card-text>
-        <v-layout row wrap>
-            <v-flex xs12 sm6 md3>
-                <v-layout mr-2>
-                    <v-text-field clearable @click:clear="clearNameFilter" autofocus="autofocus" type="text" placeholder="Filter op naam" v-model="nameFilter" v-on:input="applyFilters()"></v-text-field>
-                </v-layout>
-            </v-flex>
-            <v-flex xs12 sm6 md3>
-                <v-layout mr-2>
-                    <v-select clearable @click:clear="clearRoleFilter" no-data-text="Geen data beschikbaar" :items="roles" v-model="roleFilter" label="Filter op rol" v-on:input="applyFilters()"></v-select>
-                </v-layout>
-            </v-flex>
-            <v-flex xs12 sm6 md3>
-                <v-layout mr-2>
-                    <v-select clearable @click:clear="clearGenderFilter" no-data-text="Geen data beschikbaar" :items="genders" v-model="genderFilter" label="Filter op geslacht" v-on:input="applyFilters()"></v-select>
-                </v-layout>
-            </v-flex>
-            <v-flex xs12 sm6 md3>
-                <v-layout mr-2>
-                    <v-select clearable @click:clear="clearStatusFilter" no-data-text="Geen data beschikbaar" v-model="statusFilter" label="Filter op status" :items="statusses" v-on:input="applyFilters()"></v-select>
-                </v-layout>
-            </v-flex>
-        </v-layout>
+            <v-layout row wrap>
+                <v-flex xs12 sm6 md3>
+                    <v-layout mr-2>
+                        <v-text-field clearable autofocus="autofocus" type="text" placeholder="Filter op naam" v-model="nameFilter" v-on:input="doDelayedSearch()"></v-text-field>
+                    </v-layout>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                    <v-layout mr-2>
+                        <v-select clearable no-data-text="Geen data beschikbaar" :items="roles" v-model="roleFilter" label="Filter op rol" v-on:input="paginateUsers()"></v-select>
+                    </v-layout>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                    <v-layout mr-2>
+                        <v-select clearable no-data-text="Geen data beschikbaar" :items="genders" v-model="genderFilter" label="Filter op geslacht" v-on:input="paginateUsers()"></v-select>
+                    </v-layout>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                    <v-layout mr-2>
+                        <v-select clearable no-data-text="Geen data beschikbaar" v-model="statusFilter" label="Filter op status" :items="statusses" v-on:input="paginateUsers()"></v-select>
+                    </v-layout>
+                </v-flex>
+            </v-layout>
         </v-card-text>
     </v-card>
     <v-layout row wrap>
-
-        <userdetail :headers="headers" :users="filteredGebruikers"></userdetail>
+        <v-flex class="mt-4">
+            <v-data-table no-data-text="Geen gebruikers gevonden" disable-initial-sort v-bind:headers="headers" :items="filteredGebruikers" :pagination.sync="pagination" :total-items="totalUsers" :loading="loading" class="elevation-1">
+                <template slot="items" slot-scope="gebruiker">
+                    <tr>
+                        <td class="text-xs-left">{{ gebruiker.item.firstname }} {{gebruiker.item.lastname}}</td>
+                        <td class="text-xs-left">{{ getKeyByValue(constants.roleKeys, gebruiker.item.role) }}</td>
+                        <td class="text-xs-left">{{ gebruiker.item.email }}</td>
+                        <td class="text-xs-left">{{ gebruiker.item.gender }}</td>
+                        <td class="text-xs-left">{{ getKeyByValue(constants.statusKeys, gebruiker.item.status) }}</td>
+                        <td class="text-xs-left">{{ readableDate(gebruiker.item.accountCreatedTimestamp) }}</td>
+                        <td>
+                            <router-link :to="`/Gebruikers/${gebruiker.item.id}`">
+                                <v-btn color="primary"><i class="material-icons">remove_red_eye</i></v-btn>
+                            </router-link>
+                        </td>
+                    </tr>
+                </template>
+            </v-data-table>
+        </v-flex>
 
     </v-layout>
 </div>
@@ -48,6 +65,7 @@
 
 <script>
 import * as constants from "../../constants/user";
+import moment from "moment";
 
 function createStudentOpleidingMap(students, opleidingen) {
     return students.map(function (student) {
@@ -67,6 +85,7 @@ export default {
     name: "Gebruikers",
     data() {
         return {
+            constants: constants,
             receivedData: false,
             formData: [],
             gebruikers: [],
@@ -121,8 +140,22 @@ export default {
             genders: constants.genders,
             genderKeys: constants.genderKeys,
             statusses: constants.statusses,
-            statusKeys: constants.statusKeys
+            statusKeys: constants.statusKeys,
+            pagination: {},
+            totalUsers: 0,
+            loading: true,
         };
+    },
+    watch: {
+        pagination: {
+            async handler() {
+                await this.paginateUsers();
+            },
+            deep: true
+        }
+    },
+    async mounted() {
+        await this.paginateUsers();
     },
     methods: {
         applyFilters() {
@@ -158,48 +191,78 @@ export default {
                 );
             }
         },
+        getFilters() {
+            const search = this.nameFilter;
+            const status = this.statusKeys[this.statusFilter];
+            const role = this.roleKeys[this.roleFilter] ?
+                this.roleKeys[this.roleFilter].toUpperCase() :
+                false;
+            const gender = this.genderKeys[this.genderFilter];
+            return {search, status, role, gender};
+        },
         readableDate(timeStamp) {
-            const stamp = timeStamp.split("T");
-            const date = stamp[0].split("-");
-            const time = stamp[1].split(":");
-            let day = date[2];
-            let month = date[1];
-            const year = date[0];
-            let hour = time[0];
-            let minutes = time[1];
-            return `${day}/${month}/${year}, ${+hour + 2}:${minutes}`;
+            return moment(timeStamp).format('L LT');
         },
         getKeyByValue(object, value) {
             return Object.keys(object).find(key => object[key] === value);
         },
         clearNameFilter() {
             this.nameFilter = "";
-            this.applyFilters();
+            this.paginateUsers();
         },
         clearGenderFilter() {
             this.genderFilter = "";
-            this.applyFilters();
+            this.paginateUsers();
         },
         clearRoleFilter() {
             this.roleFilter = "";
-            this.applyFilters();
+            this.paginateUsers();
         },
         clearStatusFilter() {
             this.statusFilter = "";
-            this.applyFilters();
+            this.paginateUsers();
+        },
+        async paginateUsers() {
+            this.loading = true;
+            const {
+                sortBy,
+                descending,
+                page,
+                rowsPerPage
+            } = this.pagination;
+            console.log(page, descending, sortBy, rowsPerPage);
+            const filters = this.getFilters();
+            console.log(filters);
+            const result = await this.$http.paginateUsers(
+                page,
+                rowsPerPage,
+                filters
+            );
+            this.gebruikers = result.items;
+            this.filteredGebruikers = this.gebruikers;
+            this.totalUsers = result.total;
+            this.loading = false;
+        },
+        doDelayedSearch() {
+            if (this.timeout) {
+                clearTimeout(this.timeout);
+            }
+            this.timeout = setTimeout(x => {
+                this.paginateUsers();
+            }, 500);
         }
     },
     async created() {
-        const gebruikers = await this.$http.paginateUsers({
-            page: 1,
-            perPage: 10000
-        });
-        this.gebruikers = gebruikers.items;
-        for (const gebruiker of this.gebruikers) {
-            gebruiker.naam = `${gebruiker.firstname} ${gebruiker.lastname}`;
-        }
-        this.filteredGebruikers = this.gebruikers;
-        this.applyFilters();
+        // const gebruikers = await this.$http.paginateUsers({
+        //     page: 1,
+        //     perPage: 10000
+        // });
+        // this.gebruikers = gebruikers.items;
+        // for (const gebruiker of this.gebruikers) {
+        //     gebruiker.naam = `${gebruiker.firstname} ${gebruiker.lastname}`;
+        // }
+        // this.filteredGebruikers = this.gebruikers;
+        // this.applyFilters();
     }
 };
 </script>
