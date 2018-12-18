@@ -230,9 +230,7 @@ export default {
                 page,
                 rowsPerPage
             } = this.pagination;
-            console.log(page, descending, sortBy, rowsPerPage);
             const filters = this.getFilters();
-            console.log(filters);
             const result = await this.$http.paginateUsers(
                 page,
                 rowsPerPage,

@@ -23,7 +23,6 @@ import CreateReport from "@/pages/grading/CreateReport";
 /* import pages */
 
 /* import components */
-import UserDetail from "@/components/users/UserDataTable";
 import Notifications from "@/components/notifications/NotificationList";
 import LoginForm from "@/components/auth/LoginForm";
 import ForgotPwForm from "@/components/auth/ForgotPassword"
@@ -62,7 +61,6 @@ Vue.component("checkboxes", checkboxes);
 Vue.component("searchbar", SearchBar);
 Vue.component("datatableselects", DataTableSelects);
 Vue.component("datepicker", Datepicker);
-Vue.component("userdetail", UserDetail);
 Vue.component("notification", Notifications)
 Vue.component("loginform", LoginForm);
 Vue.component("forgotpassword", ForgotPwForm);
