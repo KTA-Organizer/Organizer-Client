@@ -68,10 +68,12 @@ export default {
         changedDomain(){
             this.goals = [];
             const domain = this.domains.filter(x => x.name === this.selectedDomain)[0];
-            domain.goals.forEach(goal => {
-                this.goals.push(goal);
-            })
-            this.goalNames = this.goals.filter(x => x.active).map(x => x.name);
+            if(domain){
+                    domain.goals.forEach(goal => {
+                    this.goals.push(goal);
+                })
+                this.goalNames = this.goals.filter(x => x.active).map(x => x.name);
+            }
         },
         refreshDomains(){
             this.domains = this.module.domains;
