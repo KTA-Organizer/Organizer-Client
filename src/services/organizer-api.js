@@ -226,6 +226,14 @@ export const createMelding = meldingObj =>
 
 export const removeMelding = id => processReq(`/meldingen/${id}`, {}, "delete"); // OK
 
+export const uploadUserCsv = async file => {
+  const formData = new FormData();
+  formData.append("userfile", file);
+  const response = await fetch(`${API_URL}/users/csv`, {"body": formData, "method": "POST","credentials": "include",
+  "mode": "cors",});
+  console.log(response);
+}
+
 async function processReq(url, dataObj = {}, method = "GET") {
   const conf = {
     method: method,

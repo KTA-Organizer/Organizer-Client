@@ -54,6 +54,7 @@ import ReportTable from "@/components/report/ReportTable";
 import NewDisciplineDialog from "@/components/dialogs/NewDisciplineDialog";
 import ReportListForUser from "@/components/report/ListForUser";
 import EvaluationListForUser from "@/components/evaluation/ListForUser";
+import FileDialog from "@/components/dialogs/FileDialog";
 /* import components */
 
 /* set components */
@@ -78,6 +79,7 @@ Vue.component("newdomaindialog", NewDomainDialog);
 Vue.component("newgoaldialog", NewGoalDialog);
 Vue.component("newcriteriadialog", NewCriteriaDialog);
 Vue.component("removedomaindialog", RemoveDomainDialog);
+Vue.component("filedialog", FileDialog);
 Vue.component("removegoaldialog", RemoveGoalDialog);
 Vue.component("removecriteriadialog", RemoveCriteriaDialog);
 Vue.component("table-report", ReportTable);

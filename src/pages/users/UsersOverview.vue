@@ -5,6 +5,9 @@
             <h1 class="display-3">Overzicht van gebruikers</h1>
         </v-flex>
         <v-flex :align-end="true">
+            <v-btn fab dark color="green" @click="showFileDialogBool = true">
+                <v-icon>attach_file</v-icon>&nbsp;
+            </v-btn>
             <router-link to="Gebruikers/Toevoegen" style="text-decoration: none">
                 <v-btn fab dark color="red">
                     <v-icon>person_add</v-icon>&nbsp;
@@ -64,6 +67,8 @@
     </v-layout>
     <confirmdialog v-bind:model.sync="showDeleteDialogBool" v-on:confirm="removeUser" :name="'deze gebruiker'" :action="'verwijderen'">
     </confirmdialog>
+    <filedialog v-bind:model.sync="showFileDialogBool">
+    </filedialog>
 </div>
 </template>
 
@@ -92,6 +97,7 @@ export default {
             showDeleteDialogBool: false,
             constants: constants,
             receivedData: false,
+            showFileDialogBool: false,
             formData: [],
             gebruikers: [],
             filteredGebruikers: [],
