@@ -226,6 +226,8 @@ export const createMelding = meldingObj =>
 
 export const removeMelding = id => processReq(`/meldingen/${id}`, {}, "delete"); // OK
 
+export const getReportByEvaluationid = id => processReq(`/reports/evaluationsheet/${id}`);
+
 export const uploadUserCsv = async file => {
   const formData = new FormData();
   formData.append("userfile", file);
