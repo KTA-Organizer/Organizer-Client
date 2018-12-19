@@ -3,9 +3,14 @@
     <evaluation-header :evaluationSheet="evaluationsheet">
         <h1>Evaluatiefiche Module: {{module.name}}</h1>
         <h2>Opleiding: {{discipline.name}}</h2>
-        <v-btn class="success" v-on:click="showGenerateReport = true;">
+        <v-btn v-if="!reportid" class="success" v-on:click="showGenerateReport = true;">
             <v-icon>assignment</v-icon>&nbsp; Rapport genereren
         </v-btn>
+        <router-link v-if="reportid" to="/Rapport/5723348596162560">
+            <v-btn class="success">
+                <v-icon>assignment</v-icon>&nbsp; Rapport bekijken
+            </v-btn>
+        </router-link>
         <v-btn v-if="!evaluationsheet.enddate" color="error" @click="showEndEvaluation = true; evaluationToEnd = evaluationsheet.id;">
             <v-icon>clear</v-icon>&nbsp; afsluiten
         </v-btn>
@@ -101,7 +106,12 @@ export default {
         async fetchData() {
             this.loaded = false;
             const evaluationid = this.$route.params.evaluationid;
-            this.evaluationsheet = await this.$http.getEvaluationSheetById(evaluationid);
+            const [evaluationsheet, reportid] = await Promise.all([
+                this.$http.getEvaluationSheetById(evaluationid),
+                this.$http.getReportByEvaluationid(evaluationid)
+            ]);
+            this.evaluationsheet = evaluationsheet;
+            this.reportid = reportid.reportid ? reportid.reportid : undefined;
             this.evaluationsPerAssignment = this.evaluationsheet.scores.reduce((acc, evaluation, index) => {
                 if (acc.get(evaluation.name)) {
                     acc.get(evaluation.name).push(evaluation);
@@ -140,3 +150,9 @@ export default {
 
 };
 </script>
+
+<style scoped>
+a {
+    text-decoration: none;
+    }
+</style>
