@@ -39,6 +39,11 @@ export default {
             this.$emit('confirm');
         }
     },
-    props: ["new", "confirm", "model"]
+    props: ["new", "confirm", "model"],
+    watch: {
+        model(){
+            this.$emit('update:model', this.model);
+        }
+    }
 }
 </script>

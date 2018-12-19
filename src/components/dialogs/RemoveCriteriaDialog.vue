@@ -90,6 +90,9 @@ export default {
             this.refreshDomains();
             this.changedDomain();
             this.changedGoal();
+        },
+        model(){
+            this.$emit('update:model', this.model);
         }
     }
 }

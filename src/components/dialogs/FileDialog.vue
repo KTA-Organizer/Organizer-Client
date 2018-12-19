@@ -35,6 +35,11 @@ export default {
             }
             
         }
+    },
+    watch: {
+        model() {
+            this.$emit('update:model', this.model);
+        }
     }
 }
 </script>

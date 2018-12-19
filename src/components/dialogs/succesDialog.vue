@@ -24,6 +24,11 @@
 <script>
 export default {
     name: "SuccesDialog",
-    props: ["name", "action", "model", "link"]
+    props: ["name", "action", "model", "link"],
+    watch: {
+        model(){
+            this.$emit('update:model', this.model);
+        }
+    }
 }
 </script>

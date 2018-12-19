@@ -71,6 +71,9 @@ export default {
         module(){
             this.refreshDomains();
             this.changedDomain();
+        },
+        model(){
+            this.$emit('update:model', this.model);
         }
     }
 }

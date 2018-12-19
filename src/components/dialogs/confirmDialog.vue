@@ -29,6 +29,11 @@
 <script>
 export default {
     name: "ConfirmDialog",
-    props: ["name", "action", "model"]
+    props: ["name", "action", "model"],
+    watch: {
+        model() {
+            this.$emit('update:model', this.model);
+        }
+    }
 }
 </script>

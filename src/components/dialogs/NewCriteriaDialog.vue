@@ -87,6 +87,9 @@ export default {
     watch: {
         module(){
             this.refreshDomains();
+        },
+        model(){
+            this.$emit('update:model', this.model);
         }
     }
 }

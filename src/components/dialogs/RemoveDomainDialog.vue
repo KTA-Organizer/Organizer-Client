@@ -47,6 +47,9 @@ export default {
     computed: {
         domains(){
             return this.module.domains.filter(x => x.active).map(x => x.name);
+        },
+        model(){
+            this.$emit('update:model', this.model);
         }
     }
 }
