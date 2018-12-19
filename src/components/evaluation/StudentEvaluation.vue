@@ -94,6 +94,8 @@ export default {
                 });
             }
             await this.$http.saveEvaluation(this.evaluationsheet.id, newScores);
+            this.newEvaluation = {};
+            this.assignmentName = "";
             await this.fetchData();
         },
         async fetchData() {
