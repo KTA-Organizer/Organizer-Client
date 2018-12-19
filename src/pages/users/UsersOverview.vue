@@ -67,7 +67,7 @@
     </v-layout>
     <confirmdialog v-bind:model.sync="showDeleteDialogBool" v-on:confirm="removeUser" :name="'deze gebruiker'" :action="'verwijderen'">
     </confirmdialog>
-    <filedialog v-bind:model.sync="showFileDialogBool">
+    <filedialog v-bind:model.sync="showFileDialogBool" :uploaded="false">
     </filedialog>
 </div>
 </template>

@@ -231,7 +231,7 @@ export const uploadUserCsv = async file => {
   formData.append("userfile", file);
   const response = await fetch(`${API_URL}/users/csv`, {"body": formData, "method": "POST","credentials": "include",
   "mode": "cors",});
-  console.log(response);
+  return response;
 }
 
 async function processReq(url, dataObj = {}, method = "GET") {
