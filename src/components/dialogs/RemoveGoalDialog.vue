@@ -68,6 +68,7 @@ export default {
     watch: {
         module(){
             this.refreshDomains();
+            this.changedDomain();
         }
     }
 }
