@@ -30,7 +30,6 @@ export default {
     data(){
         return{
             selectedDomain: "",
-            domains: []
         };
     },
     methods: {
@@ -43,7 +42,12 @@ export default {
         }
     },
     async created() {
-        this.domains = this.module.domains.filter(x => x.active).map(x => x.name);
+        
+    },
+    computed: {
+        domains(){
+            return this.module.domains.filter(x => x.active).map(x => x.name);
+        }
     }
 }
 </script>
