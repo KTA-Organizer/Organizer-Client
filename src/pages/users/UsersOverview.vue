@@ -48,7 +48,6 @@
                         <td class="text-xs-left">{{ getKeyByValue(constants.roleKeys, gebruiker.item.role) }}</td>
                         <td class="text-xs-left">{{ gebruiker.item.email }}</td>
                         <td class="text-xs-left">{{ getKeyByValue(constants.statusKeys, gebruiker.item.status) }}</td>
-                        <td class="text-xs-left">{{ readableDate(gebruiker.item.accountCreatedTimestamp) }}</td>
                         <td>
                             <v-layout row>
                                 <v-btn v-if="gebruiker.item.status === constants.statusKeys.Actief" @click="showDeleteDialog(gebruiker.item.id)" fab color="error" small><v-icon>close</v-icon></v-btn>
@@ -132,11 +131,6 @@ export default {
                     value: "status",
                     sortable: false
                 },
-                {
-                    text: "Datum aangemaakt",
-                    value: "accountCreatedTimestamp",
-                    sortable: false
-                }
             ],
             nameFilter: "",
             roleFilter: "",
