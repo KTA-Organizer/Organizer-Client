@@ -52,7 +52,7 @@
                         <td class="text-xs-left">{{ props.item.module.name }}</td>
                         <td class="text-xs-left">{{ props.item.open ? "Open" : "Gesloten" }}</td>
                         <td class="text-xs-right">
-                            <v-btn round color="green" class="ma-1" dark v-on:click="openPDF(props.item.id)">
+                            <v-btn round color="green" class="ma-1" dark v-on:click="printPDF(props.item.id, props.item.student)">
                                 <v-icon dark>print</v-icon>&nbsp; print
                             </v-btn>
                             <v-btn round color="primary" class="ma-1" dark :to="{ name: 'Rapport', params: { reportid: props.item.id }}">
@@ -186,10 +186,6 @@ export default {
             this.filteredReports = this.reports;
             this.totalReports = result.total;
             this.loading = false;
-        },
-        async openPDF(reportid) {
-            const pdfData = await this.$http.getReportPDF(reportid);
-            pdfMake.createPdf(pdfData).print();
         },
         clearNameFilter() {
             this.nameFilter = "";
