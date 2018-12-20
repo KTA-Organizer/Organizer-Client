@@ -61,6 +61,10 @@ export default {
         async updateUser() {
             const gender = constants.genderKeys[this.userFields.gender];
             const roles = this.userFields.roles.map(r => constants.roleKeys[r]);
+            if (!this.userFields.email || this.userFields.email === "") {
+                delete this.userFields.email;
+            }
+            console.log(this.userFields);
             await this.$http.updateUser({ ...this.userFields,
                 gender,
                 roles
