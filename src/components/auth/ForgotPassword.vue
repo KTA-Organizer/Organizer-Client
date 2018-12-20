@@ -15,7 +15,7 @@
         </v-form>
     </v-card-text>
     <v-card-text v-if="passwordResetSuccess">
-        <v-card-title>Email verstuurt!</v-card-title>
+        <v-card-title>Email verstuurd!</v-card-title>
     </v-card-text>
 </v-flex>
 </template>
