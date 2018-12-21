@@ -8,9 +8,11 @@
             <p
               v-if="isTeacher"
             >Op dit platform kan je terecht voor meerdere zaken. De inhoud van alle actieve opleidingen kunnen volledig getoond worden. Daarnaast kunnen evaluaties gemaakt worden en ingevuld worden voor de studenten. Op basis van deze evaluaties kunnen de rapporten gegenereerd worden en vervolgens bekeken, geprint of gedownload worden.</p>
+            <p v-if="isTeacher">Afspeellijst filmpjes omtrent het gebruik van dit programma: <a href="https://www.youtube.com/playlist?list=PL65dXgICHdPK4XB141Uq0G16c997XXkgi">https://www.youtube.com/playlist?list=PL65dXgICHdPK4XB141Uq0G16c997XXkgi</a></p>
             <p
               v-if="isAdmin"
             >Als admin kan je alles beheren. De inhoud van alle actieve opleidingen kunnen volledig aangepast worden. Daarnaast kunnen evaluaties gemaakt worden en ingevuld worden voor de studenten. Op basis van deze evaluaties kunnen de rapporten gegenereerd worden en vervolgens bekeken, geprint of gedownload worden. Daarnaast kun je meldingen aanmaken voor de andere admins en leerkrachten. Ten slotte kunnen alle gebruikers beheerd worden.</p>
+            <p v-if="isAdmin">Afspeellijst filmpjes omtrent het gebruik van dit programma: <a href="https://www.youtube.com/playlist?list=PL65dXgICHdPKt8K0N2x4IVOquYT0_9nnb">https://www.youtube.com/playlist?list=PL65dXgICHdPKt8K0N2x4IVOquYT0_9nnb</a></p>
             <p v-if="isTeacher || isStudent">Bij problemen, contacteer de helpdesk.</p>
           </v-card-text>
         </v-card>
